@@ -1,0 +1,17 @@
+{
+  "name": "brand",
+  "version": "0.1.0",
+  "description": "Poetics brand identity, guidelines, branded documents/decks/social templates, and brand review. A thin Claude Code wrapper around the portable brand-kit/ spec — the actual brand knowledge lives outside this plugin so it also works with other AI tools.",
+  "author": {
+    "name": "Thanos Dimitriou",
+    "email": "dimitriouathanas@gmail.com"
+  },
+  "keywords": [
+    "brand",
+    "design",
+    "identity",
+    "guidelines",
+    "templates",
+    "poetics"
+  ]
+}

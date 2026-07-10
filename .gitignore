@@ -1,0 +1,13 @@
+# Workable's internal reference repo — explicitly marked "not for external distribution"
+# in its own README. Kept locally for inspiration only; never pushed anywhere.
+/fabric-master/
+
+# OS cruft
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+
+# Generator scratch scripts (used once locally to build the HTML editors' embedded assets;
+# not needed to use or maintain the repo — templates/*/editor.html are the shipped output)
