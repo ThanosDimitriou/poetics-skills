@@ -3,9 +3,13 @@
 On-brand document, presentation, and social asset generation for the Poetics team — backed by a
 single branding spec that updates everything downstream when it changes.
 
-Inspired by (and structurally adapted from) `fabric-master/`, Workable's internal Claude plugin
-marketplace, included here as a reference copy. This repo is a much smaller, leaner version of
-that pattern, built specifically for Poetics.
+**New here? Start with [`INSTALL.md`](INSTALL.md)** — step-by-step setup for whichever tool you
+actually use (no AI, ChatGPT/Gemini, Claude Code, or VS Code/Cursor/Windsurf/JetBrains/Claude
+Desktop via MCP).
+
+Structurally inspired by Workable's internal Claude plugin marketplace ("fabric") — not included
+in this repo, since it's marked internal-only in its own source. This repo is a much smaller,
+leaner version of that pattern, built specifically for Poetics.
 
 ## Three ways to use this
 
