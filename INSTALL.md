@@ -12,6 +12,16 @@ git clone https://github.com/ThanosDimitriou/poetics-skills.git
 cd poetics-skills
 ```
 
+Or, one line that also runs the Claude Desktop/Windsurf installer in the same breath:
+
+```bash
+npx degit ThanosDimitriou/poetics-skills poetics-skills && cd poetics-skills && bash mcp-server/install.sh
+```
+
+(`degit` is a standard public npm tool for pulling a repo without its git history — not something
+we publish or maintain. Since it drops the `.git` folder, you won't be able to `git pull` later to
+get brand updates; use the plain `git clone` above if you'll want to update in place.)
+
 **For Claude Code, VS Code, or Cursor: that's it — skip straight to verifying below.** This repo
 ships committed config (`.claude/settings.json`, `.mcp.json`, `.vscode/mcp.json`,
 `.cursor/mcp.json`) that those tools auto-discover the moment you open the folder. No install
