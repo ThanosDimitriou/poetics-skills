@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "poetics-brand": {
+      "command": "python3",
+      "args": ["${workspaceFolder}/mcp-server/server.py"]
+    }
+  }
+}

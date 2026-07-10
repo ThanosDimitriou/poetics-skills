@@ -34,21 +34,25 @@ brand-kit/
 
 A thin wrapper around the same `brand-kit/` files, packaged as a Claude Code plugin: skills
 auto-trigger on natural requests ("make a Poetics deck," "write a branded doc," "is this
-on-brand?") and take priority over Claude's generic `pptx`/`docx`/`pdf` skills. Add this repo as a
-local plugin marketplace to install it:
+on-brand?") and take priority over Claude's generic `pptx`/`docx`/`pdf` skills.
 
-```
-/plugin marketplace add <path-to-this-repo>
-```
+**Zero-command install:** the marketplace registration and plugin install are committed in
+`.claude/settings.json` — just `git clone` and open the repo in Claude Code, it's already active.
+Confirm with `claude plugin list`.
 
 ### 3. Any MCP-compatible editor/CLI — `mcp-server/`
 
 VS Code, Cursor, Windsurf, JetBrains, and Claude Desktop all support connecting to
 [MCP](https://modelcontextprotocol.io) servers. `mcp-server/` wraps `brand-kit/` as MCP
 resources/tools/prompts, so those tools get the same auto-triggering and tool-calling behavior as
-the Claude Code plugin, without being locked to Claude Code. A project-scoped `.mcp.json` at the
-repo root also lets Claude Code itself pick it up automatically. See
-[`mcp-server/README.md`](mcp-server/README.md) for per-editor setup.
+the Claude Code plugin, without being locked to Claude Code.
+
+**VS Code and Cursor:** zero-command — `.vscode/mcp.json` and `.cursor/mcp.json` are committed and
+auto-discovered on opening the folder.
+**Claude Desktop and Windsurf:** one command — `bash mcp-server/install.sh` (no project-folder
+concept for those to auto-discover config from, so it safely merges the entry into their global
+config for you).
+See [`mcp-server/README.md`](mcp-server/README.md) for details and any other client.
 
 Lighter-weight, config-only awareness (no tool-calling, just pointing the AI at `brand.md`) is
 also wired up via `.cursorrules` and `.github/copilot-instructions.md` for editors that read
@@ -67,9 +71,10 @@ anything still unresolved.
 brand-kit/            portable brand core (see above) — works with or without Claude
 marketplace.json       Claude Code marketplace manifest
 .claude-plugin/         mirror consumed by Claude Code
+.claude/settings.json   commits the plugin as pre-installed for anyone who clones the repo
 plugins/brand/           the thin Claude Code skill wrapper
-mcp-server/              MCP server wrapper for VS Code / Cursor / Windsurf / JetBrains / Claude Desktop
-.mcp.json                project-scoped MCP config (auto-discovered by Claude Code)
+mcp-server/              MCP server wrapper + install.sh for Claude Desktop/Windsurf
+.mcp.json, .vscode/mcp.json, .cursor/mcp.json   committed MCP config, auto-discovered on open
 .cursorrules             lightweight brand pointer for Cursor
 .github/copilot-instructions.md   lightweight brand pointer for GitHub Copilot
 fabric-master/           Workable's reference marketplace (untouched, for inspiration only)

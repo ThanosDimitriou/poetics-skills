@@ -2,6 +2,10 @@
 # in its own README. Kept locally for inspiration only; never pushed anywhere.
 /fabric-master/
 
+# Personal Claude Code state (permission allowlists etc.) — .claude/settings.json IS
+# committed on purpose (it's what auto-registers the marketplace + plugin on clone).
+.claude/settings.local.json
+
 # OS cruft
 .DS_Store
 

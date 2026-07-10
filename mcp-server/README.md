@@ -31,101 +31,55 @@ client, Claude Code plugin or MCP, picks it up immediately.
 
 ## Requirements
 
-Python **3.10+** (the `mcp` SDK requires it — if your default `python3` is older, point the
-config at a newer interpreter, e.g. a Homebrew Python).
+Python **3.10+** for the server itself (the `mcp` SDK requires it — if your default `python3` is
+older, the installer below finds a newer one automatically). The renderer scripts it calls into
+(`brand-kit/scripts/*.py`) self-install their own dependencies (`python-docx`, `python-pptx`,
+`playwright` + a one-time Chromium download for PDF export) the first time they run.
+
+## Installing
+
+**VS Code, Cursor, and Claude Code need zero setup.** This repo ships workspace-scoped MCP config
+(`.vscode/mcp.json`, `.cursor/mcp.json`, `.mcp.json`) that those tools auto-discover the moment
+you open the folder — the same trick as `.claude/settings.json` auto-enabling the Claude Code
+plugin. Just clone the repo and open it.
+
+**Claude Desktop and Windsurf** don't have a "workspace" concept to auto-discover config from, so
+they need one command:
 
 ```bash
-python3 -m pip install -r requirements.txt
+bash mcp-server/install.sh
 ```
 
-The renderer scripts it calls into (`brand-kit/scripts/*.py`) self-install their own dependencies
-(`python-docx`, `python-pptx`, `playwright` + a one-time Chromium download for PDF export) the
-first time they run.
+This finds a Python 3.10+ interpreter, installs the SDK, and merges the `poetics-brand` entry into
+whichever of those two it finds installed on your machine — safely: it only ever touches its own
+entry, backs up the existing config first, and is a no-op if already configured (safe to re-run).
+It never removes or overwrites any other MCP server you already have configured.
 
-## Running it directly
+Restart whichever editor it configured to pick up the new server.
 
-```bash
-python3 mcp-server/server.py
-```
+### Anything else (JetBrains AI Assistant, etc.)
 
-This starts a stdio MCP server — it's meant to be launched by an editor/client, not run
-standalone in a terminal for interactive use (it just sits there waiting for MCP messages on
-stdin/stdout, which is correct).
-
-## Installing in each client
-
-All of these register the same command:
-
-```
-command: python3   (or the full path to a 3.10+ interpreter)
-args:    ["<absolute-path-to-this-repo>/mcp-server/server.py"]
-```
-
-### Claude Desktop
-
-Edit `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS):
+`install.sh` only automates the two global-config tools above. For anything else, register the
+server manually using this shape (wherever that tool defines MCP servers):
 
 ```json
 {
-  "mcpServers": {
-    "poetics-brand": {
-      "command": "python3",
-      "args": ["/absolute/path/to/Poetics Skills/mcp-server/server.py"]
-    }
-  }
+  "command": "python3",
+  "args": ["/absolute/path/to/poetics-skills/mcp-server/server.py"]
 }
 ```
-
-Restart Claude Desktop.
-
-### Claude Code
-
-From within this repo:
-
-```bash
-claude mcp add poetics-brand -- python3 "$(pwd)/mcp-server/server.py"
-```
-
-Or add a project-scoped `.mcp.json` at the repo root (see the example below) so it's shared with
-anyone who clones the repo.
-
-### VS Code (MCP support in Copilot Chat / Claude extensions)
-
-Add to `.vscode/mcp.json` in this repo (or your user settings):
-
-```json
-{
-  "servers": {
-    "poetics-brand": {
-      "command": "python3",
-      "args": ["${workspaceFolder}/mcp-server/server.py"]
-    }
-  }
-}
-```
-
-### Cursor
-
-Add to `.cursor/mcp.json`:
-
-```json
-{
-  "mcpServers": {
-    "poetics-brand": {
-      "command": "python3",
-      "args": ["/absolute/path/to/Poetics Skills/mcp-server/server.py"]
-    }
-  }
-}
-```
-
-### Windsurf / JetBrains AI Assistant
-
-Same shape as Cursor's config, in whichever file that client uses for MCP server definitions —
-consult that tool's MCP docs; the `command`/`args` pair above is universal.
 
 ## Verifying it works
 
 Once connected, ask the assistant in that editor something like *"what are Poetics's brand
 colors?"* — it should read the `brand://spec` resource and answer from it, or *"generate a test
 Poetics one-pager PDF"* — it should call `generate_branded_document`.
+
+## Running it directly (debugging only)
+
+```bash
+python3 mcp-server/server.py
+```
+
+Starts a stdio MCP server — meant to be launched by an editor/client, not run interactively (it
+just sits waiting for MCP messages on stdin/stdout, which is correct).

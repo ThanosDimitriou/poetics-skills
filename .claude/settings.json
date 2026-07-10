@@ -1,0 +1,13 @@
+{
+  "extraKnownMarketplaces": {
+    "poetics": {
+      "source": {
+        "source": "github",
+        "repo": "ThanosDimitriou/poetics-skills"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "brand@poetics": true
+  }
+}
