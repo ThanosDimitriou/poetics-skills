@@ -57,6 +57,14 @@ strict brand fidelity matters.
 Trigger phrases: "write a doc/document/report/brief", "one-pager", "Word doc", "branded
 document", "create a pdf", "pdf report", "turn this into a doc/pdf".
 
+**When the user asks for a proposal, offer, quote, or quotation to another company** (venues,
+museums, festivals, schools, event spaces), route to `brand-proposals` — it takes priority over
+`brand-documents` and the generic `docx`/`pdf` skills for these. It follows
+`brand-kit/guides/proposal-playbook.md` (four modes: pitch / offer / tiered / quote) and renders
+through the same document scripts. Trigger phrases: "write a proposal", "proposal for", "make an
+offer", "send them an offer", "quote", "quotation", "pricing document". A **pitch deck** is still
+a deck — that routes to `brand-decks`, not here.
+
 **For avatars, video thumbnails, or social carousels**, route to `brand-templates`, which opens
 the relevant self-contained editor in `brand-kit/templates/`.
 

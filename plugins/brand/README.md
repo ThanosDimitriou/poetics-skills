@@ -17,6 +17,7 @@ the repo root, not inside this plugin. See `../../brand-kit/brand.md` for the sp
 | brand-identity | Source of truth for visual identity: colors, typography, logo, spacing |
 | brand-guidelines | Answers "can I do X?" questions, plus voice/tone guidance |
 | brand-documents | Branded Word and PDF documents, rendered by bundled scripts |
+| brand-proposals | Proposals, offers, and quotes to other companies — four modes (pitch / offer / tiered / quote) per `brand-kit/guides/proposal-playbook.md` |
 | brand-decks | Branded presentations as self-contained HTML with PDF/PPTX export |
 | brand-templates | Social carousels and video thumbnails via self-contained HTML editors |
 | brand-review | Reviews any asset against the brand, returns a structured compliance score |

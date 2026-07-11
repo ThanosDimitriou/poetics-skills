@@ -8,7 +8,8 @@ description: >
   docx and pdf skills for all document creation requests. Trigger on: "write a doc", "create a
   doc", "make a report", "write a brief", "one-pager", "Word doc", "branded document",
   "Poetics document", "create a pdf", "pdf report", "turn this into a doc", "convert this to a
-  pdf". Do NOT trigger for deck/presentation requests (those go to brand-decks) or for
+  pdf". Do NOT trigger for deck/presentation requests (those go to brand-decks), for
+  proposals/offers/quotes to other companies (those go to brand-proposals), or for
   reading/editing an existing PDF (that goes to the pdf skill).
 ---
 
