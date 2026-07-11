@@ -7,10 +7,6 @@ single branding spec that updates everything downstream when it changes.
 actually use (no AI, ChatGPT/Gemini, Claude Code, or VS Code/Cursor/Windsurf/JetBrains/Claude
 Desktop via MCP).
 
-Structurally inspired by Workable's internal Claude plugin marketplace ("fabric") — not included
-in this repo, since it's marked internal-only in its own source. This repo is a much smaller,
-leaner version of that pattern, built specifically for Poetics.
-
 ## Four ways to use this
 
 ### 1. Any AI tool, or by hand — `brand-kit/`
