@@ -1,0 +1,143 @@
+/* Poetics branded document PDF styles.
+   Dark canvas end-to-end — this is the canonical branded document format
+   (see brand.md: "if strict full-document dark-brand fidelity matters,
+   render to PDF"). Glow/orb effects come from pre-rendered background JPEGs
+   (assets/backgrounds/) rather than live CSS blur, for reliable print output. */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { background: #06070F; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  color: #F4F4F2;
+  background: #06070F;
+}
+
+@media print {
+  html, body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #F4F4F2;
+}
+
+h1 { font-size: 28pt; font-weight: 600; margin: 0 0 14pt; }
+h2 { font-size: 18pt; font-weight: 600; margin: 20pt 0 8pt; }
+h3 { font-size: 14pt; font-weight: 600; margin: 16pt 0 6pt; }
+h4 { font-size: 12pt; font-weight: 500; margin: 12pt 0 5pt; }
+h5 { font-size: 10.5pt; font-weight: 500; color: #9A9A98; margin: 10pt 0 4pt; text-transform: uppercase; letter-spacing: 0.08em; }
+h6 { font-size: 10pt; font-weight: 400; color: #9A9A98; margin: 10pt 0 4pt; }
+
+em, i { font-family: 'Cormorant Garamond', serif; font-style: italic; }
+
+p {
+  font-size: 11pt;
+  line-height: 1.6;
+  margin: 0 0 12pt;
+  color: #F4F4F2;
+}
+
+a { color: #0099FF; text-decoration: none; }
+
+ul, ol { margin: 0 0 12pt 20pt; }
+li { font-size: 11pt; line-height: 1.6; margin-bottom: 6pt; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 8pt 0 16pt;
+  break-inside: avoid;
+}
+th, td {
+  border: 0.5pt solid rgba(255,255,255,0.14);
+  padding: 8pt 10pt;
+  text-align: left;
+  font-size: 10pt;
+  vertical-align: top;
+}
+th {
+  background: #111214;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  color: #F4F4F2;
+}
+td { color: #E4E4E2; }
+
+.callout {
+  background: #111214;
+  border: 0.5pt solid rgba(255,255,255,0.12);
+  border-radius: 12px;
+  padding: 16pt 18pt;
+  margin: 8pt 0 16pt;
+  break-inside: avoid;
+}
+.callout-title { font-family: 'Inter', sans-serif; font-weight: 600; margin-bottom: 6pt; }
+.callout-body { font-size: 10.5pt; line-height: 1.55; color: #C8C8C6; }
+.callout-2col { display: flex; gap: 14pt; margin: 8pt 0 16pt; }
+.callout-2col .callout { flex: 1; margin: 0; }
+
+/* -- Page structure -- */
+
+.page-fixed {
+  position: relative;
+  width: 8.5in;
+  height: 11in;
+  overflow: hidden;
+  break-after: page;
+}
+.page-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+}
+.page-content {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  padding: 0.9in 0.75in 0.75in;
+  display: flex;
+  flex-direction: column;
+}
+
+.cover-logo img { height: 22pt; }
+.cover-middle { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; }
+.cover-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 44pt;
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  color: #F4F4F2;
+  margin-bottom: 10pt;
+}
+.cover-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  font-size: 15pt;
+  color: #9A9A98;
+}
+.cover-date {
+  font-family: 'Space Mono', monospace;
+  font-size: 9.5pt;
+  letter-spacing: 0.05em;
+  color: #9A9A98;
+  margin-top: 24pt;
+}
+
+.body-section {
+  position: relative;
+  min-height: 11in;
+  padding: 0.75in;
+  break-after: page;
+}
+.page-header { display: flex; justify-content: flex-end; margin-bottom: 18pt; }
+.page-header img { height: 16pt; }
+
+.separator .page-content { justify-content: center; }
+.separator h1 { font-size: 32pt; }

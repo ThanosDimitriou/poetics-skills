@@ -11,7 +11,7 @@ Structurally inspired by Workable's internal Claude plugin marketplace ("fabric"
 in this repo, since it's marked internal-only in its own source. This repo is a much smaller,
 leaner version of that pattern, built specifically for Poetics.
 
-## Three ways to use this
+## Four ways to use this
 
 ### 1. Any AI tool, or by hand — `brand-kit/`
 
@@ -58,6 +58,21 @@ Lighter-weight, config-only awareness (no tool-calling, just pointing the AI at 
 also wired up via `.cursorrules` and `.github/copilot-instructions.md` for editors that read
 those files but don't yet support MCP.
 
+### 4. claude.ai / Claude Desktop **chat** — `claude-skills/poetics-brand.zip`
+
+This is different from #2: Claude Code plugin skills assume a local git clone; claude.ai/Claude
+Desktop's separate **Skills** feature (Settings → Capabilities → Skills) runs in a hosted sandbox
+with no access to your files, so it needs everything bundled inside the upload itself. Download
+[`claude-skills/poetics-brand.zip`](claude-skills/poetics-brand.zip) and upload it there — see
+[`claude-skills/README.md`](claude-skills/README.md).
+
+**Not currently possible the same way:** ChatGPT and Gemini don't have an equivalent "upload a
+private skill package" mechanism. Getting real tool-calling there would mean hosting the renderer
+scripts as a public web API and building a Custom GPT Action / Gemini Extension against it — a
+meaningfully different, bigger project than packaging a skill, and not something built here. The
+`brand-kit/` path (#1) — pasting `brand.md` into those tools' custom instructions — is the
+practical option for ChatGPT/Gemini today.
+
 ## Updating the brand
 
 Edit [`brand-kit/brand.md`](brand-kit/brand.md) directly and save. There's no build step, no
@@ -77,6 +92,7 @@ mcp-server/              MCP server wrapper + install.sh for Claude Desktop/Wind
 .mcp.json, .vscode/mcp.json, .cursor/mcp.json   committed MCP config, auto-discovered on open
 .cursorrules             lightweight brand pointer for Cursor
 .github/copilot-instructions.md   lightweight brand pointer for GitHub Copilot
+claude-skills/           self-contained chat Skill bundle for claude.ai / Claude Desktop
 fabric-master/           Workable's reference marketplace (untouched, for inspiration only)
 ```
 
