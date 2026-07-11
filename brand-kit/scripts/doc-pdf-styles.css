@@ -133,7 +133,9 @@ td { color: #E4E4E2; }
 .body-section {
   position: relative;
   min-height: 11in;
-  padding: 0.75in;
+  /* Extra bottom padding keeps flowed content clear of the page edge and the
+     page-number overlay, since the PDF itself is exported with zero margins. */
+  padding: 0.75in 0.75in 0.9in;
   break-after: page;
 }
 .page-header { display: flex; justify-content: flex-end; margin-bottom: 18pt; }

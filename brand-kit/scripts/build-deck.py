@@ -305,9 +305,11 @@ def export_pdf(html_path: pathlib.Path, pdf_path: str):
     import asyncio
 
     async def _run():
+        import os as _os
         from playwright.async_api import async_playwright
         async with async_playwright() as p:
-            browser = await p.chromium.launch()
+            browser = await p.chromium.launch(
+                channel=_os.environ.get("POETICS_BROWSER_CHANNEL") or None)
             page = await browser.new_page(viewport={"width": 1920, "height": 1080})
             await page.goto(html_path.as_uri())
             try:
@@ -343,7 +345,20 @@ def check_playwright():
         if not (exe and _os.path.exists(exe)):
             raise RuntimeError
     except Exception:
-        subprocess.run([sys.executable, "-m", "playwright", "install", "chromium"], check=True)
+        import importlib.util as _ilu
+        _ba_path = pathlib.Path(__file__).parent / "_brand_assets.py"
+        _ba_spec = _ilu.spec_from_file_location("_brand_assets", _ba_path)
+        _ba = _ilu.module_from_spec(_ba_spec)
+        _ba_spec.loader.exec_module(_ba)
+        channel = _ba.pick_browser_channel()
+        if channel:
+            # System Chrome/Edge renders identically — skip the 110 MB download
+            # (which also fails outright on networks that block the Playwright CDN).
+            _os.environ.setdefault("POETICS_BROWSER_CHANNEL", channel)
+            print(f"Bundled Chromium not installed — using system browser (channel: {channel}).",
+                  file=sys.stderr)
+        else:
+            subprocess.run([sys.executable, "-m", "playwright", "install", "chromium"], check=True)
 
 
 # -- PPTX export (python-pptx) -------------------------------------------------

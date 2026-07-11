@@ -32,6 +32,10 @@ about styling.
   optional (renders as an H1 at the top of the section); `html` is required.
 - `separator_title` — optional. If present, adds a divider page (e.g. for an "Appendix") after
   the last section.
+- `theme` — optional, PDF renderer only: `"dark"` (default, canonical brand canvas) or
+  `"light"` (white body pages for print-friendly/procurement contexts — the dark brand cover and
+  separator pages are kept, and the body logo mark switches to the dark variant). The Word
+  renderer already renders light body pages by design and ignores this field.
 
 ## The `html` field
 

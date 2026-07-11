@@ -13,6 +13,11 @@ Runs standalone, no AI required:
 content.json schema: see schemas/doc-content-schema.md (same schema shared
 with build-doc.py).
 
+Optional "theme" field: "dark" (default, the canonical brand canvas) or
+"light" - white body pages for print-friendly/procurement contexts, with the
+dark brand cover (and separator) kept. Mirrors build-doc.py's dark-cover/
+light-body compromise.
+
 -- HTML escaping rules ------------------------------------------------------
 The "html" field is trusted HTML - the caller is responsible for escaping
 all user-supplied strings before passing them in. Use html.escape(text) on
@@ -88,6 +93,14 @@ def check_dependencies():
     except Exception:
         chromium_ok = False
     if not chromium_ok:
+        channel = _ba.pick_browser_channel()
+        if channel:
+            # System Chrome/Edge renders identically — skip the 110 MB download
+            # (which also fails outright on networks that block the Playwright CDN).
+            os.environ.setdefault('POETICS_BROWSER_CHANNEL', channel)
+            print(f"Bundled Chromium not installed — using system browser "
+                  f"(channel: {channel}).", file=sys.stderr)
+            return
         print("Installing Chromium for Playwright (one-time, about 110 MB)...", file=sys.stderr)
         result = subprocess.run(
             [sys.executable, "-m", "playwright", "install", "chromium"],
@@ -143,6 +156,7 @@ def load_assets(root):
         'section_bg': _bg(root, 'doc-section', 'doc-section-bg.jpg'),
         'logo_wordmark': r / 'assets/logos/wordmark-light.png',
         'logo_mark':  r / 'assets/logos/mark-light.png',
+        'logo_mark_dark': r / 'assets/logos/mark-dark.png',
         'inter_reg':  fonts / 'Inter-Regular.ttf',
         'inter_med':  fonts / 'Inter-Medium.ttf',
         'inter_sb':   fonts / 'Inter-SemiBold.ttf',
@@ -157,9 +171,11 @@ def load_assets(root):
     css_path = r / 'scripts/doc-pdf-styles.css'
     if not css_path.exists():
         raise FileNotFoundError(f'CSS not found: {css_path}')
+    light_css_path = r / 'scripts/doc-pdf-styles-light.css'
 
     assets = {k: b64(str(v)) for k, v in required.items()}
     assets['css'] = css_path.read_text()
+    assets['css_light'] = light_css_path.read_text() if light_css_path.exists() else ''
     return assets
 
 
@@ -237,6 +253,11 @@ def build_html(data, assets):
     date = e(data.get('date', ''))
     sections = data.get('sections', [])
     sep = data.get('separator_title', '')
+    light = data.get('theme', 'dark') == 'light'
+    # Light theme: white body pages need the dark logo mark; the cover and
+    # separator keep the dark canvas (and the light wordmark) either way.
+    body_mark = assets['logo_mark_dark'] if light else assets['logo_mark']
+    theme_css = f'\n{assets["css_light"]}' if light else ''
 
     font_css = f"""
 @font-face {{ font-family: 'Inter'; font-weight: 400; font-style: normal;
@@ -259,7 +280,7 @@ def build_html(data, assets):
         heading_html = f'<h1>{e(section["heading"])}</h1>' if section.get('heading') else ''
         header_html = (
             f'<div class="page-header">'
-            f'<img src="data:image/png;base64,{assets["logo_mark"]}" alt="Poetics"></div>'
+            f'<img src="data:image/png;base64,{body_mark}" alt="Poetics"></div>'
         )
         section_html = embed_local_images(section.get('html', ''))
         body_sections += f'''
@@ -284,7 +305,7 @@ def build_html(data, assets):
 <head>
 <meta charset="utf-8">
 <style>{font_css}
-{assets["css"]}
+{assets["css"]}{theme_css}
 </style>
 </head>
 <body>
@@ -310,11 +331,12 @@ def build_html(data, assets):
 
 # -- Playwright renderer -------------------------------------------------------
 
-async def render_pdf(html_path, pdf_path, preview_path=None):
+async def render_pdf(html_path, pdf_path, preview_path=None, light=False):
     from playwright.async_api import async_playwright
 
     async with async_playwright() as p:
-        browser = await p.chromium.launch()
+        browser = await p.chromium.launch(
+            channel=os.environ.get('POETICS_BROWSER_CHANNEL') or None)
         page = await browser.new_page(viewport={'width': 816, 'height': 1056})
         await page.goto(pathlib.Path(html_path).as_uri())
 
@@ -336,12 +358,17 @@ async def render_pdf(html_path, pdf_path, preview_path=None):
             )
             print(f'Preview screenshot: {preview_path}')
 
+        # Zero margins: page blocks are exactly 8.5x11in, so any PDF margin
+        # shrinks the printable area below 11in and every page spills onto a
+        # near-blank overflow page (with an unpainted white strip at the
+        # bottom). Bottom clearance for flowed content and the page-number
+        # overlay comes from .body-section padding in the CSS instead.
         await page.pdf(
             path=pdf_path,
             format='Letter',
             print_background=True,
             display_header_footer=False,
-            margin={'top': '0', 'bottom': '0.5in', 'left': '0', 'right': '0'}
+            margin={'top': '0', 'bottom': '0', 'left': '0', 'right': '0'}
         )
         await browser.close()
 
@@ -363,7 +390,10 @@ async def render_pdf(html_path, pdf_path, preview_path=None):
             buf = _io.BytesIO()
             c = rl_canvas.Canvas(buf, pagesize=letter)
             c.setFont('Helvetica', 9)
-            c.setFillColorRGB(0.604, 0.604, 0.596)  # #9A9A98
+            if light:
+                c.setFillColorRGB(0.431, 0.431, 0.416)  # #6E6E6A - AA on white
+            else:
+                c.setFillColorRGB(0.604, 0.604, 0.596)  # #9A9A98
             c.drawRightString(letter[0] - 36, 25, str(i + 1))
             c.save()
             buf.seek(0)
@@ -439,7 +469,8 @@ def main():
         preview_path = str(pathlib.Path('/tmp') / f'{stem}-preview.png')
 
     try:
-        asyncio.run(render_pdf(str(tmp_html.resolve()), output_path, preview_path))
+        asyncio.run(render_pdf(str(tmp_html.resolve()), output_path, preview_path,
+                               light=data.get('theme', 'dark') == 'light'))
     finally:
         if tmp_html.exists():
             tmp_html.unlink()
