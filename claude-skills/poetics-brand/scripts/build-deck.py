@@ -17,21 +17,59 @@ The output format is chosen by the output file's extension:
 deck.json schema:
 {
   "title": "Deck title",           // used for the HTML <title> and PPTX metadata
-  "slides": [
-    {"type": "title", "title": "...", "subtitle": "..."},
-    {"type": "section", "title": "Section name"},
-    {"type": "content", "title": "...", "bullets": ["...", "..."]},
-    {"type": "cards", "title": "...", "cards": [{"title": "...", "body": "..."}]},
-    {"type": "quote", "quote": "...", "attribution": "..."},
-    {"type": "closing", "title": "...", "cta": "..."}
-  ]
+  "footer": "poeticsvr.com",       // optional; footer text on content slides
+  "slides": [ ...one object per slide, see types below... ]
 }
+
+Slide types (all fields optional unless noted):
+
+  {"type": "title", "title": "...", "subtitle": "...", "eyebrow": "..."}
+      Cover. Big display bottom-left, optional mono eyebrow above the title.
+
+  {"type": "statement", "text": "(required)", "eyebrow": "...", "credit": "..."}
+      Centered mission-statement moment: small mono eyebrow, one large
+      statement (emphasis markers shine here), optional small credit line.
+
+  {"type": "section", "title": "(required)", "eyebrow": "..."}
+      Section divider. Left-aligned display title with an automatic huge
+      ghost numeral (01, 02, ...) counting section slides.
+
+  {"type": "agenda", "title": "...", "items": ["...", ...]}
+      Numbered index list with ghost numerals and hairline separators.
+      Splits into two columns automatically when more than 4 items.
+
+  {"type": "content", "title": "...", "bullets": ["...", ...], "eyebrow": "..."}
+      Title + bullet list. Splits bullets into two columns when more than 5.
+
+  {"type": "cards", "title": "...", "cards": [{"title": "...", "body": "..."}], "eyebrow": "..."}
+      Grid of cards (2 across for 2/4 cards, 3 across for 3/5/6).
+
+  {"type": "stats", "title": "...", "stats": [{"value": "1,500+", "label": "...", "sublabel": "..."}], "eyebrow": "..."}
+      Big-number slide. 2-4 stats in one row, 5-6 in two rows of three.
+
+  {"type": "split", "title": "...", "subtitle": "...", "items": [{"title": "...", "body": "..."}],
+   "image": "/path/to/photo.jpg", "side": "right", "eyebrow": "..."}
+      Editorial split: text column + rounded-corner image panel (the
+      reference deck's "Station setup" pattern). "image" is a local path
+      (allowlisted: /tmp or the brand-kit tree); without one, a quiet
+      branded placeholder panel renders instead. "side" = image side.
+
+  {"type": "timeline", "title": "...", "steps": [{"title": "...", "body": "..."}], "eyebrow": "..."}
+      Horizontal numbered process (01 → 02 → 03) joined by a hairline.
+      Best with 3-5 steps.
+
+  {"type": "quote", "quote": "(required)", "attribution": "..."}
+      Full-bleed serif pull quote with mono attribution.
+
+  {"type": "closing", "title": "...", "cta": "...", "contact": "..."}
+      Thank-you slide: contact line + CTA pill above a huge display title
+      bottom-left (mirrors the reference deck's closing).
 
 Every text field is treated as plain text and HTML-escaped automatically —
 callers do not need to escape content themselves (unlike build-doc-pdf.py's
 richer "html" field). Wrap 2-4 word phrases in *single asterisks* to render
 them in the Cormorant Garamond italic "emphasis" voice per brand.md, e.g.
-"A new way *to experience* art".
+"A new way *to experience* art". Use it sparingly — once or twice per slide.
 """
 
 import base64
@@ -115,71 +153,191 @@ body { font-family: 'Inter', sans-serif; color: %(text1)s; }
   flex-direction: column;
 }
 .slide + .slide { margin-top: 0; }
-.slide-inner { position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; padding: 100px 120px; }
-.logo { position: absolute; top: 56px; left: 100px; z-index: 2; height: 28px; }
+.slide-inner { position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; padding: 150px 120px 150px; }
+.logo { position: absolute; top: 64px; left: 120px; z-index: 2; height: 26px; }
+
+/* -- Shared header pattern: eyebrow above title, consistent anchor -- */
 .eyebrow {
-  font-family: 'Space Mono', monospace; font-size: 15px; letter-spacing: 0.14em;
-  text-transform: uppercase; color: %(accent)s; margin-bottom: 24px;
+  font-family: 'Space Mono', monospace; font-size: 16px; letter-spacing: 0.16em;
+  text-transform: uppercase; color: %(text2)s; margin-bottom: 26px;
 }
 h1.slide-title {
   font-family: 'Inter', sans-serif; font-weight: 600;
-  font-size: 64px; line-height: 1.08; letter-spacing: -0.02em; color: %(text1)s;
-  max-width: 1100px;
+  font-size: 66px; line-height: 1.06; letter-spacing: -0.02em; color: %(text1)s;
+  max-width: 1240px;
 }
+h1.slide-title.t-md { font-size: 56px; }
+h1.slide-title.t-sm { font-size: 46px; max-width: 1400px; }
 .slide-subtitle {
-  font-family: 'Inter', sans-serif; font-weight: 300; font-size: 26px;
-  color: %(text2)s; margin-top: 20px; max-width: 900px;
+  font-family: 'Inter', sans-serif; font-weight: 300; font-size: 28px; line-height: 1.45;
+  color: %(text2)s; margin-top: 22px; max-width: 980px;
 }
 em { font-family: 'Cormorant Garamond', serif; font-style: italic; color: inherit; }
 
-.slide.title-slide .slide-inner { justify-content: flex-end; padding-bottom: 140px; }
-.slide.section-slide { align-items: center; justify-content: center; }
-.slide.section-slide .slide-inner { align-items: center; justify-content: center; text-align: center; }
-.slide.section-slide h1.slide-title { font-size: 72px; max-width: 1400px; }
+/* -- Title (cover) -- */
+.slide.title-slide .slide-inner { justify-content: flex-end; padding-bottom: 150px; }
+.slide.title-slide h1.slide-title { font-size: 108px; line-height: 1.02; letter-spacing: -0.025em; max-width: 1500px; }
+.slide.title-slide h1.slide-title.t-md { font-size: 88px; }
+.slide.title-slide h1.slide-title.t-sm { font-size: 72px; }
+.slide.title-slide .slide-subtitle { font-size: 30px; margin-top: 28px; }
+.slide.title-slide .eyebrow { margin-bottom: 34px; }
 
-.bullets { list-style: none; margin-top: 48px; max-width: 1300px; }
+/* -- Statement (centered mission moment) -- */
+.slide.statement-slide .slide-inner { align-items: center; justify-content: center; text-align: center; }
+.statement-text {
+  font-family: 'Inter', sans-serif; font-weight: 500; font-size: 64px; line-height: 1.22;
+  letter-spacing: -0.015em; color: %(text1)s; max-width: 1520px;
+}
+.statement-text.t-md { font-size: 54px; }
+.statement-text.t-sm { font-size: 46px; }
+.statement-credit {
+  font-family: 'Inter', sans-serif; font-weight: 300; font-size: 22px;
+  color: %(text2)s; margin-top: 44px;
+}
+.slide.statement-slide .eyebrow { margin-bottom: 40px; }
+
+/* -- Section divider: asymmetric, huge ghost numeral -- */
+.slide.section-slide .slide-inner { justify-content: flex-end; padding-bottom: 170px; }
+.slide.section-slide h1.slide-title { font-size: 88px; max-width: 1400px; }
+.ghost-numeral {
+  position: absolute; top: 30px; right: 90px; z-index: 0;
+  font-family: 'Inter', sans-serif; font-weight: 200; font-size: 460px; line-height: 1;
+  letter-spacing: -0.03em; color: rgba(255,255,255,0.045);
+  user-select: none;
+}
+
+/* -- Agenda: numbered index rows -- */
+.agenda { margin-top: 64px; max-width: 1480px; }
+.agenda.cols-2 { column-count: 2; column-gap: 110px; max-width: 1680px; }
+.agenda-item {
+  display: flex; align-items: baseline; gap: 34px;
+  padding: 26px 4px; border-top: 1px solid rgba(255,255,255,0.10);
+  break-inside: avoid;
+}
+.agenda-num {
+  font-family: 'Space Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.34);
+  min-width: 44px;
+}
+.agenda-text { font-size: 31px; font-weight: 400; color: %(text1)s; line-height: 1.3; }
+
+/* -- Content bullets -- */
+.bullets { list-style: none; margin-top: 58px; max-width: 1340px; }
+.bullets.cols-2 { column-count: 2; column-gap: 100px; max-width: 1680px; }
 .bullets li {
-  font-size: 28px; line-height: 1.5; color: %(text1)s; font-weight: 300;
-  padding-left: 40px; position: relative; margin-bottom: 26px;
+  font-size: 33px; line-height: 1.5; color: %(text1)s; font-weight: 300;
+  padding-left: 44px; position: relative; margin-bottom: 34px;
+  break-inside: avoid;
 }
 .bullets li::before {
-  content: ''; position: absolute; left: 0; top: 14px; width: 6px; height: 6px;
+  content: ''; position: absolute; left: 0; top: 17px; width: 7px; height: 7px;
   border-radius: 1px; background: %(accent)s;
 }
 
-.cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 56px; }
+/* -- Cards -- */
+.cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 26px; margin-top: auto; margin-bottom: auto; }
 .cards.cols-3 { grid-template-columns: repeat(3, 1fr); }
 .card {
-  background: %(raised)s; border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 16px; padding: 36px 32px;
+  background: rgba(17,18,20,0.72); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px; padding: 42px 38px;
 }
-.card-title { font-family: 'Inter', sans-serif; font-weight: 600; font-size: 22px; color: %(text1)s; margin-bottom: 12px; }
-.card-body { font-size: 18px; line-height: 1.55; color: %(text2)s; font-weight: 300; }
+.card-dot {
+  width: 7px; height: 7px; border-radius: 1px; background: rgba(255,255,255,0.5);
+  margin-bottom: 22px;
+}
+.card-title { font-family: 'Inter', sans-serif; font-weight: 600; font-size: 27px; color: %(text1)s; margin-bottom: 14px; }
+.card-body { font-size: 21px; line-height: 1.55; color: %(text2)s; font-weight: 300; }
 
+/* -- Stats: big numbers -- */
+.stats { display: grid; gap: 30px 26px; margin-top: auto; margin-bottom: auto; max-width: 1680px; }
+.stats.cols-2 { grid-template-columns: repeat(2, 1fr); }
+.stats.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.stats.cols-4 { grid-template-columns: repeat(4, 1fr); }
+.stat { border-top: 1px solid rgba(255,255,255,0.10); padding-top: 34px; }
+.stat-value {
+  font-family: 'Inter', sans-serif; font-weight: 300; font-size: 118px; line-height: 1;
+  letter-spacing: -0.03em; color: %(accent)s;
+}
+.stats.cols-4 .stat-value { font-size: 96px; }
+.stat-label { font-size: 25px; font-weight: 400; color: %(text1)s; margin-top: 18px; line-height: 1.35; }
+.stat-sublabel { font-size: 19px; font-weight: 300; color: %(text2)s; margin-top: 8px; }
+
+/* -- Split: text column + rounded image panel -- */
+.split-wrap { display: flex; gap: 90px; margin-top: 26px; flex: 1; min-height: 0; align-items: stretch; }
+.split-text { flex: 1.05; display: flex; flex-direction: column; }
+.split-items { margin-top: 54px; display: flex; flex-direction: column; gap: 34px; }
+.split-item { display: flex; gap: 26px; align-items: flex-start; }
+.split-bar { width: 3px; border-radius: 2px; background: rgba(255,255,255,0.16); align-self: stretch; min-height: 58px; }
+.split-item-title { font-family: 'Inter', sans-serif; font-weight: 600; font-size: 28px; color: %(text1)s; }
+.split-item-body { font-size: 22px; font-weight: 300; color: %(text2)s; margin-top: 6px; line-height: 1.45; }
+.split-media { flex: 1; position: relative; border-radius: 20px; overflow: hidden; min-height: 0;
+  border: 1px solid rgba(255,255,255,0.10); align-self: center; height: 680px; }
+.split-media img { width: 100%%; height: 100%%; object-fit: cover; display: block; }
+.split-placeholder {
+  width: 100%%; height: 100%%; background:
+    radial-gradient(closest-side at 78%% 22%%, rgba(0,153,255,0.16), transparent),
+    %(raised)s;
+  display: flex; align-items: center; justify-content: center;
+}
+.split-placeholder img { width: 110px; height: 110px; opacity: 0.28; object-fit: contain; }
+
+/* -- Timeline: horizontal numbered process -- */
+.timeline { display: flex; margin-top: auto; margin-bottom: auto; }
+.tl-step { flex: 1; position: relative; padding: 0 44px 0 0; }
+.tl-step:last-child { padding-right: 0; }
+.tl-step::after {
+  content: ''; position: absolute; top: 12px; left: 52px; right: 24px;
+  border-top: 1px solid rgba(255,255,255,0.12);
+}
+.tl-step:last-child::after { right: 0; }
+.tl-marker {
+  display: inline-block;
+  font-family: 'Space Mono', monospace; font-size: 18px; color: %(accent)s;
+  line-height: 24px;
+}
+.tl-title { font-family: 'Inter', sans-serif; font-weight: 600; font-size: 30px; color: %(text1)s; margin-top: 34px; }
+.tl-body { font-size: 21px; font-weight: 300; color: %(text2)s; margin-top: 12px; line-height: 1.5; max-width: 400px; }
+
+/* -- Quote -- */
 .quote-slide .slide-inner { justify-content: center; align-items: flex-start; }
 .quote-text {
   font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 400;
-  font-size: 52px; line-height: 1.4; color: %(text1)s; max-width: 1400px;
+  font-size: 60px; line-height: 1.38; color: %(text1)s; max-width: 1520px;
 }
+.quote-text.t-sm { font-size: 48px; }
 .quote-attribution {
-  font-family: 'Space Mono', monospace; font-size: 16px; letter-spacing: 0.1em;
-  text-transform: uppercase; color: %(text2)s; margin-top: 36px;
+  font-family: 'Space Mono', monospace; font-size: 17px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: %(text2)s; margin-top: 48px;
 }
 
-.closing-slide .slide-inner { align-items: center; justify-content: center; text-align: center; }
+/* -- Closing: asymmetric thank-you (mirrors the reference deck) -- */
+.slide.closing-slide .slide-inner { justify-content: flex-end; padding-bottom: 130px; }
+.closing-contact {
+  font-family: 'Inter', sans-serif; font-weight: 400; font-size: 26px;
+  color: %(text1)s; margin-bottom: 46px;
+}
+.closing-contact span { text-decoration: underline; text-underline-offset: 6px;
+  text-decoration-thickness: 1px; text-decoration-color: rgba(255,255,255,0.5); }
+.slide.closing-slide h1.slide-title { font-size: 150px; line-height: 1; letter-spacing: -0.03em; max-width: none; }
+.slide.closing-slide h1.slide-title.t-md { font-size: 110px; }
+.slide.closing-slide h1.slide-title.t-sm { font-size: 84px; }
 .cta {
-  margin-top: 40px; display: inline-block; font-family: 'Space Mono', monospace;
-  font-size: 16px; letter-spacing: 0.08em; text-transform: uppercase; color: %(accent)s;
-  border: 1px solid rgba(0,153,255,0.4); border-radius: 20px; padding: 14px 32px;
+  display: inline-block; font-family: 'Space Mono', monospace; margin-bottom: 46px;
+  font-size: 17px; letter-spacing: 0.08em; text-transform: uppercase; color: %(accent)s;
+  border: 1px solid rgba(0,153,255,0.4); border-radius: 26px; padding: 16px 36px;
+  align-self: flex-start;
 }
 
+/* -- Footer: hairline rule, site left, slide counter right -- */
 .footer-rule {
-  position: absolute; bottom: 64px; left: 120px; right: 120px;
-  border-top: 0.5px solid rgba(255,255,255,0.12); padding-top: 14px;
+  position: absolute; bottom: 64px; left: 120px; right: 120px; z-index: 2;
+  border-top: 1px solid rgba(255,255,255,0.08); padding-top: 16px;
+  display: flex; justify-content: space-between; align-items: baseline;
 }
 .footer-rule span {
-  font-family: 'Space Mono', monospace; font-size: 13px; color: %(text2)s;
+  font-family: 'Space Mono', monospace; font-size: 14px; color: %(text2)s;
+  letter-spacing: 0.04em;
 }
+.footer-rule .slide-no { color: rgba(255,255,255,0.30); }
 
 @media print {
   html, body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
@@ -204,9 +362,57 @@ def slide_background_uri(slot: str, default_name: str) -> str:
     return ""
 
 
-def render_slide(slide: dict, logo_uri: str, footer_text: str) -> str:
+def _load_brand_assets():
+    import importlib.util as _ilu
+    _ba_path = pathlib.Path(__file__).parent / "_brand_assets.py"
+    _ba_spec = _ilu.spec_from_file_location("_brand_assets", _ba_path)
+    _ba = _ilu.module_from_spec(_ba_spec)
+    _ba_spec.loader.exec_module(_ba)
+    return _ba
+
+
+def resolve_slide_image(src: str) -> str:
+    """Resolve a slide's local image path to a data URI via the shared allowlist
+    (/tmp and the brand-kit tree). Returns '' if not resolvable."""
+    if not src:
+        return ""
+    if src.startswith("data:image/"):
+        return src
+    ba = _load_brand_assets()
+    return ba.resolve_local_image(src, ba.make_allowed_roots(__file__))
+
+
+def strip_markers(text) -> str:
+    return EMPH_RE.sub(r"\1", str(text or ""))
+
+
+def size_class(text, md_at: int, sm_at: int) -> str:
+    """Adaptive display sizing: long lines step down so they never crowd the
+    slide. Thresholds are character counts of the marker-stripped text."""
+    n = len(strip_markers(text))
+    if n > sm_at:
+        return " t-sm"
+    if n > md_at:
+        return " t-md"
+    return ""
+
+
+def _eyebrow(slide) -> str:
+    return f'<div class="eyebrow">{e(slide.get("eyebrow", ""))}</div>' if slide.get("eyebrow") else ""
+
+
+def _header(slide, md_at=52, sm_at=88) -> str:
+    """Shared eyebrow + adaptive title header for content-family slides."""
+    title = slide.get("title", "")
+    if not title and not slide.get("eyebrow"):
+        return ""
+    return f'{_eyebrow(slide)}<h1 class="slide-title{size_class(title, md_at, sm_at)}">{emph(title)}</h1>'
+
+
+def render_slide(slide: dict, logo_uri: str, mark_uri: str, footer_text: str,
+                 index: int, total: int, section_no: int) -> str:
     stype = slide.get("type", "content")
-    if stype in ("title", "section", "closing"):
+    if stype in ("title", "statement", "section", "closing"):
         bg_uri = slide_background_uri("deck-title", "deck-bg-title.jpg")
     else:
         bg_uri = slide_background_uri("deck-default", "deck-bg-default.jpg")
@@ -214,62 +420,169 @@ def render_slide(slide: dict, logo_uri: str, footer_text: str) -> str:
 
     logo_html = f'<img class="logo" src="{logo_uri}" alt="Poetics">' if logo_uri and stype != "section" else ""
     footer_html = (
-        f'<div class="footer-rule"><span>{e(footer_text)}</span></div>'
-        if footer_text and stype not in ("title", "section", "closing") else ""
+        f'<div class="footer-rule"><span>{e(footer_text)}</span>'
+        f'<span class="slide-no">{index:02d} / {total:02d}</span></div>'
+        if footer_text and stype not in ("title", "closing") else ""
     )
 
     if stype == "title":
         body = f'''
     <div class="slide-inner">
-      <h1 class="slide-title">{emph(slide.get("title", ""))}</h1>
+      {_eyebrow(slide)}
+      <h1 class="slide-title{size_class(slide.get("title",""), 34, 58)}">{emph(slide.get("title", ""))}</h1>
       {f'<div class="slide-subtitle">{emph(slide.get("subtitle", ""))}</div>' if slide.get("subtitle") else ""}
     </div>'''
         cls = "title-slide"
+
+    elif stype == "statement":
+        text = slide.get("text", "") or slide.get("title", "")
+        body = f'''
+    <div class="slide-inner">
+      {_eyebrow(slide)}
+      <div class="statement-text{size_class(text, 90, 160)}">{emph(text)}</div>
+      {f'<div class="statement-credit">{emph(slide.get("credit", ""))}</div>' if slide.get("credit") else ""}
+    </div>'''
+        cls = "statement-slide"
+
     elif stype == "section":
         body = f'''
+    <div class="ghost-numeral">{section_no:02d}</div>
     <div class="slide-inner">
-      {f'<div class="eyebrow">{e(slide.get("eyebrow",""))}</div>' if slide.get("eyebrow") else ""}
-      <h1 class="slide-title">{emph(slide.get("title", ""))}</h1>
+      {_eyebrow(slide)}
+      <h1 class="slide-title{size_class(slide.get("title",""), 40, 70)}">{emph(slide.get("title", ""))}</h1>
     </div>'''
         cls = "section-slide"
-    elif stype == "content":
-        bullets = "".join(f'<li>{emph(b)}</li>' for b in slide.get("bullets", []))
+
+    elif stype == "agenda":
+        items = slide.get("items", [])
+        cols = " cols-2" if len(items) > 4 else ""
+        rows = "".join(
+            f'<div class="agenda-item"><span class="agenda-num">{i + 1:02d}</span>'
+            f'<span class="agenda-text">{emph(it)}</span></div>'
+            for i, it in enumerate(items)
+        )
         body = f'''
     <div class="slide-inner">
-      <h1 class="slide-title">{emph(slide.get("title", ""))}</h1>
-      <ul class="bullets">{bullets}</ul>
+      {_header(slide)}
+      <div class="agenda{cols}">{rows}</div>
+    </div>'''
+        cls = "agenda-slide"
+
+    elif stype == "content":
+        items = slide.get("bullets", [])
+        cols = " cols-2" if len(items) > 5 else ""
+        bullets = "".join(f'<li>{emph(b)}</li>' for b in items)
+        body = f'''
+    <div class="slide-inner">
+      {_header(slide)}
+      <ul class="bullets{cols}">{bullets}</ul>
     </div>'''
         cls = "content-slide"
+
     elif stype == "cards":
         cards = slide.get("cards", [])
-        cols = "cols-3" if len(cards) >= 3 else ""
+        cols = " cols-3" if len(cards) in (3, 5, 6) else ""
         card_html = "".join(
-            f'<div class="card"><div class="card-title">{e(c.get("title",""))}</div>'
+            f'<div class="card"><div class="card-dot"></div>'
+            f'<div class="card-title">{e(c.get("title",""))}</div>'
             f'<div class="card-body">{emph(c.get("body",""))}</div></div>'
             for c in cards
         )
         body = f'''
     <div class="slide-inner">
-      <h1 class="slide-title">{emph(slide.get("title", ""))}</h1>
-      <div class="cards {cols}">{card_html}</div>
+      {_header(slide)}
+      <div class="cards{cols}">{card_html}</div>
     </div>'''
         cls = "cards-slide"
-    elif stype == "quote":
+
+    elif stype == "stats":
+        stats = slide.get("stats", [])
+        n = len(stats)
+        cols = " cols-2" if n <= 2 else (" cols-4" if n == 4 else " cols-3")
+        stat_html = "".join(
+            f'<div class="stat"><div class="stat-value">{e(s.get("value",""))}</div>'
+            f'<div class="stat-label">{emph(s.get("label",""))}</div>'
+            + (f'<div class="stat-sublabel">{emph(s.get("sublabel",""))}</div>' if s.get("sublabel") else "")
+            + '</div>'
+            for s in stats
+        )
         body = f'''
     <div class="slide-inner">
-      <div class="quote-text">&ldquo;{emph(slide.get("quote", ""))}&rdquo;</div>
+      {_header(slide)}
+      <div class="stats{cols}">{stat_html}</div>
+    </div>'''
+        cls = "stats-slide"
+
+    elif stype == "split":
+        items = slide.get("items", [])
+        item_html = "".join(
+            f'<div class="split-item"><div class="split-bar"></div><div>'
+            f'<div class="split-item-title">{e(it.get("title",""))}</div>'
+            + (f'<div class="split-item-body">{emph(it.get("body",""))}</div>' if it.get("body") else "")
+            + '</div></div>'
+            for it in items
+        )
+        img_uri = resolve_slide_image(slide.get("image", ""))
+        if img_uri:
+            media = f'<img src="{img_uri}" alt="">'
+        else:
+            ph_logo = f'<img src="{mark_uri}" alt="">' if mark_uri else ""
+            media = f'<div class="split-placeholder">{ph_logo}</div>'
+        text_col = f'''<div class="split-text">
+        {_header(slide, md_at=34, sm_at=60)}
+        {f'<div class="slide-subtitle">{emph(slide.get("subtitle", ""))}</div>' if slide.get("subtitle") else ""}
+        <div class="split-items">{item_html}</div>
+      </div>'''
+        media_col = f'<div class="split-media">{media}</div>'
+        cols = (media_col + text_col) if slide.get("side") == "left" else (text_col + media_col)
+        body = f'''
+    <div class="slide-inner">
+      <div class="split-wrap">{cols}</div>
+    </div>'''
+        cls = "split-slide"
+
+    elif stype == "timeline":
+        steps = slide.get("steps", [])
+        step_html = "".join(
+            f'<div class="tl-step"><span class="tl-marker">{i + 1:02d}</span>'
+            f'<div class="tl-title">{e(st.get("title",""))}</div>'
+            + (f'<div class="tl-body">{emph(st.get("body",""))}</div>' if st.get("body") else "")
+            + '</div>'
+            for i, st in enumerate(steps)
+        )
+        body = f'''
+    <div class="slide-inner">
+      {_header(slide)}
+      <div class="timeline">{step_html}</div>
+    </div>'''
+        cls = "timeline-slide"
+
+    elif stype == "quote":
+        qtext = slide.get("quote", "")
+        qcls = " t-sm" if len(strip_markers(qtext)) > 180 else ""
+        body = f'''
+    <div class="slide-inner">
+      <div class="quote-text{qcls}">&ldquo;{emph(qtext)}&rdquo;</div>
       {f'<div class="quote-attribution">{e(slide.get("attribution",""))}</div>' if slide.get("attribution") else ""}
     </div>'''
         cls = "quote-slide"
+
     elif stype == "closing":
+        contact = slide.get("contact", "")
+        contact_html = (
+            f'<div class="closing-contact"><span>{emph(contact)}</span></div>' if contact else ""
+        )
+        cta_html = f'<div class="cta">{e(slide.get("cta",""))}</div>' if slide.get("cta") else ""
         body = f'''
     <div class="slide-inner">
-      <h1 class="slide-title">{emph(slide.get("title", ""))}</h1>
-      {f'<div class="cta">{e(slide.get("cta",""))}</div>' if slide.get("cta") else ""}
+      {contact_html}
+      {cta_html}
+      <h1 class="slide-title{size_class(slide.get("title",""), 16, 30)}">{emph(slide.get("title", ""))}</h1>
     </div>'''
         cls = "closing-slide"
+
     else:
-        body = f'<div class="slide-inner"><h1 class="slide-title">{emph(slide.get("title",""))}</h1></div>'
+        body = f'<div class="slide-inner">{_header(slide)}</div>'
         cls = "content-slide"
 
     return f'<section class="slide {cls}" style="{bg_style}">{logo_html}{body}{footer_html}</section>'
@@ -280,8 +593,18 @@ def build_html(deck: dict) -> str:
     footer_text = deck.get("footer", "poeticsvr.com")
     logo_path = LOGOS / "wordmark-light.png"
     logo_uri = f"data:image/png;base64,{b64(logo_path)}" if logo_path.exists() else ""
+    mark_path = LOGOS / "mark-light.png"
+    mark_uri = f"data:image/png;base64,{b64(mark_path)}" if mark_path.exists() else ""
 
-    slides_html = "\n".join(render_slide(s, logo_uri, footer_text) for s in deck.get("slides", []))
+    slides = deck.get("slides", [])
+    total = len(slides)
+    parts = []
+    section_no = 0
+    for i, s in enumerate(slides):
+        if s.get("type") == "section":
+            section_no += 1
+        parts.append(render_slide(s, logo_uri, mark_uri, footer_text, i + 1, total, section_no))
+    slides_html = "\n".join(parts)
 
     return f"""<!DOCTYPE html>
 <html>
@@ -305,9 +628,11 @@ def export_pdf(html_path: pathlib.Path, pdf_path: str):
     import asyncio
 
     async def _run():
+        import os as _os
         from playwright.async_api import async_playwright
         async with async_playwright() as p:
-            browser = await p.chromium.launch()
+            browser = await p.chromium.launch(
+                channel=_os.environ.get("POETICS_BROWSER_CHANNEL") or None)
             page = await browser.new_page(viewport={"width": 1920, "height": 1080})
             await page.goto(html_path.as_uri())
             try:
@@ -343,7 +668,20 @@ def check_playwright():
         if not (exe and _os.path.exists(exe)):
             raise RuntimeError
     except Exception:
-        subprocess.run([sys.executable, "-m", "playwright", "install", "chromium"], check=True)
+        import importlib.util as _ilu
+        _ba_path = pathlib.Path(__file__).parent / "_brand_assets.py"
+        _ba_spec = _ilu.spec_from_file_location("_brand_assets", _ba_path)
+        _ba = _ilu.module_from_spec(_ba_spec)
+        _ba_spec.loader.exec_module(_ba)
+        channel = _ba.pick_browser_channel()
+        if channel:
+            # System Chrome/Edge renders identically — skip the 110 MB download
+            # (which also fails outright on networks that block the Playwright CDN).
+            _os.environ.setdefault("POETICS_BROWSER_CHANNEL", channel)
+            print(f"Bundled Chromium not installed — using system browser (channel: {channel}).",
+                  file=sys.stderr)
+        else:
+            subprocess.run([sys.executable, "-m", "playwright", "install", "chromium"], check=True)
 
 
 # -- PPTX export (python-pptx) -------------------------------------------------
@@ -375,6 +713,24 @@ def export_pptx(deck: dict, out_path: str):
     def strip_emphasis(text):
         return EMPH_RE.sub(r"\1", text or "")
 
+    def add_text(slide, x, y, w, h, text, *, font="Inter", size=18, bold=False,
+                 italic=False, color=TEXT_1, align=None, space_after=None):
+        box = slide.shapes.add_textbox(Inches(x), Inches(y), Inches(w), Inches(h))
+        tf = box.text_frame
+        tf.word_wrap = True
+        p = tf.paragraphs[0]
+        p.text = text
+        p.font.name = font
+        p.font.size = Pt(size)
+        p.font.bold = bold
+        p.font.italic = italic
+        p.font.color.rgb = rgb(color)
+        if align is not None:
+            p.alignment = align
+        if space_after is not None:
+            p.space_after = Pt(space_after)
+        return box
+
     for s in deck.get("slides", []):
         slide = prs.slides.add_slide(blank)
         bg = slide.background
@@ -382,19 +738,51 @@ def export_pptx(deck: dict, out_path: str):
         bg.fill.fore_color.rgb = rgb(CANVAS)
 
         stype = s.get("type", "content")
-        title_text = strip_emphasis(s.get("title", "")) or strip_emphasis(s.get("quote", ""))
+        title_text = strip_emphasis(s.get("title", "") or s.get("quote", "") or s.get("text", ""))
 
-        title_box = slide.shapes.add_textbox(Inches(0.8), Inches(0.7), Inches(11.7), Inches(1.8))
-        tf = title_box.text_frame
-        tf.word_wrap = True
-        p = tf.paragraphs[0]
-        p.text = title_text
-        p.font.name = "Inter"
-        p.font.size = Pt(40 if stype != "section" else 48)
-        p.font.bold = True
-        p.font.color.rgb = rgb(TEXT_1)
+        if stype == "statement":
+            add_text(slide, 1.2, 2.6, 10.9, 2.4, strip_emphasis(s.get("text", "") or s.get("title", "")),
+                     size=32, bold=False, align=PP_ALIGN.CENTER)
+            if s.get("credit"):
+                add_text(slide, 1.2, 5.2, 10.9, 0.6, strip_emphasis(s["credit"]),
+                         size=13, color=TEXT_2, align=PP_ALIGN.CENTER)
+            continue
 
-        if stype == "content" and s.get("bullets"):
+        if stype == "quote":
+            add_text(slide, 0.8, 2.4, 11.7, 2.6, f'“{title_text}”',
+                     font="Cormorant Garamond", size=32, italic=True)
+            if s.get("attribution"):
+                add_text(slide, 0.8, 5.4, 10.0, 0.6, s["attribution"].upper(),
+                         font="Space Mono", size=12, color=TEXT_2)
+            continue
+
+        if stype == "closing":
+            if s.get("contact"):
+                add_text(slide, 0.8, 3.4, 10.0, 0.6, strip_emphasis(s["contact"]), size=16)
+            if s.get("cta"):
+                add_text(slide, 0.8, 4.1, 6.0, 0.6, s["cta"].upper(),
+                         font="Space Mono", size=13, color=ACCENT)
+            add_text(slide, 0.8, 4.9, 12.0, 1.8, title_text, size=64, bold=True)
+            continue
+
+        # Title-at-top family (title, section, agenda, content, cards, stats, split, timeline).
+        add_text(slide, 0.8, 0.7, 11.7, 1.8, title_text,
+                 size=48 if stype in ("title", "section") else 34, bold=True)
+        if stype == "title" and s.get("subtitle"):
+            add_text(slide, 0.8, 2.2, 10.5, 0.9, strip_emphasis(s["subtitle"]), size=18, color=TEXT_2)
+
+        if stype == "agenda" and s.get("items"):
+            body = slide.shapes.add_textbox(Inches(0.8), Inches(2.2), Inches(11.5), Inches(4.7))
+            btf = body.text_frame
+            btf.word_wrap = True
+            for i, it in enumerate(s["items"]):
+                bp = btf.paragraphs[0] if i == 0 else btf.add_paragraph()
+                bp.text = f"{i + 1:02d}   {strip_emphasis(it)}"
+                bp.font.name = "Inter"
+                bp.font.size = Pt(18)
+                bp.font.color.rgb = rgb(TEXT_1)
+                bp.space_after = Pt(12)
+        elif stype == "content" and s.get("bullets"):
             body = slide.shapes.add_textbox(Inches(0.8), Inches(2.4), Inches(11.5), Inches(4.5))
             btf = body.text_frame
             btf.word_wrap = True
@@ -405,24 +793,14 @@ def export_pptx(deck: dict, out_path: str):
                 bp.font.size = Pt(18)
                 bp.font.color.rgb = rgb(TEXT_1)
                 bp.space_after = Pt(10)
-        elif stype == "quote":
-            title_box.text_frame.paragraphs[0].font.name = "Cormorant Garamond"
-            title_box.text_frame.paragraphs[0].font.italic = True
-            if s.get("attribution"):
-                attr = slide.shapes.add_textbox(Inches(0.8), Inches(5.0), Inches(8), Inches(0.6))
-                ap = attr.text_frame.paragraphs[0]
-                ap.text = s["attribution"]
-                ap.font.name = "Inter"
-                ap.font.size = Pt(13)
-                ap.font.color.rgb = rgb(TEXT_2)
         elif stype == "cards" and s.get("cards"):
             cards = s["cards"]
             n = len(cards)
-            col_w = Inches(11.5 / max(n, 1))
+            col_w = 11.5 / max(n, 1)
             for i, c in enumerate(cards):
-                left = Inches(0.8) + col_w * i
-                card_box = slide.shapes.add_textbox(left, Inches(2.6), col_w - Inches(0.2), Inches(3.5))
-                ctf = card_box.text_frame
+                box = slide.shapes.add_textbox(Inches(0.8 + col_w * i), Inches(2.6),
+                                               Inches(col_w - 0.2), Inches(3.5))
+                ctf = box.text_frame
                 ctf.word_wrap = True
                 cp = ctf.paragraphs[0]
                 cp.text = strip_emphasis(c.get("title", ""))
@@ -435,13 +813,86 @@ def export_pptx(deck: dict, out_path: str):
                 bp.font.name = "Inter"
                 bp.font.size = Pt(13)
                 bp.font.color.rgb = rgb(TEXT_2)
-        elif stype == "closing" and s.get("cta"):
-            cta_box = slide.shapes.add_textbox(Inches(0.8), Inches(2.6), Inches(6), Inches(0.8))
-            cp = cta_box.text_frame.paragraphs[0]
-            cp.text = s["cta"]
-            cp.font.name = "Space Mono"
-            cp.font.size = Pt(14)
-            cp.font.color.rgb = rgb(ACCENT)
+        elif stype == "stats" and s.get("stats"):
+            stats = s["stats"]
+            n = len(stats)
+            col_w = 11.5 / max(n, 1)
+            for i, st in enumerate(stats):
+                box = slide.shapes.add_textbox(Inches(0.8 + col_w * i), Inches(2.8),
+                                               Inches(col_w - 0.2), Inches(3.0))
+                ctf = box.text_frame
+                ctf.word_wrap = True
+                vp = ctf.paragraphs[0]
+                vp.text = st.get("value", "")
+                vp.font.name = "Inter"
+                vp.font.size = Pt(54)
+                vp.font.color.rgb = rgb(ACCENT)
+                lp = ctf.add_paragraph()
+                lp.text = strip_emphasis(st.get("label", ""))
+                lp.font.name = "Inter"
+                lp.font.size = Pt(15)
+                lp.font.color.rgb = rgb(TEXT_1)
+                if st.get("sublabel"):
+                    sp = ctf.add_paragraph()
+                    sp.text = strip_emphasis(st["sublabel"])
+                    sp.font.name = "Inter"
+                    sp.font.size = Pt(12)
+                    sp.font.color.rgb = rgb(TEXT_2)
+        elif stype == "split":
+            if s.get("subtitle"):
+                add_text(slide, 0.8, 1.9, 6.2, 0.8, strip_emphasis(s["subtitle"]), size=15, color=TEXT_2)
+            body = slide.shapes.add_textbox(Inches(0.8), Inches(2.8), Inches(6.2), Inches(4.2))
+            btf = body.text_frame
+            btf.word_wrap = True
+            for i, it in enumerate(s.get("items", [])):
+                tp = btf.paragraphs[0] if i == 0 else btf.add_paragraph()
+                tp.text = strip_emphasis(it.get("title", ""))
+                tp.font.name = "Inter"
+                tp.font.bold = True
+                tp.font.size = Pt(17)
+                tp.font.color.rgb = rgb(TEXT_1)
+                if it.get("body"):
+                    bp = btf.add_paragraph()
+                    bp.text = strip_emphasis(it["body"])
+                    bp.font.name = "Inter"
+                    bp.font.size = Pt(13)
+                    bp.font.color.rgb = rgb(TEXT_2)
+                    bp.space_after = Pt(10)
+            img_uri = resolve_slide_image(s.get("image", ""))
+            if img_uri.startswith("data:image/"):
+                import io as _io
+                raw = base64.b64decode(img_uri.split(",", 1)[1])
+                try:
+                    slide.shapes.add_picture(_io.BytesIO(raw), Inches(7.4), Inches(1.6),
+                                             width=Inches(5.1))
+                except Exception:
+                    pass
+        elif stype == "timeline" and s.get("steps"):
+            steps = s["steps"]
+            n = len(steps)
+            col_w = 11.5 / max(n, 1)
+            for i, st in enumerate(steps):
+                box = slide.shapes.add_textbox(Inches(0.8 + col_w * i), Inches(2.8),
+                                               Inches(col_w - 0.3), Inches(3.2))
+                ctf = box.text_frame
+                ctf.word_wrap = True
+                mp = ctf.paragraphs[0]
+                mp.text = f"{i + 1:02d}"
+                mp.font.name = "Space Mono"
+                mp.font.size = Pt(13)
+                mp.font.color.rgb = rgb(ACCENT)
+                tp = ctf.add_paragraph()
+                tp.text = strip_emphasis(st.get("title", ""))
+                tp.font.name = "Inter"
+                tp.font.bold = True
+                tp.font.size = Pt(17)
+                tp.font.color.rgb = rgb(TEXT_1)
+                if st.get("body"):
+                    bp = ctf.add_paragraph()
+                    bp.text = strip_emphasis(st["body"])
+                    bp.font.name = "Inter"
+                    bp.font.size = Pt(13)
+                    bp.font.color.rgb = rgb(TEXT_2)
 
     prs.save(out_path)
 

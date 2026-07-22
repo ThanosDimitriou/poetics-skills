@@ -38,12 +38,17 @@ cat "${CLAUDE_PLUGIN_ROOT}/../../brand-kit/brand.md"
   "title": "Deck title",
   "footer": "poeticsvr.com",
   "slides": [
-    {"type": "title", "title": "A new way *to experience* art", "subtitle": "Curate → Install → Operate"},
+    {"type": "title", "eyebrow": "Partner overview · July 2026", "title": "A new way *to experience* art", "subtitle": "..."},
+    {"type": "statement", "eyebrow": "Poetics is on a mission to", "text": "Curate and distribute *high-quality* immersive experiences.", "credit": "..."},
     {"type": "section", "title": "The Experience"},
-    {"type": "content", "title": "How it works", "bullets": ["Curate: ...", "Install: ...", "Operate: ..."]},
+    {"type": "agenda", "title": "What we'll cover", "items": ["The experience", "How it works", "Next steps"]},
+    {"type": "content", "eyebrow": "Why it matters", "title": "A new grammar of storytelling", "bullets": ["...", "..."]},
+    {"type": "timeline", "title": "How it works", "steps": [{"title": "Curate", "body": "..."}, {"title": "Install", "body": "..."}, {"title": "Operate", "body": "..."}]},
+    {"type": "split", "title": "Station setup", "subtitle": "...", "items": [{"title": "VR headsets", "body": "..."}], "image": "/tmp/photo.jpg", "side": "right"},
+    {"type": "stats", "title": "Our work in numbers", "stats": [{"value": "1,500+", "label": "screenings delivered", "sublabel": "..."}]},
     {"type": "cards", "title": "Why venues choose Poetics", "cards": [{"title": "Turnkey", "body": "..."}]},
     {"type": "quote", "quote": "It was overwhelming, in the best way.", "attribution": "Marina Spanou, Songwriter & Performer"},
-    {"type": "closing", "title": "Bring it to your venue", "cta": "Book a call"}
+    {"type": "closing", "title": "Thank you.", "contact": "Book a short call or say hello@poeticsvr.com", "cta": "Book a call"}
   ]
 }
 ```
@@ -65,11 +70,25 @@ python3 "${CLAUDE_PLUGIN_ROOT}/../../brand-kit/scripts/build-deck.py" /tmp/deck.
 
 ---
 
-## Slide types
+## Slide types — pick the one that matches the content shape
 
-`title` (cover), `section` (divider), `content` (title + bullets), `cards` (title + 2-3 cards),
-`quote` (pull quote + attribution), `closing` (title + CTA pill). Pick the type that matches the
-content shape — don't force everything into `content`.
+| Type | Use for |
+|---|---|
+| `title` | Cover: big display bottom-left, optional eyebrow + subtitle |
+| `statement` | One centered mission-statement line — the emotional beat of the deck |
+| `section` | Divider with an automatic huge ghost numeral (01, 02, ...) |
+| `agenda` | Numbered index of what's coming (auto two-column when > 4 items) |
+| `content` | Title + bullets (auto two-column when > 5) |
+| `timeline` | A process/sequence: numbered steps joined by a hairline (3-5 steps) |
+| `split` | Text + rounded image panel — equipment, venues, product shots. Pass a local `image` path; without one a quiet branded placeholder renders |
+| `stats` | Big accent numbers — never bury key figures in bullets, give them this slide |
+| `cards` | 2-6 parallel points of equal weight |
+| `quote` | One testimonial, full-bleed serif |
+| `closing` | Thank-you: contact line + CTA pill + huge display title |
+
+Vary the rhythm: don't chain three `content` slides in a row — a stat, quote, or split slide
+between text-heavy ones keeps the deck alive. A number that matters deserves `stats`, not a
+bullet. One idea per slide.
 
 **Never name or visually identify a specific film** on any slide — describe the program by theme
 only.

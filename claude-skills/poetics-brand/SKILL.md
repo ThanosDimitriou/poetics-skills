@@ -88,9 +88,12 @@ PDF. One question at a time; skip anything already given.
 ### Decks ("make a deck", "presentation", "pitch deck", "slides")
 
 1. Draft the deck as JSON: `{"title", "footer"?, "slides": [...]}`, where each slide has a "type"
-   (`title`, `section`, `content`, `cards`, `quote`, `closing`) — see `scripts/build-deck.py`'s
-   docstring for the exact per-type fields. Wrap 2–4 word emotional phrases in `*asterisks*` for
-   the Cormorant Garamond italic emphasis voice (sparingly — once or twice per slide at most).
+   (`title`, `statement`, `section`, `agenda`, `content`, `timeline`, `split`, `stats`, `cards`,
+   `quote`, `closing`) — see `scripts/build-deck.py`'s docstring for the exact per-type fields.
+   Vary the rhythm: don't chain three text slides in a row — put a `stats`, `quote`, or `split`
+   between them; a number that matters deserves a `stats` slide, not a bullet. Wrap 2–4 word
+   emotional phrases in `*asterisks*` for the Cormorant Garamond italic emphasis voice
+   (sparingly — once or twice per slide at most).
 2. Run the renderer — output format is chosen by the output file's extension:
    ```bash
    python3 scripts/build-deck.py /tmp/deck.json output.html   # primary — self-contained, open anywhere
