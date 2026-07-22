@@ -139,10 +139,19 @@ Everything in `brand.md`'s Voice & tone section applies, plus:
 
 ## Reusable payload snippets
 
-The price callout:
+The price callout — use the elevated `price-callout` block (not a generic `callout`): the price
+is the single most-scanned element in a proposal, and it should read as the page's focal point,
+not another card among cards:
 
 ```json
-"<div class=\"callout\"><div class=\"callout-title\">€ 18,600 — all-inclusive</div><div class=\"callout-body\">Curation, licensing coordination, delivery, installation, operation for all open hours, hygiene protocol and consumables, and strike. Excludes VAT.</div></div>"
+"<div class=\"price-callout\"><div class=\"price-value\">€ 18,600</div><div class=\"price-note\">All-inclusive</div><div class=\"price-body\">Curation, licensing coordination, delivery, installation, operation for all open hours, hygiene protocol and consumables, and strike. Excludes VAT.</div></div>"
+```
+
+For tiered mode, mark the recommended column with `class="recommended"` on its `<th>` and `<td>`
+cells so it's visually obvious before a client reads a single row:
+
+```json
+"<table><tr><th>Configuration</th><th class=\"recommended\">Gallery (recommended)</th><th>Forum</th></tr><tr><td>Price</td><td class=\"recommended\" style=\"text-align:right;white-space:nowrap\">€ 18,600</td><td style=\"text-align:right;white-space:nowrap\">€ 32,400</td></tr></table>"
 ```
 
 The at-a-glance pair (offer mode, section 1):
@@ -155,6 +164,20 @@ The acceptance block (offer mode):
 
 ```json
 "<div class=\"callout\"><div class=\"callout-title\">Acceptance</div><div class=\"callout-body\">To confirm, countersign below and return this page — or simply reply to the covering email and we'll take it from there.<br><br>For Poetics: ______________________&nbsp;&nbsp;&nbsp;&nbsp;Date: ____________<br><br>For [client]: ______________________&nbsp;&nbsp;&nbsp;&nbsp;Date: ____________</div></div>"
+```
+
+A testimonial or the pitch-mode opening line — use `pull-quote`, not italic body text, so it reads
+as a deliberate beat rather than an aside:
+
+```json
+"<div class=\"pull-quote\"><div class=\"pull-quote-text\">It was my first VR experience, and it was overwhelming. In seconds, you're transported into a world that feels real, yet beautifully dreamlike.</div><div class=\"pull-quote-attribution\">Marina Spanou, Songwriter &amp; Performer</div></div>"
+```
+
+Traction numbers (pitch mode's "why this works," or any report's "at a glance" figures) — use
+`stat-row`, not a bullet list, whenever a number is the point:
+
+```json
+"<div class=\"stat-row\"><div class=\"stat\"><div class=\"stat-value\">1,500+</div><div class=\"stat-label\">screenings delivered</div></div><div class=\"stat\"><div class=\"stat-value\">96%</div><div class=\"stat-label\">of viewers recommend</div></div></div>"
 ```
 
 Right-aligned price cells in tables need `style="text-align:right;white-space:nowrap"` so figures

@@ -34,6 +34,14 @@ automatically.
   <table><tr><th><td>          data table (break-inside: avoid)
   <div class="callout">        single-column callout box
   <div class="callout-2col">   two-column callout
+  <div class="eyebrow">        small mono kicker label above a heading
+  <div class="pull-quote">     inner-voice / testimonial quote (see schema for structure)
+  <div class="stat-row">       big accent-number row (see schema for structure)
+  <div class="price-callout">  elevated pricing block, the proposal playbook's price figure
+  <th class="recommended">     highlighted column in a tiered comparison table
+  <hr>                         section divider
+  <figure>/<figcaption>        image with caption
+See schemas/doc-content-schema.md for the exact nested structure each block expects.
 """
 
 import asyncio

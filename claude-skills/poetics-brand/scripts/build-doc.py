@@ -114,6 +114,11 @@ TABLE_BORDER = "D8DADC"
 TABLE_HEADER_BG = "F2F3F4"
 CALLOUT_BG = "13161C"          # dark callout card, echoes the brand's raised-surface color
 CALLOUT_TEXT = TEXT_ON_DARK
+RECOMMENDED_HEADER_BG = "D6EEFF"   # accent-tinted header cell for a highlighted table column
+RECOMMENDED_BODY_BG = "EAF6FF"     # accent-tinted body cell, same column
+
+VOID_TAGS = {"br", "img", "hr"}
+BLOCK_TAGS = {"h1", "h2", "h3", "h4", "h5", "h6", "p", "ul", "ol", "table", "div", "hr", "figure"}
 
 KIT_ROOT = pathlib.Path(__file__).resolve().parent.parent
 LOGO_WORDMARK = KIT_ROOT / "assets/logos/wordmark-light.png"
@@ -133,9 +138,6 @@ def _bg(slot, default_name):
 
 COVER_BG_IMG = _bg("doc-cover", "doc-cover-bg.jpg")
 SECTION_BG_IMG = _bg("doc-section", "doc-section-bg.jpg")
-
-VOID_TAGS = {"br", "img", "hr"}
-BLOCK_TAGS = {"h1", "h2", "h3", "h4", "h5", "h6", "p", "ul", "ol", "table", "div"}
 
 
 # -- Low-level XML helpers ----------------------------------------------------
@@ -399,6 +401,15 @@ def style_run(run, size_pt, bold, hex_color, italic=False, display=False):
     run.font.color.rgb = RGBColor.from_string(hex_color)
 
 
+def set_tracking(run, em_value, size_pt):
+    """Approximate CSS letter-spacing (in em) for mono/eyebrow-style labels.
+    Word exposes tracking as w:spacing in twentieths of a point on rPr."""
+    rpr = run._element.get_or_add_rPr()
+    spacing = OxmlElement("w:spacing")
+    spacing.set(qn("w:val"), str(int(size_pt * em_value * 20)))
+    rpr.append(spacing)
+
+
 def new_paragraph(container, space_before=None, space_after=None, line=LINE):
     p = container.add_paragraph()
     pf = p.paragraph_format
@@ -538,13 +549,25 @@ def render_block(container, node):
                 render_inline(p, li["children"], STYLES["body"][0], STYLES["body"][2])
     elif tag == "img":
         render_image(container, node)
+    elif tag == "figure":
+        render_figure(container, node)
+    elif tag == "hr":
+        render_hr(container)
     elif tag == "table":
         render_table(container, node)
     elif tag == "div":
         if has_class(node, "callout-2col"):
             render_callout_2col(container, node)
+        elif has_class(node, "price-callout"):
+            render_price_callout(container, node["children"])
         elif has_class(node, "callout"):
             render_callout(container, node["children"])
+        elif has_class(node, "pull-quote"):
+            render_pull_quote(container, node["children"])
+        elif has_class(node, "stat-row"):
+            render_stat_row(container, node["children"])
+        elif has_class(node, "eyebrow"):
+            render_eyebrow(container, node["children"])
         else:
             render_blocks(container, node["children"])
 
@@ -570,6 +593,160 @@ def render_image(container, node):
             return
     except Exception:
         return
+
+
+def render_figure(container, node):
+    """<figure><img src="..."><figcaption>...</figcaption></figure>"""
+    img_node = None
+    caption = None
+    for c in node["children"]:
+        if not isinstance(c, dict):
+            continue
+        if c["tag"] == "img":
+            img_node = c
+        elif c["tag"] == "figcaption":
+            caption = inline_text(c["children"])
+    if img_node:
+        render_image(container, img_node)
+    if caption:
+        p = new_paragraph(container, space_after=12)
+        style_run(p.add_run(caption), 9, False, TEXT_ON_LIGHT_SECONDARY)
+
+
+def render_hr(container):
+    p = new_paragraph(container, space_before=16, space_after=16)
+    pPr = p._p.get_or_add_pPr()
+    pBdr = OxmlElement("w:pBdr")
+    bottom = OxmlElement("w:bottom")
+    bottom.set(qn("w:val"), "single")
+    bottom.set(qn("w:sz"), "4")
+    bottom.set(qn("w:space"), "1")
+    bottom.set(qn("w:color"), TABLE_BORDER)
+    pBdr.append(bottom)
+    pPr.append(pBdr)
+
+
+def render_eyebrow(container, children):
+    p = new_paragraph(container, space_before=6, space_after=6)
+    run = p.add_run(inline_text(children).upper())
+    style_run(run, 9, False, TEXT_ON_LIGHT_SECONDARY)
+    set_tracking(run, 0.10, 9)
+
+
+def render_pull_quote(container, children):
+    text_node, attribution = None, ""
+    for ch in children:
+        if not isinstance(ch, dict):
+            continue
+        if ch["tag"] == "div" and has_class(ch, "pull-quote-text"):
+            text_node = ch
+        elif ch["tag"] == "div" and has_class(ch, "pull-quote-attribution"):
+            attribution = inline_text(ch["children"])
+    if text_node is None:
+        return
+    p = new_paragraph(container, space_before=12, space_after=4 if attribution else 12, line=1.4)
+    p.paragraph_format.left_indent = Pt(20)
+    pPr = p._p.get_or_add_pPr()
+    pBdr = OxmlElement("w:pBdr")
+    left = OxmlElement("w:left")
+    left.set(qn("w:val"), "single")
+    left.set(qn("w:sz"), "12")
+    left.set(qn("w:space"), "10")
+    left.set(qn("w:color"), ACCENT)
+    pBdr.append(left)
+    pPr.append(pBdr)
+    render_inline(p, text_node["children"], 16, TEXT_ON_LIGHT)
+    for run in p.runs:
+        run.font.italic = True
+        run.font.name = ITALIC_FONT
+    if attribution:
+        ap = new_paragraph(container, space_after=14)
+        ap.paragraph_format.left_indent = Pt(20)
+        run = ap.add_run(attribution.upper())
+        style_run(run, 9, False, TEXT_ON_LIGHT_SECONDARY)
+        set_tracking(run, 0.08, 9)
+
+
+def render_stat_row(container, children):
+    stats = [c for c in children if isinstance(c, dict) and c["tag"] == "div" and has_class(c, "stat")]
+    if not stats:
+        return
+    n = len(stats)
+    table = container.add_table(rows=1, cols=n)
+    table.alignment = WD_TABLE_ALIGNMENT.LEFT
+    align_table_full_width(table)
+    set_col_widths(table, [CONTENT_W_IN / n] * n)
+    set_table_cell_margins(table, 6, 8, 4, 8)
+    for i, stat in enumerate(stats):
+        cell = table.cell(0, i)
+        set_cell_bg(cell, "FFFFFF")
+        fill_stat_cell(cell, stat["children"])
+    new_paragraph(container, space_after=8)
+
+
+def fill_stat_cell(cell, src):
+    cell.paragraphs[0].text = ""
+    first = True
+    for ch in src:
+        if not isinstance(ch, dict):
+            continue
+        p = cell.paragraphs[0] if first else cell.add_paragraph()
+        first = False
+        p.paragraph_format.line_spacing = 1.1
+        if ch["tag"] == "div" and has_class(ch, "stat-value"):
+            p.paragraph_format.space_after = Pt(4)
+            style_run(p.add_run(inline_text(ch["children"])), 24, False, ACCENT, display=True)
+        elif ch["tag"] == "div" and has_class(ch, "stat-label"):
+            p.paragraph_format.space_after = Pt(2)
+            render_inline(p, ch["children"], 10, TEXT_ON_LIGHT)
+        elif ch["tag"] == "div" and has_class(ch, "stat-sublabel"):
+            render_inline(p, ch["children"], 9, TEXT_ON_LIGHT_SECONDARY)
+        else:
+            first = True  # unrecognized child, don't consume a blank paragraph
+
+
+def render_price_callout(container, children):
+    table = container.add_table(rows=1, cols=1)
+    table.alignment = WD_TABLE_ALIGNMENT.LEFT
+    align_table_full_width(table)
+    set_col_widths(table, [CONTENT_W_IN])
+    set_table_cell_margins(table, CALLOUT_PAD_V, 0, CALLOUT_PAD_V, 0)
+    cell = table.cell(0, 0)
+    tcPr = cell._tc.get_or_add_tcPr()
+    tcBorders = OxmlElement("w:tcBorders")
+    top = OxmlElement("w:top")
+    top.set(qn("w:val"), "single")
+    top.set(qn("w:sz"), "24")
+    top.set(qn("w:space"), "0")
+    top.set(qn("w:color"), ACCENT)
+    tcBorders.append(top)
+    tcPr.append(tcBorders)
+    fill_price_cell(cell, children)
+    pad_cell_paragraphs(cell, CALLOUT_PAD_H)
+    new_paragraph(container, space_after=4)
+
+
+def fill_price_cell(cell, src):
+    set_cell_bg(cell, CALLOUT_BG)
+    cell.paragraphs[0].text = ""
+    first = True
+    for ch in src:
+        if not isinstance(ch, dict):
+            continue
+        p = cell.paragraphs[0] if first else cell.add_paragraph()
+        first = False
+        p.paragraph_format.line_spacing = LINE
+        if ch["tag"] == "div" and has_class(ch, "price-value"):
+            p.paragraph_format.space_after = Pt(2)
+            style_run(p.add_run(inline_text(ch["children"])), 26, False, ACCENT, display=True)
+        elif ch["tag"] == "div" and has_class(ch, "price-note"):
+            p.paragraph_format.space_after = Pt(8)
+            run = p.add_run(inline_text(ch["children"]).upper())
+            style_run(run, 10, True, CALLOUT_TEXT)
+        elif ch["tag"] == "div" and has_class(ch, "price-body"):
+            render_inline(p, ch["children"], 11, CALLOUT_TEXT)
+        else:
+            first = True
 
 
 def inline_text(children):
@@ -616,16 +793,17 @@ def render_table(container, table_node):
         for ci in range(ncols):
             cell = table.cell(ri, ci)
             cell.vertical_alignment = WD_ALIGN_VERTICAL.TOP
-            if is_header:
-                set_cell_bg(cell, TABLE_HEADER_BG)
-            else:
-                set_cell_bg(cell, "FFFFFF")
             node = cells[ci] if ci < len(cells) else None
-            render_cell(cell, node, bold=is_header)
+            recommended = node is not None and has_class(node, "recommended")
+            if is_header:
+                set_cell_bg(cell, RECOMMENDED_HEADER_BG if recommended else TABLE_HEADER_BG)
+            else:
+                set_cell_bg(cell, RECOMMENDED_BODY_BG if recommended else "FFFFFF")
+            render_cell(cell, node, bold=is_header, accent=recommended and is_header)
     new_paragraph(container, space_after=4)
 
 
-def render_cell(cell, node, bold=False):
+def render_cell(cell, node, bold=False, accent=False):
     cell.paragraphs[0].text = ""
     if node is None:
         return
@@ -638,6 +816,8 @@ def render_cell(cell, node, bold=False):
         p = cell.paragraphs[0]
         p.paragraph_format.line_spacing = LINE
         size, _, color, _ = STYLES["body"]
+        if accent:
+            color = ACCENT
         segs = collect_inline_segments(node["children"], {"bold": bold})
         if not segs:
             return

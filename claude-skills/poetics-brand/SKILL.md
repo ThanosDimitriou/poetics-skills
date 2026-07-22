@@ -72,8 +72,18 @@ checklist (concrete over abstract, no invented facts, no named films, correct re
    - **Extraction** (user provides a URL/thread/pasted text and asks to "turn this into a doc"):
      extract and restructure the source content first, then proceed as create mode.
 2. For create/extraction mode, build the content as JSON matching `schemas/doc-content-schema.md`
-   (title, subtitle, date, sections[] with heading + html, optional separator_title). Escape any
-   user-provided text before embedding it in the `html` field.
+   (title, subtitle, date, sections[] with heading + html, optional separator_title, optional
+   `"theme": "light"` for print/procurement contexts). Escape any user-provided text before
+   embedding it in the `html` field.
+
+   Beyond plain `<p>`/`<table>`/`<ul>`, the `html` field supports richer blocks — use the one that
+   matches the content, don't force everything into a bullet: `eyebrow` (small kicker label above
+   a heading), `pull-quote` (inner-voice/testimonial moments), `stat-row` (a number that matters
+   gets this, never a bullet), `price-callout` (the single most important block in any
+   proposal/quote — always use this over a plain `callout` for a price), and `class="recommended"`
+   on a table column to highlight a tiered comparison's suggested option. Full structures in
+   `schemas/doc-content-schema.md`.
+
 3. Write that JSON to a temp file, then run the renderer from this skill's own directory:
    ```bash
    python3 scripts/build-doc-pdf.py /tmp/content.json output.pdf   # recommended — full dark-brand fidelity
@@ -81,6 +91,11 @@ checklist (concrete over abstract, no invented facts, no named films, correct re
    ```
 4. Present the resulting file. Do not hand-style the document yourself — the script applies
    brand.md's tokens mechanically; your job is only the content JSON.
+
+**Proposals, offers, and quotes to another company** (venues, museums, festivals, schools) follow
+a distinct playbook, not ad-hoc structure — read `guides/proposal-playbook.md` first. It defines
+four modes (pitch / offer / tiered / quote), their exact section order, and hard pricing rules
+(one all-inclusive figure, never invent a price, always note excl. VAT).
 
 Ask before generating if missing: topic, audience, key sections, and (only if unclear) Word vs.
 PDF. One question at a time; skip anything already given.

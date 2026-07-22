@@ -30,3 +30,25 @@ html, body { background: #FFFFFF; }
 }
 .body-section .callout-title { color: #0A0A0A; }
 .body-section .callout-body { color: #3C3D40; }
+
+.body-section .eyebrow { color: #6E6E6A; }
+
+.body-section .pull-quote { border-left-color: rgba(0,153,255,0.5); }
+.body-section .pull-quote-text { color: #0A0A0A; }
+.body-section .pull-quote-attribution { color: #6E6E6A; }
+
+.body-section .stat { border-top-color: rgba(10,10,10,0.16); }
+.body-section .stat-label { color: #0A0A0A; }
+.body-section .stat-sublabel { color: #6E6E6A; }
+
+.body-section .price-callout { background: #F7F7F5; border-color: rgba(10,10,10,0.14); }
+.body-section .price-note { color: #0A0A0A; }
+.body-section .price-body { color: #3C3D40; }
+
+.body-section th.recommended, .body-section td.recommended {
+  background: rgba(0,153,255,0.08) !important;
+  border-color: rgba(0,153,255,0.35) !important;
+}
+
+.body-section hr { border-top-color: rgba(10,10,10,0.16); }
+.body-section figcaption { color: #6E6E6A; }

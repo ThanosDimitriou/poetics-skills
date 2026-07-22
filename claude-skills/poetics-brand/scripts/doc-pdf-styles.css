@@ -81,6 +81,111 @@ td { color: #E4E4E2; }
 .callout-2col { display: flex; gap: 14pt; margin: 8pt 0 16pt; }
 .callout-2col .callout { flex: 1; margin: 0; }
 
+/* -- Eyebrow: small kicker label above a heading, mirrors the deck's eyebrow -- */
+.eyebrow {
+  font-family: 'Space Mono', monospace;
+  font-size: 9pt;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #9A9A98;
+  margin: 4pt 0 6pt;
+}
+
+/* -- Pull quote: the inner-voice moment inside a document (pitch openings,
+   testimonials). Cormorant Garamond italic, set off with an accent rule,
+   not a filled box — a quote is a beat, not a card. -- */
+.pull-quote {
+  margin: 18pt 0 22pt;
+  padding-left: 20pt;
+  border-left: 2pt solid rgba(0,153,255,0.45);
+  break-inside: avoid;
+}
+.pull-quote-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 20pt;
+  line-height: 1.42;
+  color: #F4F4F2;
+}
+.pull-quote-attribution {
+  font-family: 'Space Mono', monospace;
+  font-size: 9pt;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #9A9A98;
+  margin-top: 10pt;
+}
+
+/* -- Stat row: big accent numbers. A figure that matters gets this, never a
+   bullet — mirrors the deck's stats slide. 2-4 stats read well in one row. -- */
+.stat-row {
+  display: flex;
+  gap: 28pt;
+  margin: 16pt 0 22pt;
+  break-inside: avoid;
+}
+.stat { flex: 1; border-top: 0.5pt solid rgba(255,255,255,0.16); padding-top: 10pt; }
+.stat-value {
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  font-size: 30pt;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: #0099FF;
+}
+.stat-label { font-size: 9.5pt; font-weight: 400; color: #F4F4F2; margin-top: 7pt; line-height: 1.35; }
+.stat-sublabel { font-size: 8.5pt; font-weight: 300; color: #9A9A98; margin-top: 2pt; }
+
+/* -- Price callout: the single most important block in a proposal (per the
+   proposal playbook's pricing rules) — gets its own elevated treatment, not
+   a generic callout, so the number a client is scanning for actually stands
+   out. One accent-topped card, one figure. -- */
+.price-callout {
+  background: #111214;
+  border: 0.5pt solid rgba(255,255,255,0.14);
+  border-top: 2pt solid #0099FF;
+  border-radius: 12px;
+  padding: 18pt 20pt 20pt;
+  margin: 10pt 0 18pt;
+  break-inside: avoid;
+}
+.price-value {
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  font-size: 28pt;
+  letter-spacing: -0.02em;
+  color: #0099FF;
+}
+.price-note {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 10pt;
+  color: #F4F4F2;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 3pt;
+}
+.price-body { font-size: 10.5pt; line-height: 1.55; color: #C8C8C6; margin-top: 9pt; }
+
+/* -- Recommended column/cell in a comparison table (tiered-mode proposals):
+   a highlight, not a redesign — same table, one column earns the eye. -- */
+th.recommended, td.recommended {
+  background: rgba(0,153,255,0.10) !important;
+  border-color: rgba(0,153,255,0.4) !important;
+}
+th.recommended { color: #0099FF; }
+
+/* -- Section divider -- */
+hr { border: none; border-top: 0.5pt solid rgba(255,255,255,0.14); margin: 20pt 0; }
+
+/* -- Images: no default styling existed before, so a bare <img> rendered at
+   native pixel size and could break the page grid. -- */
+img { max-width: 100%; border-radius: 10px; display: block; }
+figure { margin: 10pt 0 16pt; break-inside: avoid; }
+figure img { margin: 0 0 8pt; }
+figcaption { font-size: 8.5pt; line-height: 1.4; color: #9A9A98; }
+
 /* -- Page structure -- */
 
 .page-fixed {
@@ -133,7 +238,9 @@ td { color: #E4E4E2; }
 .body-section {
   position: relative;
   min-height: 11in;
-  padding: 0.75in;
+  /* Extra bottom padding keeps flowed content clear of the page edge and the
+     page-number overlay, since the PDF itself is exported with zero margins. */
+  padding: 0.75in 0.75in 0.9in;
   break-after: page;
 }
 .page-header { display: flex; justify-content: flex-end; margin-bottom: 18pt; }
