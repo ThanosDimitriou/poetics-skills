@@ -60,14 +60,13 @@ Trigger phrases: "write a doc/document/report/brief", "one-pager", "Word doc", "
 document", "create a pdf", "pdf report", "turn this into a doc/pdf".
 
 **When the user asks for a proposal, offer, quote, or quotation to another company** (venues,
-museums, festivals, schools, event spaces), route to `brand-proposals` — it takes priority over
-`brand-documents` and the generic `docx`/`pdf` skills for these. It follows
-`brand-kit/guides/proposal-playbook.md` (four modes: pitch / offer / tiered / quote) and renders
-through the same document scripts. Trigger phrases: "write a proposal", "proposal for", "make an
-offer", "send them an offer", "quote", "quotation", "pricing document". A **pitch deck** is still
-a deck — that routes to `brand-decks`, not here. So does a proposal, offer or quote the user
-wants **as slides** ("proposal deck", "offer slides"): `brand-decks` has a proposal variant that
-follows the same playbook.
+museums, festivals, brands, agencies, schools), route to `brand-proposals`. It takes priority over
+`brand-documents` and the generic `docx`/`pdf` skills. **Every proposal is the practical A4 quote
+sheet** rendered by `brand-kit/scripts/build-deck.py` (the deck skill's proposal variant), never
+the document scripts. It follows `brand-kit/guides/proposal-playbook.md` (four modes: quote /
+offer / tiered / pitch). Trigger phrases: "write a proposal", "proposal for", "make an offer",
+"send them an offer", "quote", "quotation", "pricing document", "proposal deck", "προσφορά". A
+**pitch deck** with photographs and a story is a standard deck: that routes to `brand-decks`.
 
 **For avatars, video thumbnails, or social carousels**, route to `brand-templates`, which opens
 the relevant self-contained editor in `brand-kit/templates/`.

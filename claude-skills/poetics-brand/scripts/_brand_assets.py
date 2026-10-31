@@ -47,6 +47,26 @@ def make_allowed_roots(caller_file: str) -> tuple:
     return (_TMP, _kit_root_from_caller(caller_file))
 
 
+def pick_browser_channel():
+    """Return a Playwright launch channel for a system browser, or None.
+
+    Fallback for when Playwright's bundled Chromium isn't installed and can't
+    be downloaded (some networks block the Playwright CDN). Chrome and Edge
+    are both Chromium, so rendering output is identical.
+    """
+    import shutil
+    candidates = (
+        ('chrome', ('/Applications/Google Chrome.app',
+                    'google-chrome', 'google-chrome-stable')),
+        ('msedge', ('/Applications/Microsoft Edge.app', 'microsoft-edge')),
+    )
+    for channel, probes in candidates:
+        for probe in probes:
+            if pathlib.Path(probe).exists() or shutil.which(probe):
+                return channel
+    return None
+
+
 def resolve_local_image(src: str, allowed_roots: tuple) -> str:
     """Resolve a local file path to a base64 data URI.
 

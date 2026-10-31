@@ -27,15 +27,21 @@ as a single upload than seven). To refresh it after editing `brand-kit/`:
 
 ```bash
 cd claude-skills
-rm -rf poetics-brand/assets poetics-brand/scripts poetics-brand/templates poetics-brand/schemas
+rm -rf poetics-brand/assets poetics-brand/scripts poetics-brand/templates poetics-brand/schemas poetics-brand/guides
 cp -R ../brand-kit/assets poetics-brand/assets
 cp -R ../brand-kit/scripts poetics-brand/scripts
 cp -R ../brand-kit/templates poetics-brand/templates
 cp -R ../brand-kit/schemas poetics-brand/schemas
-cp ../brand-kit/guides/writing-on-brand-copy.md poetics-brand/guides/
-cp ../brand-kit/brand.md poetics-brand/brand.md
-rm -f poetics-brand.zip && zip -rq poetics-brand.zip poetics-brand -x "*.DS_Store"
+mkdir poetics-brand/guides
+cp ../brand-kit/guides/{writing-on-brand-copy,proposal-playbook,deck-copy,anti-slop}.md poetics-brand/guides/
+cp ../brand-kit/brand.md ../brand-kit/design-system.md poetics-brand/
+find poetics-brand -name __pycache__ -prune -exec rm -rf {} +
+rm -f poetics-brand.zip && zip -rq poetics-brand.zip poetics-brand -x "*.DS_Store" "*__pycache__*"
 ```
+
+`../brand-kit` is a symlink to `plugins/brand/brand-kit`, the real folder. The photo index
+(`brand-kit/photos/`) is left out on purpose: it points at photographs on the owner's machine,
+which a hosted chat skill can't reach, so in claude.ai decks ask the user to upload photos.
 
 (`SKILL.md` itself isn't touched by this sync — it's hand-written, not copied from `brand-kit/`;
 update it manually if the routing logic or trigger phrases need to change.)

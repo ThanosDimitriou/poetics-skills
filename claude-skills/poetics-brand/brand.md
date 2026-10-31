@@ -4,6 +4,14 @@
 asset generated through this kit — by Claude, by any other AI tool, or by hand — should follow
 what's written here. Colors, type, logo, voice, all in one place.
 
+> **Decks moved to the website's design system (2026-10-31).** Slide decks now follow
+> [`design-system.md`](design-system.md): the Poetics Website's "Aperture" system (paper and ink,
+> light by default with a dark theme, Instrument Serif and Inter Tight, the lens blue only on what
+> can be pressed). For decks, it replaces the Color, Typography and Spacing sections below, and it
+> settles the accent question: lens `#16249C` (dark theme `#8F9CFF`). Company facts, voice, logo
+> rules and social specs in this file still apply to decks. Documents and social templates stay on
+> this file's visual spec until they are migrated.
+
 **To update the brand:** edit this file directly and save. There is no build step, no sync, no
 approval workflow — every skill and script reads this file fresh each time it runs.
 
@@ -83,6 +91,16 @@ Dark theme only. Near-black canvas, warm-white text, one accent color used spari
 
 **Contrast note:** text secondary was lightened from an earlier `#808080` specifically for AA
 contrast on near-black backgrounds. Don't darken it back down.
+
+**Light / print variant (documents only, added 2026-07-11):** dark remains the canonical canvas.
+For print-friendly or procurement contexts, the PDF document renderer accepts `"theme": "light"`
+in the content JSON: body pages go white while the cover (and any separator page) keep the dark
+brand canvas — the same compromise the Word renderer has always made. Derived tokens for light
+pages (chosen for AA contrast on white; defined in `scripts/doc-pdf-styles-light.css`): text
+`#0A0A0A`, secondary text `#6E6E6A`, raised surface `#F7F7F5`, hairlines
+`rgba(10,10,10,0.12–0.16)`. The accent stays `#0099FF` — still one accent only. Light pages use
+the **dark** logo variants, which the renderer swaps automatically. Decks and social assets
+remain dark-only.
 
 **Glow / atmosphere:** the reference deck's backgrounds are full-bleed atmospheric imagery —
 either real photography graded dark (a rim-lit figure in red/blue light, a warm amber silhouette,
