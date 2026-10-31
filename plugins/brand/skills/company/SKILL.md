@@ -23,7 +23,7 @@ Read `${CLAUDE_PLUGIN_ROOT}/GLOBAL_RULES.md` first.
 The "Company" section of the brand spec has the factual boilerplate:
 
 ```bash
-cat "${CLAUDE_PLUGIN_ROOT}/../../brand-kit/brand.md"
+cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/brand.md"
 ```
 
 ---

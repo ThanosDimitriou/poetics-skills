@@ -101,16 +101,30 @@ def generate_branded_document(content: dict, output_path: str, format: str = "pd
 
 @mcp.tool()
 def generate_branded_deck(deck: dict, output_path: str) -> str:
-    """Render a branded Poetics slide deck. `deck` is {title, footer?, slides[]}
-    where each slide has a "type" (title, section, content, cards, quote,
-    closing) — see build-deck.py's docstring for the full slide schema.
+    """Render a Poetics slide deck in the website's design system
+    (brand-kit/design-system.md). `deck` is {kind, format?, theme?, density?,
+    title, footer?, confidential?, number?, date?, disclaimer?, slides[]}.
+    Proposals default to A4 portrait (.html/.pdf only), with the creation date
+    and a scope disclaimer in every footer. kind is "standard",
+    "curation" (the only kind that may name films, via "work" slides) or
+    "proposal" (with "mode": pitch | offer | tiered | quote). Slide types:
+    cover, statement, section, agenda, content, terms, columns, stats, split,
+    timeline, quote, people, gallery, media, table, price, work, acceptance,
+    closing. A slide may name a page template instead: {"template": "E3"}
+    (O1-O3 open, N1-N2 navigate, E1-E4 explain, P1-P2 prove, S1-S4 show,
+    V1-V2 voices, T1 steps, C1 closing (email only), D1-D2 deal, W1 title
+    card, E5 text, A1 stacked A4 page with "sections").
+    See build-deck.py's docstring for every field, and
+    brand-kit/templates/decks/ for a starter of each kind.
 
-    Output format is chosen by output_path's extension: .html (primary,
-    self-contained, opens anywhere), .pdf (rendered from the same HTML via
-    headless Chromium), or .pptx (editable PowerPoint approximation).
+    Output format is chosen by output_path's extension: .html (a presenter
+    that scales to any screen; arrow keys, F, N for notes, T for theme), .pdf
+    (rendered from the same HTML via headless Chromium), or .pptx (editable
+    approximation with speaker notes).
 
-    Wrap 2-4 word phrases in *asterisks* for the Cormorant Garamond italic
-    emphasis voice, used sparingly per brand://spec.
+    Write in the website's voice (brand-kit/guides/deck-copy.md): short plain
+    headings with a full stop, no em dashes. Items holding a [PLACEHOLDER]
+    are dropped unless "draft": true.
 
     Returns the absolute path to the generated file.
     """

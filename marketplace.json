@@ -1,6 +1,6 @@
 {
   "name": "poetics",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "owner": {
     "name": "Poetics",
     "email": "dimitriouathanas@gmail.com"
@@ -13,7 +13,7 @@
       "name": "brand",
       "source": "./plugins/brand",
       "description": "Poetics brand identity, guidelines, branded documents/decks/social templates, and brand review — all reading from the portable brand-kit/ spec.",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "author": {
         "name": "Thanos Dimitriou",
         "email": "dimitriouathanas@gmail.com"

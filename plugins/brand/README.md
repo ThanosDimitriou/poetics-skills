@@ -6,9 +6,9 @@ routing through a designer for every deliverable.
 
 **Owner:** Thanos Dimitriou (dimitriouathanas@gmail.com)
 
-This plugin is a thin Claude Code wrapper — the actual brand knowledge lives in `brand-kit/` at
-the repo root, not inside this plugin. See `../../brand-kit/brand.md` for the spec itself and
-`../../brand-kit/guides/using-outside-claude-code.md` for using it without Claude Code.
+The brand knowledge lives in `brand-kit/` inside this plugin, so an installed copy carries it.
+The repo root's `brand-kit` is a symlink to it. See `brand-kit/brand.md` for the spec and
+`brand-kit/guides/using-outside-claude-code.md` for using it without Claude Code.
 
 ## Skills
 
@@ -18,7 +18,7 @@ the repo root, not inside this plugin. See `../../brand-kit/brand.md` for the sp
 | brand-guidelines | Answers "can I do X?" questions, plus voice/tone guidance |
 | brand-documents | Branded Word and PDF documents, rendered by bundled scripts |
 | brand-proposals | Proposals, offers, and quotes to other companies — four modes (pitch / offer / tiered / quote) per `brand-kit/guides/proposal-playbook.md` |
-| brand-decks | Branded presentations as self-contained HTML with PDF/PPTX export |
+| brand-decks | Decks in the website's design system: standard, curation and proposal variants, as an HTML presenter with PDF/PPTX export |
 | brand-templates | Social carousels and video thumbnails via self-contained HTML editors |
 | brand-review | Reviews any asset against the brand, returns a structured compliance score |
 | company | "What is Poetics" boilerplate for decks/docs/proposal intros |
@@ -27,5 +27,5 @@ Skill routing and output rules live in `GLOBAL_RULES.md`.
 
 ## Updating the brand
 
-Edit `../../brand-kit/brand.md` directly and save. No build step, no sync, no approval workflow —
+Edit `brand-kit/brand.md` directly and save. No build step, no sync, no approval workflow —
 every skill reads the file fresh each time it runs.

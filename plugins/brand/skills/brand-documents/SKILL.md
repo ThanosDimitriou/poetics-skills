@@ -23,8 +23,8 @@ the full routing rules.
 ## Reference files
 
 ```bash
-cat "${CLAUDE_PLUGIN_ROOT}/../../brand-kit/brand.md"
-cat "${CLAUDE_PLUGIN_ROOT}/../../brand-kit/schemas/doc-content-schema.md"
+cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/brand.md"
+cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/schemas/doc-content-schema.md"
 ```
 
 ---
@@ -43,12 +43,12 @@ User request
 └── No existing file → Create mode
     │
     ├── Output: Word doc (.docx)?
-    │   └── python3 "${CLAUDE_PLUGIN_ROOT}/../../brand-kit/scripts/build-doc.py" \
+    │   └── python3 "${CLAUDE_PLUGIN_ROOT}/brand-kit/scripts/build-doc.py" \
     │         /tmp/<name>.json <output.docx>
     │       Dark cover page + light, readable body pages (see the script's docstring for why).
     │
     └── Output: PDF? (recommended — the canonical branded format, full dark-brand fidelity)
-        └── python3 "${CLAUDE_PLUGIN_ROOT}/../../brand-kit/scripts/build-doc-pdf.py" \
+        └── python3 "${CLAUDE_PLUGIN_ROOT}/brand-kit/scripts/build-doc-pdf.py" \
               /tmp/<name>.json <output.pdf>
 ```
 

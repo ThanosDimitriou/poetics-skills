@@ -4,6 +4,14 @@
 asset generated through this kit — by Claude, by any other AI tool, or by hand — should follow
 what's written here. Colors, type, logo, voice, all in one place.
 
+> **Decks moved to the website's design system (2026-10-31).** Slide decks now follow
+> [`design-system.md`](design-system.md): the Poetics Website's "Aperture" system (paper and ink,
+> light by default with a dark theme, Instrument Serif and Inter Tight, the lens blue only on what
+> can be pressed). For decks, it replaces the Color, Typography and Spacing sections below, and it
+> settles the accent question: lens `#16249C` (dark theme `#8F9CFF`). Company facts, voice, logo
+> rules and social specs in this file still apply to decks. Documents and social templates stay on
+> this file's visual spec until they are migrated.
+
 **To update the brand:** edit this file directly and save. There is no build step, no sync, no
 approval workflow — every skill and script reads this file fresh each time it runs.
 

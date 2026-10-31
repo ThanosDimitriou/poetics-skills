@@ -1,0 +1,1240 @@
+{
+  "root": "~/Data/Projects/Poetics Website/src/assets/images",
+  "photos": [
+    {
+      "id": "about-fitting-headset-03",
+      "file": "about/about-fitting-headset-03.jpg",
+      "subject": "About fitting headset.",
+      "event": "about",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        2000,
+        1000
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "about-founders-toss-gallery-01",
+      "file": "about/about-founders-toss-gallery-01.jpg",
+      "subject": "About founders toss gallery.",
+      "event": "about",
+      "people": "The Poetics team. Use only when the user asks: decks leave the makers out.",
+      "shape": "landscape",
+      "size": [
+        2400,
+        1200
+      ],
+      "use": [
+        "team"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "about-setup-laptop-04",
+      "file": "about/about-setup-laptop-04.jpg",
+      "subject": "About setup laptop.",
+      "event": "about",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        2000,
+        1000
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "about-team-toss-gallery-02",
+      "file": "about/about-team-toss-gallery-02.jpg",
+      "subject": "About team toss gallery.",
+      "event": "about",
+      "people": "The Poetics team. Use only when the user asks: decks leave the makers out.",
+      "shape": "landscape",
+      "size": [
+        2400,
+        1201
+      ],
+      "use": [
+        "team"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "art-tech-technopolis-audience-screen-01",
+      "file": "art-tech-technopolis/art-tech-technopolis-audience-screen-01.jpg",
+      "subject": "A projected film of a person in a headset in a dark gallery at Technopolis, with a viewer in a headset at the right.",
+      "event": "art-tech-technopolis",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        2400,
+        1501
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "art-tech-technopolis-child-on-stool-09",
+      "file": "art-tech-technopolis/art-tech-technopolis-child-on-stool-09.jpg",
+      "subject": "A child in a headset on a stool, with an adult kneeling beside them, smiling.",
+      "event": "art-tech-technopolis",
+      "people": "Visitors; not named.",
+      "shape": "portrait",
+      "size": [
+        1800,
+        2400
+      ],
+      "use": [
+        "any",
+        "portrait"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "art-tech-technopolis-child-with-adult-08",
+      "file": "art-tech-technopolis/art-tech-technopolis-child-with-adult-08.jpg",
+      "subject": "A child in a headset and an adult seated beside them, holding their hands.",
+      "event": "art-tech-technopolis",
+      "people": "Visitors; not named.",
+      "shape": "portrait",
+      "size": [
+        1800,
+        2400
+      ],
+      "use": [
+        "any",
+        "portrait"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "art-tech-technopolis-gallery-visitors-04",
+      "file": "art-tech-technopolis/art-tech-technopolis-gallery-visitors-04.jpg",
+      "subject": "Visitors in headsets, with people moving through the gallery behind them.",
+      "event": "art-tech-technopolis",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        2400,
+        1600
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "art-tech-technopolis-station-empty-room-07",
+      "file": "art-tech-technopolis/art-tech-technopolis-station-empty-room-07.jpg",
+      "subject": "A single Poetics station in a large industrial room, with the Poetics logo on the floor.",
+      "event": "art-tech-technopolis",
+      "people": "Visitors; not named.",
+      "shape": "portrait",
+      "size": [
+        1800,
+        2400
+      ],
+      "use": [
+        "any",
+        "portrait"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "art-tech-technopolis-station-stool-06",
+      "file": "art-tech-technopolis/art-tech-technopolis-station-stool-06.jpg",
+      "subject": "A black Poetics stool with a headset and headphones on its seat.",
+      "event": "art-tech-technopolis",
+      "people": "Visitors; not named.",
+      "shape": "portrait",
+      "size": [
+        1800,
+        2400
+      ],
+      "use": [
+        "any",
+        "portrait"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "art-tech-technopolis-two-viewers-screen-02",
+      "file": "art-tech-technopolis/art-tech-technopolis-two-viewers-screen-02.jpg",
+      "subject": "Two visitors in headsets seated in front of a projected film in a gallery.",
+      "event": "art-tech-technopolis",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        2400,
+        1600
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "art-tech-technopolis-viewers-screen-10",
+      "file": "art-tech-technopolis/art-tech-technopolis-viewers-screen-10.jpg",
+      "subject": "Four visitors in headsets watching a projected film in a bare-walled gallery at Technopolis.",
+      "event": "art-tech-technopolis",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        2400,
+        1600
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "art-tech-technopolis-visitor-headset-11",
+      "file": "art-tech-technopolis/art-tech-technopolis-visitor-headset-11.jpg",
+      "subject": "Art tech technopolis visitor headset.",
+      "event": "art-tech-technopolis",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        2400,
+        1600
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "art-tech-technopolis-visitor-wall-panel-03",
+      "file": "art-tech-technopolis/art-tech-technopolis-visitor-wall-panel-03.jpg",
+      "subject": "A visitor in a headset facing a panel on a weathered wall.",
+      "event": "art-tech-technopolis",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        2400,
+        1600
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "athens-literature-festival-art-tech-area-10",
+      "file": "athens-literature-festival/athens-literature-festival-art-tech-area-10.jpg",
+      "subject": "A visitor in a VR headset in a pink-lit room, with a projected Art/Tech Area sign and the festival's AILF arch behind.",
+      "event": "athens-literature-festival",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        2400,
+        1600
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "athens-literature-festival-headsets-bench-07",
+      "file": "athens-literature-festival/athens-literature-festival-headsets-bench-07.jpg",
+      "subject": "Two Poetics headsets on a wooden bench under the Athens International Literature Festival banner.",
+      "event": "athens-literature-festival",
+      "people": "Visitors; not named.",
+      "shape": "portrait",
+      "size": [
+        1600,
+        2400
+      ],
+      "use": [
+        "any",
+        "portrait"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "athens-literature-festival-single-seat-06",
+      "file": "athens-literature-festival/athens-literature-festival-single-seat-06.jpg",
+      "subject": "A black Poetics stool with a headset resting on it, in purple light.",
+      "event": "athens-literature-festival",
+      "people": "Visitors; not named.",
+      "shape": "portrait",
+      "size": [
+        1465,
+        2400
+      ],
+      "use": [
+        "any",
+        "portrait"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "athens-literature-festival-three-visitors-purple-01",
+      "file": "athens-literature-festival/athens-literature-festival-three-visitors-purple-01.jpg",
+      "subject": "Athens literature festival three visitors purple.",
+      "event": "athens-literature-festival",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        2400,
+        1600
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "athens-literature-festival-two-visitors-magenta-09",
+      "file": "athens-literature-festival/athens-literature-festival-two-visitors-magenta-09.jpg",
+      "subject": "Two visitors in headsets against a magenta wall.",
+      "event": "athens-literature-festival",
+      "people": "Visitors; not named.",
+      "shape": "portrait",
+      "size": [
+        1600,
+        2400
+      ],
+      "use": [
+        "any",
+        "portrait"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "athens-literature-festival-two-visitors-warm-08",
+      "file": "athens-literature-festival/athens-literature-festival-two-visitors-warm-08.jpg",
+      "subject": "Two visitors in headsets against a warm pink wall, one turned away.",
+      "event": "athens-literature-festival",
+      "people": "Visitors; not named.",
+      "shape": "portrait",
+      "size": [
+        1600,
+        2400
+      ],
+      "use": [
+        "any",
+        "portrait"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "athens-literature-festival-visitor-dark-room-04",
+      "file": "athens-literature-festival/athens-literature-festival-visitor-dark-room-04.jpg",
+      "subject": "A visitor in a headset in a dark room, with a screen behind and people walking past.",
+      "event": "athens-literature-festival",
+      "people": "Visitors; not named.",
+      "shape": "portrait",
+      "size": [
+        1600,
+        2400
+      ],
+      "use": [
+        "any",
+        "portrait"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "athens-literature-festival-visitor-lanyard-02",
+      "file": "athens-literature-festival/athens-literature-festival-visitor-lanyard-02.jpg",
+      "subject": "A visitor watching in a headset, wearing a festival lanyard.",
+      "event": "athens-literature-festival",
+      "people": "Visitors; not named.",
+      "shape": "portrait",
+      "size": [
+        1600,
+        2400
+      ],
+      "use": [
+        "any",
+        "portrait"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "athens-literature-festival-visitor-pink-03",
+      "file": "athens-literature-festival/athens-literature-festival-visitor-pink-03.jpg",
+      "subject": "A visitor in a headset and a long green coat, seated in front of an Art/Tech Area backdrop in pink light.",
+      "event": "athens-literature-festival",
+      "people": "Visitors; not named.",
+      "shape": "portrait",
+      "size": [
+        1600,
+        2400
+      ],
+      "use": [
+        "any",
+        "portrait"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "athina-immersion-cinema-poetics-art-tech-cosmote",
+      "file": "blog/athina-immersion-cinema-poetics-art-tech-cosmote.jpg",
+      "subject": "Athina immersion cinema poetics art tech cosmote.",
+      "event": "blog",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        2048,
+        1365
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "curiosity-beats-the-algorithm",
+      "file": "blog/curiosity-beats-the-algorithm.jpg",
+      "subject": "Curiosity beats the algorithm.",
+      "event": "blog",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        1600,
+        1200
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "distribution-problem-immersive-cinema",
+      "file": "blog/distribution-problem-immersive-cinema.jpg",
+      "subject": "Distribution problem immersive cinema.",
+      "event": "blog",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        2400,
+        1600
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "how-poetics-works",
+      "file": "blog/how-poetics-works.jpg",
+      "subject": "How poetics works.",
+      "event": "blog",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        2400,
+        1600
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "immersive-cinema",
+      "file": "blog/immersive-cinema.jpg",
+      "subject": "Immersive cinema.",
+      "event": "blog",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        2400,
+        1350
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "introducing-poetics",
+      "file": "blog/introducing-poetics.jpg",
+      "subject": "Introducing poetics.",
+      "event": "blog",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        1280,
+        720
+      ],
+      "use": [
+        "any"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "poetics-at-cannes",
+      "file": "blog/poetics-at-cannes.jpg",
+      "subject": "Poetics at cannes.",
+      "event": "blog",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        1262,
+        778
+      ],
+      "use": [
+        "any"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "viewer-experience",
+      "file": "blog/viewer-experience.jpg",
+      "subject": "Viewer experience.",
+      "event": "blog",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        2400,
+        1350
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "what-poetics-offers",
+      "file": "blog/what-poetics-offers.jpg",
+      "subject": "What poetics offers.",
+      "event": "blog",
+      "people": "Visitors; not named.",
+      "shape": "portrait",
+      "size": [
+        1600,
+        2400
+      ],
+      "use": [
+        "any",
+        "portrait"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "why-poetics-aristotle",
+      "file": "blog/why-poetics-aristotle.jpg",
+      "subject": "Why poetics aristotle.",
+      "event": "blog",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        1238,
+        962
+      ],
+      "use": [
+        "any"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "events-banner-stage-01",
+      "file": "events/events-banner-stage-01.jpg",
+      "subject": "A Poetics banner beside a purple-lit VR cinema setup.",
+      "event": "events",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        1600,
+        1067
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "events-gallery-activation-05",
+      "file": "events/events-gallery-activation-05.jpg",
+      "subject": "Visitors using Poetics headsets during a public gallery activation.",
+      "event": "events",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        1600,
+        1067
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "events-multi-station-venue-03",
+      "file": "events/events-multi-station-venue-03.jpg",
+      "subject": "A VR cinema pop-up with several stations in a colorful venue.",
+      "event": "events",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        1600,
+        1200
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "events-operators-visitors-12",
+      "file": "events/events-operators-visitors-12.jpg",
+      "subject": "Visitors and operators during a VR cinema pop-up.",
+      "event": "events",
+      "people": "Visitors; not named.",
+      "shape": "portrait",
+      "size": [
+        1200,
+        1600
+      ],
+      "use": [
+        "any",
+        "portrait"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "events-queue-stations-10",
+      "file": "events/events-queue-stations-10.jpg",
+      "subject": "An audience queue and several Poetics VR stations in a bright event venue.",
+      "event": "events",
+      "people": "Visitors; not named.",
+      "shape": "portrait",
+      "size": [
+        1200,
+        1600
+      ],
+      "use": [
+        "any",
+        "portrait"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "events-single-station-gallery-04",
+      "file": "events/events-single-station-gallery-04.jpg",
+      "subject": "A single Poetics VR station in an industrial gallery.",
+      "event": "events",
+      "people": "Visitors; not named.",
+      "shape": "portrait",
+      "size": [
+        1200,
+        1600
+      ],
+      "use": [
+        "any",
+        "portrait"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "events-three-stations-purple-07",
+      "file": "events/events-three-stations-purple-07.jpg",
+      "subject": "Three Poetics VR stations in a purple-lit room.",
+      "event": "events",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        1600,
+        1373
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "events-two-visitors-cinematic-11",
+      "file": "events/events-two-visitors-cinematic-11.jpg",
+      "subject": "Two visitors in Poetics headsets in a cinematic setup.",
+      "event": "events",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        1600,
+        1067
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "events-visitor-gallery-08",
+      "file": "events/events-visitor-gallery-08.jpg",
+      "subject": "A visitor in a Poetics headset in a gallery.",
+      "event": "events",
+      "people": "Visitors; not named.",
+      "shape": "portrait",
+      "size": [
+        1067,
+        1600
+      ],
+      "use": [
+        "any",
+        "portrait"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "events-visitor-green-light-09",
+      "file": "events/events-visitor-green-light-09.jpg",
+      "subject": "A visitor in a Poetics VR headset, with soft green light in the foreground.",
+      "event": "events",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        1600,
+        1067
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "events-visitors-colorful-room-06",
+      "file": "events/events-visitors-colorful-room-06.jpg",
+      "subject": "Visitors watching VR in a colorful room of several stations.",
+      "event": "events",
+      "people": "Visitors; not named.",
+      "shape": "portrait",
+      "size": [
+        1200,
+        1600
+      ],
+      "use": [
+        "any",
+        "portrait"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "events-visitors-pink-light-02",
+      "file": "events/events-visitors-pink-light-02.jpg",
+      "subject": "Two visitors in VR headsets in pink event lighting.",
+      "event": "events",
+      "people": "Visitors; not named.",
+      "shape": "portrait",
+      "size": [
+        1067,
+        1600
+      ],
+      "use": [
+        "any",
+        "portrait"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "greek-tour-16-stops-chalkida-child-08",
+      "file": "greek-tour-16-stops/greek-tour-16-stops-chalkida-child-08.jpg",
+      "subject": "A child seated in a headset in front of the tent wall.",
+      "event": "greek-tour-16-stops",
+      "people": "Visitors; not named.",
+      "shape": "portrait",
+      "size": [
+        1800,
+        2400
+      ],
+      "use": [
+        "any",
+        "portrait"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "greek-tour-16-stops-chalkida-fitting-07",
+      "file": "greek-tour-16-stops/greek-tour-16-stops-chalkida-fitting-07.jpg",
+      "subject": "A staff member fits a headset on a child in front of the tent wall.",
+      "event": "greek-tour-16-stops",
+      "people": "Visitors; not named.",
+      "shape": "portrait",
+      "size": [
+        1800,
+        2400
+      ],
+      "use": [
+        "any",
+        "portrait"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "greek-tour-16-stops-chalkida-helping-09",
+      "file": "greek-tour-16-stops/greek-tour-16-stops-chalkida-helping-09.jpg",
+      "subject": "A staff member helps a young visitor with a headset.",
+      "event": "greek-tour-16-stops",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        2400,
+        1600
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "greek-tour-16-stops-chalkida-waterfront-10",
+      "file": "greek-tour-16-stops/greek-tour-16-stops-chalkida-waterfront-10.jpg",
+      "subject": "An audience on the Chalkida waterfront watching a big screen at dusk, with ART/TECH flags and tents beside it.",
+      "event": "greek-tour-16-stops",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        2400,
+        1797
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "greek-tour-16-stops-karditsa-child-05",
+      "file": "greek-tour-16-stops/greek-tour-16-stops-karditsa-child-05.jpg",
+      "subject": "A child in a headset, seen in profile, in front of the tent.",
+      "event": "greek-tour-16-stops",
+      "people": "Visitors; not named.",
+      "shape": "portrait",
+      "size": [
+        1800,
+        2400
+      ],
+      "use": [
+        "any",
+        "portrait"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "greek-tour-16-stops-karditsa-staff-01",
+      "file": "greek-tour-16-stops/greek-tour-16-stops-karditsa-staff-01.jpg",
+      "subject": "Greek tour 16 stops karditsa staff.",
+      "event": "greek-tour-16-stops",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        2400,
+        1344
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "greek-tour-16-stops-karditsa-tent-03",
+      "file": "greek-tour-16-stops/greek-tour-16-stops-karditsa-tent-03.jpg",
+      "subject": "Visitors in headsets on swivel chairs under the roadshow tent, a staff member standing behind.",
+      "event": "greek-tour-16-stops",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        2400,
+        1600
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "greek-tour-16-stops-lamia-tent-02",
+      "file": "greek-tour-16-stops/greek-tour-16-stops-lamia-tent-02.jpg",
+      "subject": "A white and pink tent with ART/TECH banners on a town square.",
+      "event": "greek-tour-16-stops",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        2400,
+        1600
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "greek-tour-16-stops-livadeia-child-06",
+      "file": "greek-tour-16-stops/greek-tour-16-stops-livadeia-child-06.jpg",
+      "subject": "A child in a headset and a staff member leaning toward each other in front of the tent wall.",
+      "event": "greek-tour-16-stops",
+      "people": "Visitors; not named.",
+      "shape": "portrait",
+      "size": [
+        1800,
+        2400
+      ],
+      "use": [
+        "any",
+        "portrait"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "hero-reel-poster",
+      "file": "home/hero-reel-poster.jpg",
+      "subject": "Hero reel poster.",
+      "event": "home",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        1600,
+        870
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "home-curate-gallery-wall-01",
+      "file": "home/home-curate-gallery-wall-01.jpg",
+      "subject": "Home curate gallery wall.",
+      "event": "home",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        2400,
+        1800
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "home-install-headset-stool-01",
+      "file": "home/home-install-headset-stool-01.jpg",
+      "subject": "Home install headset stool.",
+      "event": "home",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        2400,
+        1800
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "home-operate-fitting-headset-01",
+      "file": "home/home-operate-fitting-headset-01.jpg",
+      "subject": "Home operate fitting headset.",
+      "event": "home",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        2197,
+        1648
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "home-portrait-haris-doukas-01",
+      "file": "home/home-portrait-haris-doukas-01.jpg",
+      "subject": "Home portrait haris doukas.",
+      "event": "home",
+      "people": "Named person: Haris Doukas. Use only on a page that names them.",
+      "shape": "square",
+      "size": [
+        381,
+        381
+      ],
+      "use": [
+        "people"
+      ],
+      "focal": "top"
+    },
+    {
+      "id": "home-portrait-lena-divani-01",
+      "file": "home/home-portrait-lena-divani-01.jpg",
+      "subject": "Home portrait lena divani.",
+      "event": "home",
+      "people": "Named person: Lena Divani. Use only on a page that names them.",
+      "shape": "landscape",
+      "size": [
+        733,
+        672
+      ],
+      "use": [
+        "people"
+      ],
+      "focal": "top"
+    },
+    {
+      "id": "home-portrait-marina-spanou-01",
+      "file": "home/home-portrait-marina-spanou-01.jpg",
+      "subject": "Home portrait marina spanou.",
+      "event": "home",
+      "people": "Named person: Marina Spanou. Use only on a page that names them.",
+      "shape": "portrait",
+      "size": [
+        523,
+        606
+      ],
+      "use": [
+        "people"
+      ],
+      "focal": "top"
+    },
+    {
+      "id": "home-portrait-niovi-voudouri-01",
+      "file": "home/home-portrait-niovi-voudouri-01.jpg",
+      "subject": "Home portrait niovi voudouri.",
+      "event": "home",
+      "people": "Named person: Niovi Voudouri. Use only on a page that names them.",
+      "shape": "square",
+      "size": [
+        799,
+        799
+      ],
+      "use": [
+        "people"
+      ],
+      "focal": "top"
+    },
+    {
+      "id": "film-poster",
+      "file": "lbvr/film-poster.jpg",
+      "subject": "Film poster.",
+      "event": "lbvr",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        1920,
+        1080
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "lbvr-station-pods-window-01",
+      "file": "lbvr/lbvr-station-pods-window-01.jpg",
+      "subject": "Lbvr station pods window.",
+      "event": "lbvr",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        2400,
+        1600
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "tedxauth-entrance-04",
+      "file": "tedxauth/tedxauth-entrance-04.jpg",
+      "subject": "The view through the glass entrance, with the empty stools roped off and an operator preparing headsets at the desk.",
+      "event": "tedxauth",
+      "people": "Visitors; not named.",
+      "shape": "portrait",
+      "size": [
+        1800,
+        2400
+      ],
+      "use": [
+        "any",
+        "portrait"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "tedxauth-headset-partner-badge-03",
+      "file": "tedxauth/tedxauth-headset-partner-badge-03.jpg",
+      "subject": "A Poetics headset on a stool, with a TEDxAUTH partner badge reading Poetics hung beside it.",
+      "event": "tedxauth",
+      "people": "Visitors; not named.",
+      "shape": "portrait",
+      "size": [
+        1800,
+        2400
+      ],
+      "use": [
+        "any",
+        "portrait"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "tedxauth-room-operator-02",
+      "file": "tedxauth/tedxauth-room-operator-02.jpg",
+      "subject": "The installation under a glass roof, with viewers in headsets on stools behind a rope line and an operator leaning in to help a visitor with a headset.",
+      "event": "tedxauth",
+      "people": "Visitors; not named.",
+      "shape": "portrait",
+      "size": [
+        1800,
+        2400
+      ],
+      "use": [
+        "any",
+        "portrait"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "tedxauth-stools-logo-05",
+      "file": "tedxauth/tedxauth-stools-logo-05.jpg",
+      "subject": "Empty stools with headsets and headphones on their seats, behind a rope line, with the Poetics letters standing on the floor.",
+      "event": "tedxauth",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        2400,
+        1800
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "tedxauth-viewer-headphones-01",
+      "file": "tedxauth/tedxauth-viewer-headphones-01.jpg",
+      "subject": "Tedxauth viewer headphones.",
+      "event": "tedxauth",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        2400,
+        1600
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "tedxauth-viewer-profile-06",
+      "file": "tedxauth/tedxauth-viewer-profile-06.jpg",
+      "subject": "A viewer in a headset and headphones in profile, with another viewer behind taking a photo while still wearing a headset.",
+      "event": "tedxauth",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        1920,
+        1280
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    },
+    {
+      "id": "tedxauth-viewers-logo-07",
+      "file": "tedxauth/tedxauth-viewers-logo-07.jpg",
+      "subject": "Viewers in headsets on stools behind a rope line, an operator talking with a visitor, and the Poetics letters on the floor in front.",
+      "event": "tedxauth",
+      "people": "Visitors; not named.",
+      "shape": "landscape",
+      "size": [
+        2400,
+        1600
+      ],
+      "use": [
+        "any",
+        "cover",
+        "wide"
+      ],
+      "focal": "center"
+    }
+  ]
+}

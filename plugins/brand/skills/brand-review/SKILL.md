@@ -20,7 +20,7 @@ Read `${CLAUDE_PLUGIN_ROOT}/GLOBAL_RULES.md` first.
 ## Reference file
 
 ```bash
-cat "${CLAUDE_PLUGIN_ROOT}/../../brand-kit/brand.md"
+cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/brand.md"
 ```
 
 ---

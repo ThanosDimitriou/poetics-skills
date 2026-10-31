@@ -22,9 +22,9 @@ the full routing rules.
 ## Reference files
 
 ```bash
-cat "${CLAUDE_PLUGIN_ROOT}/../../brand-kit/brand.md"
-cat "${CLAUDE_PLUGIN_ROOT}/../../brand-kit/guides/proposal-playbook.md"
-cat "${CLAUDE_PLUGIN_ROOT}/../../brand-kit/schemas/doc-content-schema.md"
+cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/brand.md"
+cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/guides/proposal-playbook.md"
+cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/schemas/doc-content-schema.md"
 ```
 
 The playbook is the heart of this skill: it defines the four proposal modes, their exact section
@@ -70,7 +70,7 @@ User request
 │   └── "Just send the price", repeat client    → quote   (1 section)
 │
 └── Build content JSON per the playbook's structures, then render:
-    python3 "${CLAUDE_PLUGIN_ROOT}/../../brand-kit/scripts/build-doc-pdf.py" \
+    python3 "${CLAUDE_PLUGIN_ROOT}/brand-kit/scripts/build-doc-pdf.py" \
       /tmp/<name>.json "Poetics-Proposal-<Client>-<YYYY-MM>.pdf"
     (.docx via build-doc.py only if the client needs an editable file)
     Printable/procurement context? Add "theme": "light" to the JSON —

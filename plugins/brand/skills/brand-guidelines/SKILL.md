@@ -22,12 +22,12 @@ Read `${CLAUDE_PLUGIN_ROOT}/GLOBAL_RULES.md` first.
 
 ### Brand spec (always load)
 ```bash
-cat "${CLAUDE_PLUGIN_ROOT}/../../brand-kit/brand.md"
+cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/brand.md"
 ```
 
 ### Voice/copy guide (load for writing or voice questions)
 ```bash
-cat "${CLAUDE_PLUGIN_ROOT}/../../brand-kit/guides/writing-on-brand-copy.md"
+cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/guides/writing-on-brand-copy.md"
 ```
 
 ---
