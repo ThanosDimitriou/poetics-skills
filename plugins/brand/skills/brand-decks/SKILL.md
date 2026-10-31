@@ -178,7 +178,8 @@ then rewrite it for the brief. Curation and proposal starters ship with `"draft"
 
 **Curation** (`curation.json`): 16:9, reading density. The one place films are named (W1).
 
-**Proposal** (`proposal.json`, `quote.json`): a **practical document**, modelled on the proposals
+**Proposal** (`proposal.json`, `quote.json`): every proposal, offer and quote uses this variant
+(the `brand-proposals` skill is its entry point and follows the same steps). A **practical document**, modelled on the proposals
 Poetics already sends. A4 portrait, reading density, **no cover and no closing page**: the first
 page is the D3 quote sheet (to, heading, one intro sentence, the scope as ruled rows with
 sub-items, capacity, the price). Every footer carries the disclaimer ("Any change in scope requires

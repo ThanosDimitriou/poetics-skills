@@ -17,7 +17,7 @@ The repo root's `brand-kit` is a symlink to it. See `brand-kit/brand.md` for the
 | brand-identity | Source of truth for visual identity: colors, typography, logo, spacing |
 | brand-guidelines | Answers "can I do X?" questions, plus voice/tone guidance |
 | brand-documents | Branded Word and PDF documents, rendered by bundled scripts |
-| brand-proposals | Proposals, offers, and quotes to other companies — four modes (pitch / offer / tiered / quote) per `brand-kit/guides/proposal-playbook.md` |
+| brand-proposals | Proposals, offers and quotes: practical A4 quote sheets (quote / offer / tiered / pitch) per `brand-kit/guides/proposal-playbook.md`, rendered by the deck renderer |
 | brand-decks | Decks in the website's design system: standard, curation and proposal variants, as an HTML presenter with PDF/PPTX export |
 | brand-templates | Social carousels and video thumbnails via self-contained HTML editors |
 | brand-review | Reviews any asset against the brand, returns a structured compliance score |

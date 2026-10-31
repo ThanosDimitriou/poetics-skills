@@ -1,0 +1,175 @@
+{
+  "kind": "standard",
+  "title": "Poetics: immersive cinema, anywhere",
+  "theme": "light",
+  "density": "speaker",
+  "slides": [
+    {
+      "template": "O2",
+      "overline": "Partner overview · 2026",
+      "title": "Immersive cinema, anywhere.",
+      "lead": "Pop-up VR cinemas for festivals, museums and brands. In Greece and beyond.",
+      "image": "photo:events-two-visitors-cinematic-11",
+      "notes": "Start with the room: what a visitor walks into."
+    },
+    {
+      "template": "O3",
+      "text": "You give us the room. We install the cinema."
+    },
+    {
+      "template": "E3",
+      "title": "What we take care of.",
+      "columns": [
+        {
+          "title": "Curation",
+          "text": "We choose a handful of titles for your audience."
+        },
+        {
+          "title": "Equipment",
+          "text": "Pods arrive cabled and ready to play."
+        },
+        {
+          "title": "Rights",
+          "text": "We license every title for your dates."
+        },
+        {
+          "title": "Operators",
+          "text": "They run the room and onboard every visitor."
+        }
+      ]
+    },
+    {
+      "template": "S4",
+      "images": [
+        "photo:events-visitors-pink-light-02",
+        "photo:art-tech-technopolis-child-with-adult-08",
+        "photo:athens-literature-festival-three-visitors-purple-01",
+        "photo:greek-tour-16-stops-chalkida-fitting-07",
+        "photo:events-queue-stations-10",
+        "photo:athens-literature-festival-visitor-pink-03"
+      ],
+      "caption": "Festivals, museums and brand events, 2025–2026."
+    },
+    {
+      "template": "P1",
+      "overline": "As of September 2026",
+      "title": "What we have done so far.",
+      "stats": [
+        {
+          "value": "5,000+",
+          "label": "screenings at live events"
+        },
+        {
+          "value": "250+",
+          "label": "five-star Google reviews"
+        }
+      ],
+      "notes": "Visitors rate us 4.92 out of 5 (on the website)."
+    },
+    {
+      "template": "V2",
+      "title": "Some of our visitors.",
+      "people": [
+        {
+          "name": "Marina Spanou",
+          "role": "Composer and performer",
+          "context": "Art-Tech, Technopolis",
+          "image": "photo:home-portrait-marina-spanou-01"
+        },
+        {
+          "name": "Lena Divani",
+          "role": "Writer",
+          "context": "Athens International Literature Festival",
+          "image": "photo:home-portrait-lena-divani-01"
+        },
+        {
+          "name": "Haris Doukas",
+          "role": "Mayor of Athens",
+          "image": "photo:home-portrait-haris-doukas-01"
+        }
+      ]
+    },
+    {
+      "template": "E2",
+      "title": "How we choose programs.",
+      "lead": "A person reviews hundreds of titles and picks a handful for the place and the people.",
+      "rows": [
+        {
+          "term": "Arts",
+          "text": "Work by artists, to feel and connect with."
+        },
+        {
+          "term": "Education",
+          "text": "Documentaries and training: you learn by being there."
+        },
+        {
+          "term": "Entertainment",
+          "text": "Performance and sport, without limits of space or time."
+        }
+      ]
+    },
+    {
+      "template": "S1",
+      "title": "We run it ourselves.",
+      "items": [
+        {
+          "title": "Trained operators install and pack down the room."
+        },
+        {
+          "title": "Every visitor gets a short onboarding."
+        },
+        {
+          "title": "Equipment is cleaned after every use."
+        },
+        {
+          "title": "One on-site hub monitors every pod."
+        }
+      ],
+      "image": "photo:home-operate-fitting-headset-01"
+    },
+    {
+      "template": "E1",
+      "title": "Ways to pay.",
+      "bullets": [
+        "Tickets: visitors pay per session.",
+        "A flat fee, paid by the venue or a partner.",
+        "A mix of tickets, fees and sponsorship."
+      ]
+    },
+    {
+      "template": "S1",
+      "title": "We build our own software.",
+      "items": [
+        {
+          "title": "Poetics Pods",
+          "text": "Every pod on one schedule: timeslots and live updates for the team.",
+          "note": "In use at every event"
+        }
+      ],
+      "image": "photo:about-setup-laptop-04",
+      "side": "left"
+    },
+    {
+      "template": "T1",
+      "title": "What comes next.",
+      "steps": [
+        {
+          "title": "Recurring events",
+          "text": "Programs with our current partners.",
+          "when": "All year",
+          "now": true
+        },
+        {
+          "title": "A VR film festival",
+          "text": "The first in Greece.",
+          "when": "December"
+        }
+      ],
+      "notes": "Only public plans here. Roadmap dates beyond the festival stay out of decks unless the user includes them."
+    },
+    {
+      "template": "C1",
+      "title": "Tell us about your space."
+    }
+  ]
+}

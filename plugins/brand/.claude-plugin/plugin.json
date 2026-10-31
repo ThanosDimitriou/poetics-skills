@@ -1,6 +1,6 @@
 {
   "name": "brand",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Poetics brand identity, guidelines, branded documents/decks/social templates, and brand review. Carries the brand-kit/ (spec, assets, renderers) inside the plugin; the repo root links to it so other AI tools can use the same files.",
   "author": {
     "name": "Thanos Dimitriou",

@@ -1,0 +1,319 @@
+{
+  "kind": "curation",
+  "title": "Poetics page templates",
+  "theme": "light",
+  "density": "speaker",
+  "draft": true,
+  "slides": [
+    {
+      "template": "O1",
+      "overline": "Partner overview · 2026",
+      "title": "Immersive cinema, anywhere.",
+      "lead": "Pop-up VR cinemas for festivals, museums and brands."
+    },
+    {
+      "template": "O2",
+      "overline": "Partner overview · 2026",
+      "title": "Immersive cinema, anywhere.",
+      "lead": "Pop-up VR cinemas for festivals, museums and brands.",
+      "image": "photo:events-two-visitors-cinematic-11"
+    },
+    {
+      "template": "O3",
+      "text": "You give us the room. We install the cinema."
+    },
+    {
+      "template": "N1",
+      "title": "How it works."
+    },
+    {
+      "template": "N2",
+      "title": "Contents.",
+      "items": [
+        "The experience",
+        "How a day runs",
+        "What it costs",
+        "Next steps"
+      ]
+    },
+    {
+      "template": "E1",
+      "title": "You give us the room. We do the rest.",
+      "bullets": [
+        "Pods arrive cabled and ready to play.",
+        "Operators stay for every opening hour.",
+        "Gone the next morning."
+      ]
+    },
+    {
+      "template": "E2",
+      "title": "How we choose programs.",
+      "rows": [
+        {
+          "term": "Arts",
+          "text": "Feel and connect with the artist."
+        },
+        {
+          "term": "Education",
+          "text": "Experience creates knowledge."
+        },
+        {
+          "term": "Entertainment",
+          "text": "Performance and sport without limits of space or time."
+        }
+      ]
+    },
+    {
+      "template": "E3",
+      "title": "What we take care of.",
+      "columns": [
+        {
+          "title": "Curation",
+          "text": "Titles picked for your audience."
+        },
+        {
+          "title": "Equipment",
+          "text": "Pods, headsets, headphones, cabling."
+        },
+        {
+          "title": "Rights",
+          "text": "Screening licences for your dates."
+        },
+        {
+          "title": "Operators",
+          "text": "On site, every opening hour."
+        }
+      ]
+    },
+    {
+      "template": "E4",
+      "title": "Where we have worked.",
+      "columns": [
+        {
+          "title": "Festivals",
+          "text": "A room of pods beside the main program.",
+          "image": "photo:athens-literature-festival-three-visitors-purple-01"
+        },
+        {
+          "title": "Brand events",
+          "text": "A few pods where the audience already is.",
+          "image": "photo:greek-tour-16-stops-chalkida-fitting-07"
+        },
+        {
+          "title": "Touring",
+          "text": "One Greek tour covered 16 cities and islands.",
+          "image": "photo:events-queue-stations-10"
+        }
+      ]
+    },
+    {
+      "template": "E5",
+      "title": "Why Poetics exists.",
+      "paragraphs": [
+        "Immersive films are made to be watched from the inside. They win prizes at Cannes, Venice and Sundance, then wait: cinemas are not built for them, and headsets sit unused at home.",
+        "Poetics is the layer in between. We license the work, curate it for a place and an audience, and put it in front of people."
+      ]
+    },
+    {
+      "template": "P1",
+      "overline": "As of September 2026",
+      "title": "What we have done so far.",
+      "stats": [
+        {
+          "value": "5,000+",
+          "label": "screenings at live events"
+        },
+        {
+          "value": "250+",
+          "label": "five-star Google reviews"
+        }
+      ],
+      "note": "From audience forms at our latest events."
+    },
+    {
+      "template": "P2",
+      "title": "Three sizes. Gallery suits your space.",
+      "columns": [
+        "",
+        "Chamber",
+        "Gallery",
+        "Forum"
+      ],
+      "rows": [
+        [
+          "Pods",
+          "[N]",
+          "[N]",
+          "[N]"
+        ],
+        [
+          "Visitors a day",
+          "[N]",
+          "[N]",
+          "[N]"
+        ],
+        [
+          "Footprint",
+          "[N] m²",
+          "[N] m²",
+          "[N] m²"
+        ],
+        [
+          "Price",
+          "€ [AMOUNT]",
+          "€ [AMOUNT]",
+          "€ [AMOUNT]"
+        ]
+      ],
+      "highlight": 2,
+      "highlight_label": "Recommended"
+    },
+    {
+      "template": "S1",
+      "title": "We run it ourselves.",
+      "items": [
+        {
+          "title": "Installation by trained operators"
+        },
+        {
+          "title": "Onboarding for every viewer"
+        },
+        {
+          "title": "Hygiene after every use"
+        },
+        {
+          "title": "Every pod monitored on site"
+        }
+      ],
+      "image": "photo:home-operate-fitting-headset-01"
+    },
+    {
+      "template": "S2",
+      "title": "One seat, one visitor.",
+      "image": "photo:athens-literature-festival-three-visitors-purple-01",
+      "caption": "Athens International Literature Festival, 2026."
+    },
+    {
+      "template": "S3",
+      "image": "photo:events-two-visitors-cinematic-11"
+    },
+    {
+      "template": "S4",
+      "images": [
+        "photo:events-visitors-pink-light-02",
+        "photo:art-tech-technopolis-child-with-adult-08",
+        "photo:athens-literature-festival-three-visitors-purple-01",
+        "photo:greek-tour-16-stops-chalkida-fitting-07",
+        "photo:events-queue-stations-10",
+        "photo:athens-literature-festival-visitor-pink-03"
+      ]
+    },
+    {
+      "template": "V1",
+      "quote": "It was overwhelming, in the best way.",
+      "name": "Marina Spanou",
+      "role": "Composer and performer",
+      "image": "photo:home-portrait-marina-spanou-01"
+    },
+    {
+      "template": "V2",
+      "title": "Some of our visitors.",
+      "people": [
+        {
+          "name": "Marina Spanou",
+          "role": "Composer and performer",
+          "image": "photo:home-portrait-marina-spanou-01"
+        },
+        {
+          "name": "Lena Divani",
+          "role": "Writer",
+          "image": "photo:home-portrait-lena-divani-01"
+        }
+      ]
+    },
+    {
+      "template": "T1",
+      "title": "Schedule.",
+      "steps": [
+        {
+          "title": "Confirm",
+          "when": "Week 1"
+        },
+        {
+          "title": "Curate",
+          "when": "Week 2",
+          "now": true
+        },
+        {
+          "title": "Install",
+          "when": "Day before"
+        },
+        {
+          "title": "Open",
+          "when": "Opening day"
+        }
+      ]
+    },
+    {
+      "template": "D1",
+      "title": "Price.",
+      "amount": "€ [AMOUNT]",
+      "includes": [
+        "Curation and rights",
+        "Delivery and installation",
+        "Operators",
+        "Pack-down"
+      ],
+      "validity": "Valid for 30 days."
+    },
+    {
+      "template": "D2",
+      "title": "Acceptance.",
+      "parties": [
+        "For the venue",
+        "For Poetics"
+      ]
+    },
+    {
+      "template": "W1",
+      "pillar": "Arts · [MIN] minutes",
+      "title": "[TITLE]",
+      "image": "",
+      "synopsis": "[TWO SENTENCES ON WHAT THE VIEWER SEES.]",
+      "fit": "[WHY IT SUITS THIS PROGRAM.]",
+      "facts": [
+        {
+          "term": "Created by",
+          "text": "[STUDIO]"
+        },
+        {
+          "term": "Format",
+          "text": "[6DOF]"
+        },
+        {
+          "term": "Distributor",
+          "text": "[DISTRIBUTOR]"
+        }
+      ],
+      "image_credit": "[CREDIT: STILL FROM THE DISTRIBUTOR'S PRESS KIT]",
+      "link": {
+        "label": "[OFFICIAL PAGE OR TRAILER]",
+        "href": "[URL]"
+      },
+      "sources": [
+        {
+          "fact": "title, creator, year, length",
+          "url": "[URL]"
+        },
+        {
+          "fact": "distributor",
+          "url": "[URL]"
+        }
+      ]
+    },
+    {
+      "template": "C1",
+      "title": "Tell us about your space."
+    }
+  ]
+}
