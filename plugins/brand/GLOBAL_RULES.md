@@ -4,22 +4,24 @@ These rules apply to every skill in this plugin. Read this before doing anything
 
 ---
 
-## The brand knowledge lives outside this plugin
+## Where the brand knowledge lives
 
-This plugin is a thin Claude Code wrapper. The actual brand spec, assets, and renderer scripts
-live in `brand-kit/` at the repo root (two levels up from `${CLAUDE_PLUGIN_ROOT}`), not inside
-this plugin folder — so the same files also work from ChatGPT, Gemini, or by hand (see
-`brand-kit/guides/using-outside-claude-code.md`).
+The brand spec, assets, and renderer scripts live in `brand-kit/` inside this plugin
+(`${CLAUDE_PLUGIN_ROOT}/brand-kit`), so an installed copy of the plugin carries everything it needs.
+The repo root has a `brand-kit` symlink to the same folder, so the MCP server, the docs and anyone
+working outside Claude Code use the same files (see `brand-kit/guides/using-outside-claude-code.md`).
 
 Before answering any brand question, generating any output, or reviewing any asset, read the
 spec:
 
 ```bash
-cat "${CLAUDE_PLUGIN_ROOT}/../../brand-kit/brand.md"
+cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/brand.md"
 ```
 
-This is the **only** source of truth for colors, typography, logo rules, voice/tone, and company
-facts. If it hasn't been populated yet on some point, say so — do not invent values. If the file
+This is the source of truth for colors, typography, logo rules, voice/tone, and company
+facts. **Decks are the exception for visuals:** they follow `brand-kit/design-system.md` (the
+website's design system for slides), and `brand-kit/guides/anti-slop.md` lists the patterns no
+generated asset should carry. If it hasn't been populated yet on some point, say so — do not invent values. If the file
 flags an "Open question," surface it rather than picking silently.
 
 ---
@@ -63,7 +65,9 @@ museums, festivals, schools, event spaces), route to `brand-proposals` — it ta
 `brand-kit/guides/proposal-playbook.md` (four modes: pitch / offer / tiered / quote) and renders
 through the same document scripts. Trigger phrases: "write a proposal", "proposal for", "make an
 offer", "send them an offer", "quote", "quotation", "pricing document". A **pitch deck** is still
-a deck — that routes to `brand-decks`, not here.
+a deck — that routes to `brand-decks`, not here. So does a proposal, offer or quote the user
+wants **as slides** ("proposal deck", "offer slides"): `brand-decks` has a proposal variant that
+follows the same playbook.
 
 **For avatars, video thumbnails, or social carousels**, route to `brand-templates`, which opens
 the relevant self-contained editor in `brand-kit/templates/`.

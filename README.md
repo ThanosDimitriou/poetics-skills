@@ -94,10 +94,15 @@ fabric-master/           Workable's reference marketplace (untouched, for inspir
 
 ## Status
 
-Built 2026-07-10. Real logo masters (SVG + PNG, light/dark variants) and the document/deck/social
+Built 2026-07-10. Real logo masters (SVG + PNG, light/dark variants) and the document/social
 renderers are aligned to the Athens College deck aesthetic: deep blue-black canvas, Inter display
 type with occasional Cormorant italic accents, and cinematic gradient backgrounds (with a drop-in
 folder at `brand-kit/assets/backgrounds/photo/` for real photos).
+
+Decks moved to the Poetics Website's design system on 2026-10-31 (`brand-kit/design-system.md`):
+paper and ink, light by default, Instrument Serif and Inter Tight, aperture-shaped photographs.
+Three variants (standard, curation, proposal) start from `brand-kit/templates/decks/`, and
+`build-deck.py --check` renders every slide to PNG and reports overflow.
 
 Remaining open items are in `brand.md`'s "Open questions for Thanos" section: the accent color
 (ember vs. electric blue — currently electric blue `#0099FF` pending confirmation) and a fuller

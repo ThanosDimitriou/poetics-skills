@@ -1,0 +1,270 @@
+{
+  "kind": "curation",
+  "title": "Program for [VENUE]",
+  "theme": "light",
+  "density": "reading",
+  "draft": true,
+  "slides": [
+    {
+      "template": "O2",
+      "overline": "Curated program · [MONTH YEAR]",
+      "title": "Program for [VENUE].",
+      "lead": "[N] titles, [MIN] minutes a visitor.",
+      "image": "photo:events-two-visitors-cinematic-11"
+    },
+    {
+      "template": "E2",
+      "title": "Your brief.",
+      "rows": [
+        {
+          "term": "Venue",
+          "text": "[VENUE AND ROOM]"
+        },
+        {
+          "term": "Occasion",
+          "text": "[EXHIBITION OR FESTIVAL, AND ITS THEME]"
+        },
+        {
+          "term": "Audience",
+          "text": "[WHO COMES, AGES]"
+        },
+        {
+          "term": "Dates",
+          "text": "[DATES AND HOURS]"
+        },
+        {
+          "term": "Languages",
+          "text": "[AUDIO AND SUBTITLES]"
+        }
+      ],
+      "notes": "Confirm the brief before showing the titles."
+    },
+    {
+      "template": "O3",
+      "text": "We watched [N] titles. These [N] suit your room and your visitors."
+    },
+    {
+      "template": "P2",
+      "title": "The program.",
+      "columns": [
+        "Title",
+        "Strand",
+        "Length",
+        "Ages"
+      ],
+      "rows": [
+        [
+          "[TITLE 1]",
+          "Arts",
+          "[MIN]",
+          "[AGE]"
+        ],
+        [
+          "[TITLE 2]",
+          "Arts",
+          "[MIN]",
+          "[AGE]"
+        ],
+        [
+          "[TITLE 3]",
+          "Education",
+          "[MIN]",
+          "[AGE]"
+        ],
+        [
+          "[TITLE 4]",
+          "Entertainment",
+          "[MIN]",
+          "[AGE]"
+        ]
+      ],
+      "note": "We can change the running order to fit your schedule."
+    },
+    {
+      "template": "W1",
+      "pillar": "Arts · [MIN] minutes",
+      "title": "[TITLE 1]",
+      "image": "",
+      "synopsis": "[TWO SENTENCES: WHAT THE VIEWER SEES AND DOES.]",
+      "fit": "[ONE SENTENCE: WHY IT SUITS THIS AUDIENCE.]",
+      "facts": [
+        {
+          "term": "Created by",
+          "text": "[STUDIO]"
+        },
+        {
+          "term": "Year",
+          "text": "[YEAR]"
+        },
+        {
+          "term": "Format",
+          "text": "[3DOF OR 6DOF]"
+        },
+        {
+          "term": "Distributor",
+          "text": "[DISTRIBUTOR]"
+        }
+      ],
+      "image_credit": "[CREDIT: STILL FROM THE DISTRIBUTOR'S PRESS KIT]",
+      "link": {
+        "label": "[OFFICIAL PAGE OR TRAILER]",
+        "href": "[URL]"
+      },
+      "sources": [
+        {
+          "fact": "title, creator, year, length",
+          "url": "[URL]"
+        },
+        {
+          "fact": "distributor",
+          "url": "[URL]"
+        }
+      ]
+    },
+    {
+      "template": "W1",
+      "pillar": "Arts · [MIN] minutes",
+      "title": "[TITLE 2]",
+      "image": "",
+      "synopsis": "[TWO SENTENCES: WHAT THE VIEWER SEES AND DOES.]",
+      "fit": "[ONE SENTENCE: WHY IT SUITS THIS AUDIENCE.]",
+      "facts": [
+        {
+          "term": "Created by",
+          "text": "[STUDIO]"
+        },
+        {
+          "term": "Year",
+          "text": "[YEAR]"
+        },
+        {
+          "term": "Format",
+          "text": "[3DOF OR 6DOF]"
+        },
+        {
+          "term": "Distributor",
+          "text": "[DISTRIBUTOR]"
+        }
+      ],
+      "image_credit": "[CREDIT: STILL FROM THE DISTRIBUTOR'S PRESS KIT]",
+      "link": {
+        "label": "[OFFICIAL PAGE OR TRAILER]",
+        "href": "[URL]"
+      },
+      "sources": [
+        {
+          "fact": "title, creator, year, length",
+          "url": "[URL]"
+        },
+        {
+          "fact": "distributor",
+          "url": "[URL]"
+        }
+      ]
+    },
+    {
+      "template": "W1",
+      "pillar": "Education · [MIN] minutes",
+      "title": "[TITLE 3]",
+      "image": "",
+      "synopsis": "[TWO SENTENCES: WHAT THE VIEWER SEES AND DOES.]",
+      "fit": "[ONE SENTENCE: WHY IT SUITS THIS AUDIENCE.]",
+      "facts": [
+        {
+          "term": "Created by",
+          "text": "[STUDIO]"
+        },
+        {
+          "term": "Year",
+          "text": "[YEAR]"
+        },
+        {
+          "term": "Format",
+          "text": "[3DOF OR 6DOF]"
+        },
+        {
+          "term": "Distributor",
+          "text": "[DISTRIBUTOR]"
+        }
+      ],
+      "image_credit": "[CREDIT: STILL FROM THE DISTRIBUTOR'S PRESS KIT]",
+      "link": {
+        "label": "[OFFICIAL PAGE OR TRAILER]",
+        "href": "[URL]"
+      },
+      "sources": [
+        {
+          "fact": "title, creator, year, length",
+          "url": "[URL]"
+        },
+        {
+          "fact": "distributor",
+          "url": "[URL]"
+        }
+      ]
+    },
+    {
+      "template": "W1",
+      "pillar": "Entertainment · [MIN] minutes",
+      "title": "[TITLE 4]",
+      "image": "",
+      "synopsis": "[TWO SENTENCES: WHAT THE VIEWER SEES AND DOES.]",
+      "fit": "[ONE SENTENCE: WHY IT SUITS THIS AUDIENCE.]",
+      "facts": [
+        {
+          "term": "Created by",
+          "text": "[STUDIO]"
+        },
+        {
+          "term": "Year",
+          "text": "[YEAR]"
+        },
+        {
+          "term": "Format",
+          "text": "[3DOF OR 6DOF]"
+        },
+        {
+          "term": "Distributor",
+          "text": "[DISTRIBUTOR]"
+        }
+      ],
+      "image_credit": "[CREDIT: STILL FROM THE DISTRIBUTOR'S PRESS KIT]",
+      "link": {
+        "label": "[OFFICIAL PAGE OR TRAILER]",
+        "href": "[URL]"
+      },
+      "sources": [
+        {
+          "fact": "title, creator, year, length",
+          "url": "[URL]"
+        },
+        {
+          "fact": "distributor",
+          "url": "[URL]"
+        }
+      ]
+    },
+    {
+      "template": "E2",
+      "title": "How a day runs.",
+      "rows": [
+        {
+          "term": "Sessions",
+          "text": "[N] visitors an hour, [PODS] pods"
+        },
+        {
+          "term": "Per visitor",
+          "text": "[MIN] minutes, with a short onboarding"
+        },
+        {
+          "term": "Rights",
+          "text": "We license every title for your dates"
+        }
+      ]
+    },
+    {
+      "template": "C1",
+      "title": "Tell us what to change."
+    }
+  ]
+}

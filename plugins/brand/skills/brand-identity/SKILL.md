@@ -22,7 +22,7 @@ Read `${CLAUDE_PLUGIN_ROOT}/GLOBAL_RULES.md` first.
 The full visual identity spec: colors, typography, logo, spacing, voice/tone, company facts.
 
 ```bash
-cat "${CLAUDE_PLUGIN_ROOT}/../../brand-kit/brand.md"
+cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/brand.md"
 ```
 
 ---

@@ -1,0 +1,48 @@
+{
+  "kind": "proposal",
+  "mode": "quote",
+  "format": "a4",
+  "lang": "en",
+  "title": "Quotation for [CLIENT]",
+  "number": "[NUMBER]",
+  "draft": true,
+  "slides": [
+    {
+      "template": "D3",
+      "to": "[CLIENT]",
+      "title": "VR cinema at [EVENT OR VENUE].",
+      "intro": "This proposal covers the full production and operation of a VR cinema at [EVENT OR VENUE], [DATES], with the scope below.",
+      "scope": [
+        {
+          "title": "[N] VR pods with central control",
+          "text": "Plus [N] spare headsets."
+        },
+        {
+          "title": "Film curation and licensing",
+          "text": "A program of [N] titles, with subtitles."
+        },
+        {
+          "title": "Area layout and visitor flow"
+        },
+        {
+          "title": "Full production setup",
+          "items": [
+            "Installation and pack-down",
+            "Headsets and central control set up",
+            "[N] operators on site"
+          ]
+        },
+        {
+          "title": "[N] days open to the public",
+          "text": "[N] hours a day, in slots of [MIN] minutes.",
+          "items": [
+            "Visitor onboarding and support"
+          ]
+        }
+      ],
+      "capacity": "Up to [N] screenings.",
+      "amount": "€ [AMOUNT]",
+      "validity": "Valid for 30 days."
+    }
+  ]
+}

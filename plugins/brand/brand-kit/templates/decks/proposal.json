@@ -1,0 +1,84 @@
+{
+  "kind": "proposal",
+  "mode": "offer",
+  "format": "a4",
+  "lang": "en",
+  "title": "Proposal for [CLIENT]",
+  "number": "[NUMBER]",
+  "draft": true,
+  "slides": [
+    {
+      "template": "D3",
+      "to": "[CLIENT]",
+      "title": "VR cinema at [EVENT OR VENUE].",
+      "intro": "This proposal covers the full production and operation of a VR cinema at [EVENT OR VENUE], [DATES], with the scope below.",
+      "scope": [
+        {
+          "title": "[N] VR pods with central control",
+          "text": "Plus [N] spare headsets."
+        },
+        {
+          "title": "Film curation and licensing",
+          "text": "A program of [N] titles, with subtitles."
+        },
+        {
+          "title": "Area layout and visitor flow"
+        },
+        {
+          "title": "Full production setup",
+          "items": [
+            "Installation and pack-down",
+            "Headsets and central control set up",
+            "[N] operators on site"
+          ]
+        },
+        {
+          "title": "[N] days open to the public",
+          "text": "[N] hours a day, in slots of [MIN] minutes.",
+          "items": [
+            "Visitor onboarding and support"
+          ]
+        }
+      ],
+      "capacity": "Up to [N] screenings.",
+      "amount": "€ [AMOUNT]",
+      "validity": "Valid for 30 days."
+    },
+    {
+      "template": "A1",
+      "sections": [
+        {
+          "template": "E2",
+          "title": "Terms.",
+          "rows": [
+            {
+              "term": "Payment",
+              "text": "[SPLIT, E.G. 50% ON SIGNATURE, 50% AFTER THE EVENT]"
+            },
+            {
+              "term": "Validity",
+              "text": "30 days from the date below"
+            },
+            {
+              "term": "Cancellation",
+              "text": "[CONFIRM: cancellation terms]"
+            },
+            {
+              "term": "You provide",
+              "text": "The space, standard power, access the day before"
+            }
+          ]
+        },
+        {
+          "template": "D2",
+          "title": "Acceptance.",
+          "text": "Signed by both parties, this confirms the scope and price above.",
+          "parties": [
+            "For [CLIENT]",
+            "For Poetics"
+          ]
+        }
+      ]
+    }
+  ]
+}

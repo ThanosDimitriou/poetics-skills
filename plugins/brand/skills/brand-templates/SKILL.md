@@ -20,7 +20,7 @@ Read `${CLAUDE_PLUGIN_ROOT}/GLOBAL_RULES.md` first.
 ## Reference file
 
 ```bash
-cat "${CLAUDE_PLUGIN_ROOT}/../../brand-kit/brand.md"
+cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/brand.md"
 ```
 
 ---
@@ -32,8 +32,8 @@ entirely client-side in a browser (Canvas 2D rendering with embedded brand fonts
 
 | Request signal | Template | Path |
 |---|---|---|
-| social carousel, LinkedIn/Instagram/TikTok post, case study post | social-carousel | `${CLAUDE_PLUGIN_ROOT}/../../brand-kit/templates/social-carousel/editor.html` |
-| video thumbnail, YouTube thumbnail, video cover | video-thumb | `${CLAUDE_PLUGIN_ROOT}/../../brand-kit/templates/video-thumb/editor.html` |
+| social carousel, LinkedIn/Instagram/TikTok post, case study post | social-carousel | `${CLAUDE_PLUGIN_ROOT}/brand-kit/templates/social-carousel/editor.html` |
+| video thumbnail, YouTube thumbnail, video cover | video-thumb | `${CLAUDE_PLUGIN_ROOT}/brand-kit/templates/video-thumb/editor.html` |
 
 **Open the editor file for the user** (or tell them the path to open locally — it's a plain HTML
 file, works via `file://` with no server). The editor has form fields for layout type, eyebrow,
