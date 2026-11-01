@@ -151,6 +151,20 @@ Word file) use the same system on A4:
 The Word file names the fonts rather than embedding them: install Instrument Serif and Inter
 Tight to see it as designed. The PDF is the version to send.
 
+## Social posts and thumbnails
+
+The two editors in `templates/` (built from `templates/_src/` by `scripts/build-social-editors.py`)
+draw the same system on a canvas:
+
+- **Social post:** 1080 wide at 4:5, 1:1 or 9:16. 90px margins, the wordmark top-left (28px tall),
+  the footer bottom-left, an optional "2 of 6" bottom-right. A story keeps its top and bottom 250px
+  clear (the app's own interface). Layouts mirror the deck templates: cover, photo with caption,
+  statement (on paper-deep), heading and rows, figure, quote, closing (the band with the Ring, the
+  email in lens).
+- **Video thumbnail:** 1920 × 1080, 120px margins; title and photo (the photograph bleeds off the
+  right edge, square on that side) or title only. Large display type: thumbnails are seen small.
+- Display sizes step down to fit rather than overflow; the copy check runs as you type.
+
 ## Spacing guardrail
 
 Every render is checked (`build-deck.py --check`), and a deck that fails isn't finished:

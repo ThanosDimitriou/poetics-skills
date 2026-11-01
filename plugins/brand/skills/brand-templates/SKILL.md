@@ -15,54 +15,64 @@ description: >
 
 Read `${CLAUDE_PLUGIN_ROOT}/GLOBAL_RULES.md` first.
 
----
-
 ## Reference files
 
 ```bash
-cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/brand.md"                          # social canvas specs, legacy look
 cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/guides/writing-on-brand-copy.md"   # the voice
+cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/design-system.md"                  # the look (the editors apply it)
+cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/brand.md"                          # social canvas specs
 ```
 
-The two editors still use the **legacy look** (dark canvas, Inter, `#0099FF`); they haven't moved
-to the website's design system yet. Their copy follows the current voice all the same.
+## The two editors
 
----
+Self-contained HTML files: open them in a browser (double-click works, no server, nothing is
+uploaded). They draw in the website's design system (paper and ink, light or dark, Instrument
+Serif and Inter Tight, photographs in rounded frames, the wordmark), preview live, check the copy
+as you type, and export a PNG.
 
-## Routing
-
-Both templates are self-contained HTML editors — no hosting, no server, no upload. They run
-entirely client-side in a browser (Canvas 2D rendering with embedded brand fonts and logo).
-
-| Request signal | Template | Path |
+| Request | Editor | Path |
 |---|---|---|
-| social carousel, LinkedIn/Instagram/TikTok post, case study post | social-carousel | `${CLAUDE_PLUGIN_ROOT}/brand-kit/templates/social-carousel/editor.html` |
-| video thumbnail, YouTube thumbnail, video cover | video-thumb | `${CLAUDE_PLUGIN_ROOT}/brand-kit/templates/video-thumb/editor.html` |
+| Instagram, LinkedIn or TikTok post or carousel, story | Social post | `${CLAUDE_PLUGIN_ROOT}/brand-kit/templates/social-carousel/editor.html` |
+| YouTube thumbnail, video cover | Video thumbnail | `${CLAUDE_PLUGIN_ROOT}/brand-kit/templates/video-thumb/editor.html` |
 
-**Open the editor file for the user** (or tell them the path to open locally — it's a plain HTML
-file, works via `file://` with no server). The editor has form fields for layout type, eyebrow,
-title, and body copy — pre-fill guidance in chat if you know the content, but the user fills and
-exports interactively (export happens client-side, there's no way to hand back a finished PNG
-without the user clicking Export in the browser).
+**Social post**: formats 4:5 (feed and carousels, the default), 1:1, 9:16 (stories, keeping clear
+of the app's interface). Layouts mirror the deck's page templates:
 
-**Social carousel** exports at 1080×1350 (4:5, the primary format across IG/LinkedIn/TikTok per
-`brand.md`'s Social canvas specs), with layout options: cover/title, bullet list, stat callout,
-quote. Each export is a single slide — for a multi-page carousel, the user fills and exports each
-page in turn, cycling through layouts.
+| Layout | Use it for |
+|---|---|
+| Cover | The first slide: heading, one line, an optional photograph |
+| Photo with caption | One photograph that tells it |
+| Statement | One sentence that matters |
+| Heading and rows | Up to five short lines |
+| Figure | One real number, with its as-of date in the overline |
+| Quote | A person's words, name, role, optional portrait |
+| Closing | Where to write: "Tell us about your space." and hello@poeticsvr.com |
 
-**Video thumbnail** exports at 1920×1080, with eyebrow/title/subtitle fields.
+A carousel is several exports: one slide at a time, with "2 of 6" in the slide field. Use the
+true count of slides; don't pad to a round number.
 
-Write the text the way `writing-on-brand-copy.md` says: short plain sentences, no em dashes,
-sentence case, no hype. Fill the eyebrow field only when it adds a fact (a date, an event).
-Don't use the editors' `*asterisk*` italic emphasis: the italic "inner voice" is retired.
+**Video thumbnail**: 1920 × 1080, "Title and photo" (the photograph bleeds off the right edge) or
+"Title only". People see thumbnails small: a few large words.
 
----
+## Your part
 
-## Fallback: when no template matches
+Open the editor for the user, or give them the path. Draft the text with them first, in the
+website's voice: short plain sentences with a full stop, no em dashes, no hype, sentence case,
+overlines only when they add a fact, no asterisks (there are no italics). The editor's copy check
+flags what slips through. The user picks the photo (their own file, or one from the Poetics photo
+library folder) and exports; you can't click Export for them.
 
-If the request is for an asset type the two editors don't cover (a LinkedIn single-image post,
-an Instagram Story), build it in the **current** system, `brand-kit/design-system.md`: paper and
-ink, Instrument Serif and Inter Tight, a photograph in an aperture, the wordmark, generous space.
-Use the dimensions in `brand.md`'s "Social canvas specs" for the platform.
+## Formats the editors don't cover
 
-Never use colours, fonts or styles that are in neither file.
+For anything else (a LinkedIn 1200 × 627 image, a banner), build it in the same system from
+`design-system.md`, with the dimensions in `brand.md`'s "Social canvas specs".
+
+## Changing the editors
+
+Edit the sources in `${CLAUDE_PLUGIN_ROOT}/brand-kit/templates/_src/`, then rebuild:
+
+```bash
+python3 "${CLAUDE_PLUGIN_ROOT}/brand-kit/scripts/build-social-editors.py"
+```
+
+Never edit `editor.html` by hand: the build embeds the fonts and the wordmark.

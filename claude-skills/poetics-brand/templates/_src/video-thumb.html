@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Poetics video thumbnail</title>
+<style>
+/*UI_FONTS*/
+:root { --paper:#EFF0EC; --deep:#E5E8E3; --shade:#C5CBC4; --ink:#121614; --soft:#5B625C; --lens:#16249C; --lens-deep:#0E1769; }
+* { box-sizing: border-box; margin: 0; }
+html, body { height: 100%; }
+body { font: 15px/1.5 'Inter Tight', system-ui, sans-serif; background: var(--paper); color: var(--ink); display: flex; }
+.panel { width: 380px; flex: none; padding: 28px 28px 40px; background: var(--deep); overflow-y: auto; }
+h1 { font: 400 32px/1.1 'Instrument Serif', Georgia, serif; letter-spacing: -0.02em; }
+.intro { color: var(--soft); margin: 8px 0 20px; font-size: 14px; }
+label { display: block; font-size: 13px; color: var(--soft); margin: 16px 0 6px; }
+select, input[type=text], textarea { width: 100%; font: inherit; color: var(--ink); background: var(--paper);
+  border: 1px solid var(--soft); border-radius: 12px; padding: 9px 12px; }
+textarea { min-height: 80px; resize: vertical; }
+input[type=file] { font: inherit; font-size: 13px; }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.btn { display: block; width: 100%; margin-top: 24px; min-height: 48px; border-radius: 9999px; border: 1px solid var(--lens);
+  background: var(--lens); color: var(--paper); font: 500 15px 'Inter Tight', sans-serif; cursor: pointer; }
+.btn:hover { background: var(--lens-deep); border-color: var(--lens-deep); }
+.issues { margin-top: 18px; font-size: 13px; }
+.issues p { color: var(--ink); padding: 8px 0; border-top: 1px solid var(--shade); }
+.issues .ok { color: var(--soft); }
+.stage { flex: 1; display: flex; align-items: center; justify-content: center; padding: 32px; min-width: 0; }
+canvas { max-width: 100%; max-height: calc(100vh - 64px); width: auto; height: auto; border-radius: 4px;
+  box-shadow: 0 2px 24px rgb(18 22 20 / 0.08); }
+[hidden] { display: none !important; }
+:focus-visible { outline: 2px solid var(--lens); outline-offset: 3px; }
+</style>
+</head>
+<body>
+<div class="panel">
+  <h1>Video thumbnail.</h1>
+  <p class="intro">1920×1080, for YouTube and video covers. People see it small: a few large words beat a sentence.</p>
+  <div class="row">
+    <div><label for="layout">Layout</label>
+      <select id="layout"><option value="photo">Title and photo</option><option value="text">Title only</option></select></div>
+    <div><label for="theme">Theme</label>
+      <select id="theme"><option value="light">Light</option><option value="dark">Dark</option></select></div>
+  </div>
+  <label for="overline">Overline (optional)</label><input id="overline" type="text">
+  <label for="title">Title</label><textarea id="title"></textarea>
+  <label for="subtitle">Line under the title (optional)</label><input id="subtitle" type="text">
+  <div data-for="photo"><label for="photo">Photograph</label><input id="photo" type="file" accept="image/*"></div>
+  <div data-for="photo"><label for="focal">Keep in frame</label>
+    <select id="focal"><option value="center">Center</option><option value="top">Top</option>
+      <option value="bottom">Bottom</option><option value="left">Left</option><option value="right">Right</option></select></div>
+  <button class="btn" id="export">Export PNG</button>
+  <div class="issues" id="issues" aria-live="polite"></div>
+</div>
+<div class="stage"><canvas id="canvas" width="1920" height="1080" aria-label="Preview"></canvas></div>
+
+<script>
+const WORDMARK_SVG = __WORDMARK_SVG__;
+const FONT_FACES = /*FONT_FACES*/;
+/*COMMON_JS*/
+
+const W = 1920, H = 1080, M = 120;
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const $ = id => document.getElementById(id);
+let photo = null;
+bindPhoto('photo', img => { photo = img; render(); });
+
+function render() {
+  const t = THEMES[$('theme').value];
+  const layout = $('layout').value;
+  document.querySelectorAll('[data-for]').forEach(el => el.hidden = el.dataset.for !== layout);
+  ctx.fillStyle = t.paper; ctx.fillRect(0, 0, W, H);
+  drawWordmark(ctx, t.ink, M, 108, 40);
+
+  const over = $('overline').value.trim(), title = $('title').value.trim(), sub = $('subtitle').value.trim();
+  const withPhoto = layout === 'photo';
+  // A bleeding photograph runs off the right edge only, and that side is square.
+  if (withPhoto) drawAperture(ctx, t, photo, 1056, 120, W - 1056, H - 240, [48, 0, 0, 48], $('focal').value);
+  const textW = withPhoto ? 1056 - M - 72 : W - 2 * M;
+  const tt = fit(ctx, title, DISPLAY, 400, withPhoto ? [150, 128, 110, 96] : [196, 168, 144, 120], textW, 3);
+  ctx.font = `400 44px ${SANS}`;
+  const subLines = sub ? wrapLines(ctx, sub, textW).slice(0, 2) : [];
+  const blockH = (over ? 72 : 0) + tt.lines.length * tt.size * 1.02 + (subLines.length ? 40 + subLines.length * 44 * 1.4 : 0);
+  let y = H - 120 - blockH;
+  if (over) { ctx.font = `400 34px ${SANS}`; drawLines(ctx, [over], M, y, 34, 1.4, t.soft); y += 72; }
+  ctx.font = `400 ${tt.size}px ${DISPLAY}`;
+  y = drawLines(ctx, tt.lines, M, y, tt.size, 1.02, t.ink);
+  if (subLines.length) { ctx.font = `400 44px ${SANS}`; drawLines(ctx, subLines, M, y + 40, 44, 1.4, t.soft); }
+
+  const issues = copyCheck({ Overline: over, Title: title, Line: sub });
+  if (title.split(/\s+/).filter(Boolean).length > 8) issues.push('Title: more than eight words. Thumbnails are seen small.');
+  $('issues').innerHTML = issues.length ? issues.map(i => `<p>${i.replace(/</g, '&lt;')}</p>`).join('')
+                                        : '<p class="ok">Copy check: nothing to fix.</p>';
+}
+window.render = render;
+
+document.querySelectorAll('input, select, textarea').forEach(el => el.addEventListener('input', render));
+$('export').addEventListener('click', () => { render(); exportPNG(canvas, 'poetics-video-thumbnail.png'); });
+
+$('title').value = 'Inside a pop-up VR cinema.';
+loadFonts(FONT_FACES).then(render);
+render();
+</script>
+</body>
+</html>

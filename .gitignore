@@ -13,5 +13,4 @@
 __pycache__/
 *.pyc
 
-# Generator scratch scripts (used once locally to build the HTML editors' embedded assets;
-# not needed to use or maintain the repo — templates/*/editor.html are the shipped output)
+# (The social editors are built by brand-kit/scripts/build-social-editors.py, which is committed.)

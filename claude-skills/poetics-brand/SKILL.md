@@ -24,10 +24,10 @@ relative to that folder — locate it (the directory containing this SKILL.md) b
 anything.
 
 **Always read `brand.md` (in this skill's folder) before answering any brand question or
-generating any output.** It holds the company facts, logo rules and voice, and says which visual
-system applies: decks, proposals and documents follow `design-system.md` (the website's system);
-only the social templates still use `brand.md`'s legacy look. How to write, for everything:
-`guides/writing-on-brand-copy.md`. If something isn't covered, say so; never invent values.
+generating any output.** It holds the company facts, logo rules, voice and social sizes.
+Everything looks the way `design-system.md` says (the website's system), and everything is
+written the way `guides/writing-on-brand-copy.md` says. If something isn't covered, say so; never
+invent values.
 
 ---
 
@@ -37,8 +37,8 @@ only the social templates still use `brand.md`'s legacy look. How to write, for 
 brand.md                              ← the brand spec — read this first, always
 design-system.md                      ← the visual system decks follow (the website's, for slides)
 assets/
-  logos/                                wordmark-mono.svg (+ PNGs for Word), legacy wordmark/mark files
-  fonts/                                Instrument Serif + Inter Tight; the legacy fonts for social
+  logos/                                wordmark-mono.svg (+ PNGs for Word), the logo lockups
+  fonts/                                Instrument Serif + Inter Tight
 scripts/
   build-doc.py                          renders a branded .docx from content JSON
   build-doc-pdf.py                      renders a branded .pdf from the same content JSON
@@ -65,9 +65,9 @@ guides/
 
 ### Brand Q&A ("what are our colors", "can I use this font for X", "is this on-brand")
 
-Answer from the file that applies: `design-system.md` for how decks, proposals and documents
-look; `brand.md` for company facts, logo rules and the social templates' legacy look. For "can I
-do X": yes or no first, then the rule, then the reason. If the files are silent, say so.
+Answer from `design-system.md` for how anything looks, and `brand.md` for company facts, logo
+rules and social sizes. For "can I do X": yes or no first, then the rule, then the reason. If the
+files are silent, say so.
 
 For copy ("make this sound like Poetics"), rewrite in the website's voice from
 `guides/writing-on-brand-copy.md` and check it against `guides/anti-slop.md`.
@@ -158,11 +158,12 @@ people who made the deck unless asked; the only email is hello@poeticsvr.com; ev
 
 ### Social assets ("carousel", "Instagram/LinkedIn post", "video thumbnail")
 
-Point to (or open, if this environment can) the relevant self-contained editor:
-`templates/social-carousel/editor.html` (1080×1350, layouts: cover/bullets/stat/quote) or
-`templates/video-thumb/editor.html` (1920×1080). These are interactive HTML forms — the user fills
-them in and clicks Export themselves; this skill can prefill guidance in chat but can't complete
-the interactive export step for them.
+Give the user the right self-contained editor (an HTML file to open in a browser, offline):
+`templates/social-carousel/editor.html` for posts, carousel slides and stories (4:5, 1:1, 9:16;
+layouts: cover, photo, statement, rows, figure, quote, closing) or
+`templates/video-thumb/editor.html` for 1920×1080 thumbnails. Both draw in the design system,
+check the copy live and export a PNG. Draft the text with the user in the website's voice; they
+add the photo and click Export.
 
 ### Brand review ("review this", "is this on-brand", "brand audit")
 

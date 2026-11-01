@@ -1,7 +1,7 @@
 {
   "name": "brand",
   "displayName": "Brand kit - Poetics",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Poetics decks, A4 proposals, documents and social assets in the website's design system, plus brand answers and reviews. Carries its own brand kit (spec, fonts, renderers).",
   "author": {
     "name": "Thanos Dimitriou",
