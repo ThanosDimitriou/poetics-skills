@@ -17,13 +17,15 @@ as context, or skip AI entirely and run the scripts yourself. See
 [`brand-kit/guides/using-outside-claude-code.md`](brand-kit/guides/using-outside-claude-code.md).
 
 ```
-brand-kit/
-├── brand.md              ← the single spec: colors, type, logo, voice/tone, company facts
-├── assets/                 logos, self-hosted font files, generated glow backgrounds
-├── scripts/                 build-doc.py / build-doc-pdf.py / build-deck.py — run these directly
-├── templates/               self-contained HTML editors for social carousels & video thumbnails
-├── schemas/                 the JSON content schema the scripts consume
-└── guides/                  voice/tone guide, and the "outside Claude Code" guide
+brand-kit/                (a link to plugins/brand/brand-kit, the real folder)
+├── brand.md              ← company facts, logo rules, voice; legacy look for social templates
+├── design-system.md      ← how decks, proposals and documents look (the website's system)
+├── assets/                 logos, self-hosted fonts
+├── photos/                 the photo library index (the photos stay on the owner's machine)
+├── scripts/                build-deck.py, build-doc-pdf.py, build-doc.py, audit-deck.py, photo-library.py
+├── templates/              deck starters (decks/) and the social carousel / video thumbnail editors
+├── schemas/                the document content schema
+└── guides/                 voice, deck copy, anti-slop, proposal playbook, using it outside Claude Code
 ```
 
 ### 2. Claude Code — `plugins/brand`
@@ -94,16 +96,12 @@ fabric-master/           Workable's reference marketplace (untouched, for inspir
 
 ## Status
 
-Built 2026-07-10. Real logo masters (SVG + PNG, light/dark variants) and the document/social
-renderers are aligned to the Athens College deck aesthetic: deep blue-black canvas, Inter display
-type with occasional Cormorant italic accents, and cinematic gradient backgrounds (with a drop-in
-folder at `brand-kit/assets/backgrounds/photo/` for real photos).
+Decks, proposals and documents follow the Poetics Website's design system
+(`brand-kit/design-system.md`, since November 2026): off-white paper and ink, light by default,
+Instrument Serif and Inter Tight, aperture-shaped photographs, one voice
+(`guides/writing-on-brand-copy.md`). Decks come in three variants (standard, curation,
+proposal); every proposal is a practical A4 quote sheet; documents are A4 reports and
+one-pagers. `build-deck.py --check` renders every page and reports overflow and spacing problems.
 
-Decks moved to the Poetics Website's design system on 2026-10-31 (`brand-kit/design-system.md`):
-paper and ink, light by default, Instrument Serif and Inter Tight, aperture-shaped photographs.
-Three variants (standard, curation, proposal) start from `brand-kit/templates/decks/`, and
-`build-deck.py --check` renders every slide to PNG and reports overflow.
-
-Remaining open items are in `brand.md`'s "Open questions for Thanos" section: the accent color
-(ember vs. electric blue — currently electric blue `#0099FF` pending confirmation) and a fuller
-About/company story. Real background photos from the deck can be dropped in whenever available.
+Still on the July look: the two social editors in `brand-kit/templates/` (dark canvas, Inter,
+`#0099FF`), until they're migrated. Not written yet: team bios.

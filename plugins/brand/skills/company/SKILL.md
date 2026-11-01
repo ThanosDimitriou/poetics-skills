@@ -16,29 +16,26 @@ description: >
 
 Read `${CLAUDE_PLUGIN_ROOT}/GLOBAL_RULES.md` first.
 
----
-
-## Reference file
-
-The "Company" section of the brand spec has the factual boilerplate:
+## Reference files
 
 ```bash
-cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/brand.md"
+cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/brand.md"                          # the Company section
+cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/guides/writing-on-brand-copy.md"   # the voice and reusable lines
 ```
 
----
+## How to answer
 
-## How to use this skill
+Answer from `brand.md`'s Company section, in the website's voice. Fit the length to the place: a
+Slack reply gets one sentence, a proposal intro one or two, an "about us" a short paragraph.
 
-Lead with the three-verb pitch (Curate → Install → Operate) and adapt length/register to the
-audience — a Slack reply needs one sentence, a proposal intro needs a paragraph.
+- **One line:** "Poetics installs pop-up VR cinemas at festivals, museums and brand events, in
+  Greece and beyond."
+- **The pitch:** Curate → Install → Operate, in the website's words (in `brand.md`).
+- **Why it exists, track record, recognition** (Cannes Curators Network, Venice Production Bridge),
+  **based in Thessaloniki**: all in `brand.md`, with their as-of dates. Quote figures with the
+  date.
 
-**What's covered:** what Poetics does, the three-verb pitch, where they're based, who they serve
-(B2B: museums, galleries, festivals, schools, event spaces), and social/site links.
+**Not written yet:** team bios. Say so rather than inventing them. Don't name the founders or team
+in generated material unless the user asks.
 
-**What's not covered yet** (flagged in `brand.md`'s "Open questions" section): a fuller
-"about us"/company story and team bios. If asked for these, say the source content doesn't exist
-yet rather than inventing a narrative — this is explicitly called out as an open item for Thanos
-to supply.
-
-**Never invent facts** — stats, dates, team bios, or customer names beyond what's in `brand.md`.
+**Never invent facts:** figures, dates, clients, partners or quotes beyond what's in `brand.md`.

@@ -16,34 +16,34 @@ description: >
 
 Read `${CLAUDE_PLUGIN_ROOT}/GLOBAL_RULES.md` first.
 
----
-
 ## Reference files
 
-### Brand spec (always load)
 ```bash
-cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/brand.md"
+cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/guides/writing-on-brand-copy.md"   # the voice, for everything
+cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/guides/anti-slop.md"               # what never to do
+cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/design-system.md"                  # visual rules (decks, documents)
+cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/brand.md"                          # company, logo, legacy social spec
 ```
 
-### Voice/copy guide (load for writing or voice questions)
-```bash
-cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/guides/writing-on-brand-copy.md"
-```
+## How to answer
 
----
+Yes or no first, then the rule, then the reason. Don't pad. If the guidelines don't cover the
+exact situation, say so and give the closest rule; don't invent a firm answer.
 
-## How to use this skill
+**Visual questions:** decks, proposals and documents follow `design-system.md` (one accent, the
+lens blue, only on what can be pressed; space and hairlines, never boxes or shadows; no gradients;
+the spacing guardrail). The social templates still use `brand.md`'s legacy spec.
 
-Answer directly: yes/no first, then the rule, then the reason. Don't pad.
+**Copy and "make this sound like Poetics":** rewrite in the website's voice using
+`writing-on-brand-copy.md`: plain, concrete, "we" and "you", short sentences, what happens
+rather than how it feels, no em dashes, no hype, sentence case. Check the rewrite against
+`anti-slop.md` before giving it back. Reuse the website's approved lines where they fit.
 
-If the guideline doesn't cover the exact situation, say so and give the closest applicable rule.
-Don't extrapolate a firm yes/no where `brand.md` is silent — flag the gap instead.
+## Hard rules, always
 
-For voice/tone questions or requests to rewrite copy "on-brand," use
-`writing-on-brand-copy.md`'s checklist and before/after examples as the working method: check for
-hype words, invented facts, named films (hard rule — never), and correct register (narrator vs.
-inner voice).
-
-**Hard rule, always enforce:** never generate copy that names or visually identifies a specific
-film. This applies regardless of what the user asks for — if a request would require naming a
-film, say so and offer the theme-based alternative instead.
+- Never name or visually identify a specific film, except in a curation deck made for one venue.
+  If a request needs a film named anywhere else, say so and offer the theme-based version.
+- Never invent a figure, date, quote, name or price. Mark unknowns as `[PLACEHOLDER]`.
+- The only email is hello@poeticsvr.com; don't name the people who made the material unless asked.
+- Confidential items (pricing amounts, franchise model, roadmap dates, streaming platform status,
+  internal tooling, survey methodology) stay out unless the user includes them.

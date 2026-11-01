@@ -24,9 +24,10 @@ relative to that folder — locate it (the directory containing this SKILL.md) b
 anything.
 
 **Always read `brand.md` (in this skill's folder) before answering any brand question or
-generating any output.** It is the single source of truth for colors, typography, logo rules,
-voice/tone, and company facts. If something isn't covered there, say so — never invent brand
-values.
+generating any output.** It holds the company facts, logo rules and voice, and says which visual
+system applies: decks, proposals and documents follow `design-system.md` (the website's system);
+only the social templates still use `brand.md`'s legacy look. How to write, for everything:
+`guides/writing-on-brand-copy.md`. If something isn't covered, say so; never invent values.
 
 ---
 
@@ -36,17 +37,15 @@ values.
 brand.md                              ← the brand spec — read this first, always
 design-system.md                      ← the visual system decks follow (the website's, for slides)
 assets/
-  logos/                                wordmark-mono.svg (decks), wordmark-{light,dark}, mark-*
-  fonts/                                Instrument Serif + Inter Tight (decks); Inter, Cormorant,
-                                        Space Mono, Bricolage (documents, social)
-  backgrounds/                          gradients + photo/ drop-in folder (documents only)
+  logos/                                wordmark-mono.svg (+ PNGs for Word), legacy wordmark/mark files
+  fonts/                                Instrument Serif + Inter Tight; the legacy fonts for social
 scripts/
   build-doc.py                          renders a branded .docx from content JSON
   build-doc-pdf.py                      renders a branded .pdf from the same content JSON
   build-deck.py                         renders a deck or A4 quote sheet (.html / .pdf / .pptx)
   audit-deck.py                         checks a deck's links, images and sources
   photo-library.py                      Poetics' photo library (local machines only, see Decks)
-  doc-pdf-styles*.css, _brand_assets.py supporting files — don't edit or call directly
+  _brand_assets.py                      supporting file — don't edit or call directly
 templates/
   decks/                                standard, curation, proposal, quote, catalog (deck JSON)
   social-carousel/editor.html           self-contained HTML editor — open in a browser
@@ -66,12 +65,12 @@ guides/
 
 ### Brand Q&A ("what are our colors", "can I use this font for X", "is this on-brand")
 
-Read `brand.md` and answer directly from it. For "can I do X" questions: answer yes/no first,
-then the rule, then the reason — don't pad. If `brand.md` is silent on the exact situation, say so
-rather than extrapolating a confident answer.
+Answer from the file that applies: `design-system.md` for how decks, proposals and documents
+look; `brand.md` for company facts, logo rules and the social templates' legacy look. For "can I
+do X": yes or no first, then the rule, then the reason. If the files are silent, say so.
 
-For voice/tone or copy-writing requests, also read `guides/writing-on-brand-copy.md` and apply its
-checklist (concrete over abstract, no invented facts, no named films, correct register).
+For copy ("make this sound like Poetics"), rewrite in the website's voice from
+`guides/writing-on-brand-copy.md` and check it against `guides/anti-slop.md`.
 
 ### Documents and PDFs ("write a doc", "create a pdf", "one-pager", "report", "brief")
 
@@ -82,25 +81,25 @@ checklist (concrete over abstract, no invented facts, no named films, correct re
    - **Extraction** (user provides a URL/thread/pasted text and asks to "turn this into a doc"):
      extract and restructure the source content first, then proceed as create mode.
 2. For create/extraction mode, build the content as JSON matching `schemas/doc-content-schema.md`
-   (title, subtitle, date, sections[] with heading + html, optional separator_title, optional
-   `"theme": "light"` for print/procurement contexts). Escape any user-provided text before
-   embedding it in the `html` field.
+   (title, subtitle, date, sections[] with heading + html, optional separator_title, `theme`
+   light or dark, `lang` en or el, `cover_image`). Escape any user-provided text before
+   embedding it in the `html` field. Write in the website's voice; the look (A4, off-white paper,
+   Instrument Serif and Inter Tight, hairlines, "poeticsvr.com · Confidential" footers) comes from
+   the script.
 
    Beyond plain `<p>`/`<table>`/`<ul>`, the `html` field supports richer blocks — use the one that
-   matches the content, don't force everything into a bullet: `eyebrow` (small kicker label above
-   a heading), `pull-quote` (inner-voice/testimonial moments), `stat-row` (a number that matters
-   gets this, never a bullet), `price-callout` (the single most important block in any
-   proposal/quote — always use this over a plain `callout` for a price), and `class="recommended"`
-   on a table column to highlight a tiered comparison's suggested option. Full structures in
-   `schemas/doc-content-schema.md`.
+   matches the content, don't force everything into a bullet: `eyebrow` (an overline, only when it
+   adds a fact), `pull-quote` (a person's words), `stat-row` (figures that matter, with their
+   date), `price-callout` (a price), and `class="recommended"` on a table column. Full structures
+   in `schemas/doc-content-schema.md`.
 
 3. Write that JSON to a temp file, then run the renderer from this skill's own directory:
    ```bash
-   python3 scripts/build-doc-pdf.py /tmp/content.json output.pdf   # recommended — full dark-brand fidelity
-   python3 scripts/build-doc.py     /tmp/content.json output.docx  # editable Word alternative
+   python3 scripts/build-doc-pdf.py /tmp/content.json output.pdf --preview   # the version to send
+   python3 scripts/build-doc.py     /tmp/content.json output.docx            # only if someone must edit in Word
    ```
-4. Present the resulting file. Do not hand-style the document yourself — the script applies
-   brand.md's tokens mechanically; your job is only the content JSON.
+4. Fix every warning the PDF script prints (em dashes, stock phrases, other emails), then present
+   the file. Don't hand-style it: the script applies the design system; your job is the content.
 
 **Proposals, offers, and quotes to another company** never use the document renderers. Every
 proposal is the practical A4 quote sheet from the deck renderer: read `guides/proposal-playbook.md`

@@ -1,79 +1,91 @@
 # Poetics brand spec
 
-**This is the single source of truth for Poetics branding.** Every document, deck, and social
-asset generated through this kit — by Claude, by any other AI tool, or by hand — should follow
-what's written here. Colors, type, logo, voice, all in one place.
+The brand facts, logo rules and voice for everything this kit makes. **How things look is in two
+places:**
 
-> **Decks moved to the website's design system (2026-10-31).** Slide decks now follow
-> [`design-system.md`](design-system.md): the Poetics Website's "Aperture" system (paper and ink,
-> light by default with a dark theme, Instrument Serif and Inter Tight, the lens blue only on what
-> can be pressed). For decks, it replaces the Color, Typography and Spacing sections below, and it
-> settles the accent question: lens `#16249C` (dark theme `#8F9CFF`). Company facts, voice, logo
-> rules and social specs in this file still apply to decks. Documents and social templates stay on
-> this file's visual spec until they are migrated.
+| Material | Visual system |
+| --- | --- |
+| Decks, proposals, documents and PDFs | [`design-system.md`](design-system.md): the Poetics Website's "Aperture" system (paper and ink, light by default with a dark theme, Instrument Serif and Inter Tight, the lens blue only on what can be pressed) |
+| Social templates (carousel, video thumbnail) | The **legacy spec** in the Color, Typography and Spacing sections below (dark canvas, Inter, Cormorant italics, `#0099FF`), until the editors are migrated |
 
-**To update the brand:** edit this file directly and save. There is no build step, no sync, no
-approval workflow — every skill and script reads this file fresh each time it runs.
+How to write, for every material: [`guides/writing-on-brand-copy.md`](guides/writing-on-brand-copy.md)
+(the website's voice). What never to do: [`guides/anti-slop.md`](guides/anti-slop.md).
+
+**To update the brand:** edit this file (or `design-system.md`) and save. Every skill and script
+reads them fresh each time it runs; the installed plugin and the claude.ai bundle pick changes up
+when they're updated (see `INSTALL.md`).
 
 **Owner:** Thanos Dimitriou (dimitriouathanas@gmail.com)
-**Last updated:** 2026-07-10
-**Source:** Derived from `Poetics Main Site/REDESIGN_GUIDE.md` (approved brief, 2026-07-04) and
-the site's built code (`src/app/globals.css`, `src/lib/fonts.ts`, through commit `4aec5af`,
-2026-07-06). This supersedes the older `poetics_design_system.md` (May 2026, Figtree/cobalt
-palette) — that document is retired, do not use it.
+**Last updated:** 2026-11-01
+**Sources:** the Poetics Website (`Poetics Website/DESIGN-SYSTEM.md`, `_source/copy/BRIEF.md`,
+`src/data/*.ts`, as of October 2026) for company facts, voice and the design system. The legacy
+visual spec below came from `Poetics Main Site/REDESIGN_GUIDE.md` (July 2026), now superseded for
+everything except the social templates.
 
 ---
 
-## Open questions for Thanos
+## Open questions
 
-These aren't guesses baked into the spec below — they're flagged here so nothing gets used
-silently until you confirm:
+None at the moment. Two earlier questions are settled by the website:
 
-1. **Accent color.** The approved written brief (REDESIGN_GUIDE §6) calls for warm ember
-   `#E9963E` ("the electric blue was rejected; do not bring it back"). But the most recent commit
-   to the site (`4aec5af`, "accent: revert to electric blue #0099FF (previous)") reverts that
-   in the actual code. This spec uses **`#0099FF` (electric blue)** because it's the latest
-   intentional change — but you should confirm which one is actually final and update this file
-   (and the site) to match.
-2. **About page / team bios / company story** — REDESIGN_GUIDE §5 notes no source content exists
-   yet for the `/about` page. The `company` section below only has the factual boilerplate that
-   already exists (what Poetics does, the three-verb pitch); a fuller "our story" narrative isn't
-   written yet.
+- **Accent colour:** the website's lens blue, `#16249C` (dark theme `#8F9CFF`), used only on what
+  can be pressed. The legacy `#0099FF` survives only in the social templates.
+- **Company story:** the website's About page now has it (see Company below). Team bios are still
+  not written; don't invent them.
 
 ---
 
 ## Company
 
-**What Poetics is:** Poetics installs pop-up immersive cinemas — single-seat VR pods with
-high-quality headsets and a curated catalog of immersive films — in museums, festivals, cultural
-venues, and event spaces. The team handles everything: curation, installation, operation,
-hygiene.
+**What Poetics is:** production, curation and distribution of immersive experiences with new
+media. Poetics runs pop-up immersive cinemas (single-seat VR pods, a curated program, trained
+operators), interactive projection mapping, immersive recordings (VR180 and 360°) and
+audiovisual experiences, at festivals, museums and brand events. Tagline: **Immersive cinema,
+anywhere.**
 
-**The pitch, in three verbs:** **Curate → Install → Operate.**
+**The pitch, in three verbs:** **Curate → Install → Operate.** In the website's words:
 
-- **Curate:** "We review hundreds of available immersive experiences to find the ones matching
-  your theme."
-- **Install:** "We install single-seat VR pods. Everything will be delivered, cabled, and
-  preloaded for instant use."
-- **Operate:** "Operators from our team will run sessions, guide audiences, and handle hygiene
-  protocols."
+- **We curate:** "We review hundreds of titles and choose a handful for your audience. A program
+  runs 10–50 minutes."
+- **We install:** "Each pod is one seat: a swivel chair, a headset and noise-cancelling
+  headphones. Pods arrive cabled and ready to play."
+- **We operate:** "Trained operators run the room and control the equipment through Poetics Pods,
+  our own software. They follow the hygiene protocols and onboard every visitor."
 
-**Based:** Greece (Athens), operating in Greece "and beyond."
+**Why it exists** (website, About): immersive films win prizes at Cannes, Venice and Sundance,
+then wait: cinemas aren't built for them and headsets sit unused at home. Poetics is the layer in
+between: it licenses the work, curates it for a place and an audience, and puts it in front of
+people.
 
-**Audience:** B2B — museums, galleries, festivals, schools, cultural venues, event spaces. The
-pitch works by making venues feel what their visitors will feel, not by listing specs.
+**Based:** Thessaloniki, Greece (founded 2025), working in Greece and beyond.
 
-**Do not name or visually identify specific films** in any generated material — this is a
-deliberate brand decision (REDESIGN_GUIDE §2, "the films pivot"). Describe the program only by
-theme and feeling: immersive art, documentary, performance, education. Films are the ingredient,
-not the product.
+**Track record** (public, as of September 2026): 5,000+ screenings at 15+ events, rated 4.92 out
+of 5 by visitors, 250+ five-star Google reviews. Selected for the Curators Network of the Cannes
+Immersive Market (May 2026), the first Greek private initiative in it. Co-hosted a panel at the
+Venice Production Bridge (September 2026).
 
-**Social:** Instagram / TikTok / LinkedIn / Facebook — all `@poeticsvr`.
-**Site:** poeticsvr.com
+**Audience:** B2B: museums, galleries, festivals, brands and agencies, schools, cultural venues.
+
+**Films:** never name or show a specific film in generated material, except in a curation deck
+made for one venue (it lists the titles chosen for them). Describe a program by theme: arts,
+education, entertainment. Films are the ingredient, not the product.
+
+**Confidential** until Poetics clears it: pricing amounts, the franchise model, roadmap dates
+(other than the December festival), the streaming platform's status, internal tooling, survey
+methodology.
+
+**Contact:** hello@poeticsvr.com · **Site:** poeticsvr.com
+**Social:** Instagram `@poeticsimmersive` · TikTok `@poeticsvr` · LinkedIn `poetics-vr` · Facebook
 
 ---
 
-## Color
+## Legacy visual spec (social templates only)
+
+The Color, Typography and Spacing sections below describe the July 2026 look. Only the social
+templates (`templates/social-carousel`, `templates/video-thumb`) still use it; decks, proposals and
+documents follow `design-system.md`.
+
+## Color (legacy: social templates)
 
 Dark theme only. Near-black canvas, warm-white text, one accent color used sparingly.
 
@@ -92,16 +104,6 @@ Dark theme only. Near-black canvas, warm-white text, one accent color used spari
 **Contrast note:** text secondary was lightened from an earlier `#808080` specifically for AA
 contrast on near-black backgrounds. Don't darken it back down.
 
-**Light / print variant (documents only, added 2026-07-11):** dark remains the canonical canvas.
-For print-friendly or procurement contexts, the PDF document renderer accepts `"theme": "light"`
-in the content JSON: body pages go white while the cover (and any separator page) keep the dark
-brand canvas — the same compromise the Word renderer has always made. Derived tokens for light
-pages (chosen for AA contrast on white; defined in `scripts/doc-pdf-styles-light.css`): text
-`#0A0A0A`, secondary text `#6E6E6A`, raised surface `#F7F7F5`, hairlines
-`rgba(10,10,10,0.12–0.16)`. The accent stays `#0099FF` — still one accent only. Light pages use
-the **dark** logo variants, which the renderer swaps automatically. Decks and social assets
-remain dark-only.
-
 **Glow / atmosphere:** the reference deck's backgrounds are full-bleed atmospheric imagery —
 either real photography graded dark (a rim-lit figure in red/blue light, a warm amber silhouette,
 a dark venue) or deep gradient fields with soft multi-color light bleeding from the edges. The
@@ -113,7 +115,7 @@ are near-monochrome; color is a whisper, not a statement.
 
 ---
 
-## Typography
+## Typography (legacy: social templates)
 
 Self-hosted Google Fonts. Font files are in `assets/fonts/`.
 
@@ -141,6 +143,11 @@ not the website. Bricolage font files remain in `assets/fonts/` but are not used
 ---
 
 ## Logo
+
+These rules apply to every material. Decks, proposals and documents use the website's
+single-colour wordmark, `assets/logos/wordmark-mono.svg`, painted in `ink` for the theme (dark on
+paper, light on the dark theme). The files below are the legacy lockups used by the social
+templates.
 
 Wordmark: **"P⬭ETICS"** — the O is rendered as a headset-shaped pill, referencing the VR product.
 Official master assets (SVG + PNG) live in `assets/logos/`.
@@ -170,44 +177,19 @@ default, the **light** variant is the everyday one.
 
 ## Voice & tone
 
-**Register:** cinematic, editorial, restrained. Think A24 / cultural-institution sensibility, not
-tech-startup landing page. Confident without hype.
+**One voice, the website's.** Plain, concrete, first person plural, short sentences, active verbs.
+Confident about operations, modest about art. Describe what happens, never how it feels: the
+photography carries the feeling. No hype, no em dashes, no exclamation marks, sentence case.
 
-**Two voices, strict roles** (mirrors the typography split):
+The full guide, with reusable lines and before/after examples, is
+[`guides/writing-on-brand-copy.md`](guides/writing-on-brand-copy.md). Slide specifics are in
+`guides/deck-copy.md`; the patterns that read as machine-written are in `guides/anti-slop.md`.
 
-1. **Inner voice** (serif italic in visual materials, second person, present tense) — used for
-   sensory, experiential moments. Short, subtitle-like. *"You sit down. The lights dim."*
-   Reserve for genuinely immersive/emotional beats, not routine copy.
-2. **Narrator / facts** (sans, conventional) — used for informational content: services, process,
-   case studies, FAQ, About. Scannable, direct, no hype language.
-
-**Restraint is a brand value, not a style tic.** The design brief explicitly calls this out
-multiple times: "do not overuse eyebrows," "at most one mono annotation per viewport," "one
-accent only." Apply the same discipline to writing — don't stack superlatives, don't over-explain,
-don't add flourish that isn't earned.
-
-**What Poetics sounds like:**
-
-- Concrete over abstract: describe what the audience will *feel* and *do*, not vague claims about
-  "transforming" or "revolutionizing."
-- Never invents facts: stats, dates, attendance numbers, team bios, testimonial quotes. If a
-  number or quote isn't confirmed, mark it as a placeholder rather than inventing one.
-- Never names or visually identifies a specific film (see Company section — this is a hard rule,
-  not a style preference).
-- Classical subtext, worn lightly: the brand name references Aristotle's *Poetics*, and the
-  visual identity draws on ancient Greek theater (masks, marble, chiaroscuro). This can inform
-  word choice and imagery selection but shouldn't be forced into every sentence.
-
-**What Poetics doesn't sound like:**
-
-- No startup hype: "disruptive," "game-changing," "10x," excessive exclamation points.
-- No generic wellness/tech-marketing language: "empowering," "seamless," "elevate your..."
-- No named films, franchises, or content specifics — describe by theme (art, documentary,
-  performance, education) only.
+The earlier two-voice system (a serif italic "inner voice" for sensory moments) is retired.
 
 ---
 
-## Spacing & structure
+## Spacing & structure (legacy: social templates)
 
 Dark canvas, generous negative space, asymmetric editorial layouts rather than centered
 symmetric ones.

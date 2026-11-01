@@ -1,7 +1,8 @@
 {
   "name": "brand",
-  "version": "0.2.1",
-  "description": "Poetics brand identity, guidelines, branded documents/decks/social templates, and brand review. Carries the brand-kit/ (spec, assets, renderers) inside the plugin; the repo root links to it so other AI tools can use the same files.",
+  "displayName": "Brand kit - Poetics",
+  "version": "0.3.0",
+  "description": "Poetics decks, A4 proposals, documents and social assets in the website's design system, plus brand answers and reviews. Carries its own brand kit (spec, fonts, renderers).",
   "author": {
     "name": "Thanos Dimitriou",
     "email": "dimitriouathanas@gmail.com"
@@ -13,5 +14,7 @@
     "guidelines",
     "templates",
     "poetics"
-  ]
+  ],
+  "icon": "./icon.png",
+  "homepage": "https://poeticsvr.com"
 }

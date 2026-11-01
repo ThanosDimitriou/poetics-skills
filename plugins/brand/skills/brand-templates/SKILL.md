@@ -17,11 +17,15 @@ Read `${CLAUDE_PLUGIN_ROOT}/GLOBAL_RULES.md` first.
 
 ---
 
-## Reference file
+## Reference files
 
 ```bash
-cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/brand.md"
+cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/brand.md"                          # social canvas specs, legacy look
+cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/guides/writing-on-brand-copy.md"   # the voice
 ```
+
+The two editors still use the **legacy look** (dark canvas, Inter, `#0099FF`); they haven't moved
+to the website's design system yet. Their copy follows the current voice all the same.
 
 ---
 
@@ -48,16 +52,17 @@ page in turn, cycling through layouts.
 
 **Video thumbnail** exports at 1920×1080, with eyebrow/title/subtitle fields.
 
-Tell the user to wrap 2-4 word phrases in `*asterisks*` in the text fields to get the Cormorant
-Garamond italic emphasis voice.
+Write the text the way `writing-on-brand-copy.md` says: short plain sentences, no em dashes,
+sentence case, no hype. Fill the eyebrow field only when it adds a fact (a date, an event).
+Don't use the editors' `*asterisk*` italic emphasis: the italic "inner voice" is retired.
 
 ---
 
 ## Fallback: when no template matches
 
-If the request is for a social/brand asset type not covered by the two templates above (e.g. a
-LinkedIn single-image post, an Instagram Story), generate a brand-compliant starter using
-`brand.md`'s tokens directly — dark canvas, one accent color, correct fonts, restrained layout.
-Use the dimension table in `brand.md`'s "Social canvas specs" section for the target platform.
+If the request is for an asset type the two editors don't cover (a LinkedIn single-image post,
+an Instagram Story), build it in the **current** system, `brand-kit/design-system.md`: paper and
+ink, Instrument Serif and Inter Tight, a photograph in an aperture, the wordmark, generous space.
+Use the dimensions in `brand.md`'s "Social canvas specs" for the platform.
 
-Never use colors, fonts, or styles not in `brand.md`.
+Never use colours, fonts or styles that are in neither file.

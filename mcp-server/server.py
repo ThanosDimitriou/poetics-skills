@@ -34,10 +34,23 @@ mcp = FastMCP("poetics-brand")
 
 @mcp.resource("brand://spec")
 def brand_spec() -> str:
-    """The single Poetics brand spec: colors, typography, logo rules, voice/tone,
-    company facts, and open questions. Read this before producing any branded
-    output — it is the only source of truth."""
+    """The Poetics brand spec: company facts, logo rules, voice summary, and the
+    legacy visual spec the social templates still use. Decks, proposals and
+    documents look the way brand://design-system says."""
     return (KIT / "brand.md").read_text()
+
+
+@mcp.resource("brand://design-system")
+def design_system() -> str:
+    """How decks, proposals and documents look: the Poetics Website's design
+    system (colour roles, type, spacing, shapes, the spacing guardrail)."""
+    return (KIT / "design-system.md").read_text()
+
+
+@mcp.resource("brand://guide/anti-slop")
+def anti_slop_guide() -> str:
+    """The deck rules and the patterns that make material read as machine-made."""
+    return (KIT / "guides/anti-slop.md").read_text()
 
 
 @mcp.resource("brand://schema/document")
@@ -48,7 +61,7 @@ def document_schema() -> str:
 
 @mcp.resource("brand://guide/voice")
 def voice_guide() -> str:
-    """Practical voice/tone checklist and before/after copy examples."""
+    """The one voice guide (the website's voice), with reusable lines and before/after examples."""
     return (KIT / "guides/writing-on-brand-copy.md").read_text()
 
 
@@ -77,9 +90,14 @@ def generate_branded_document(content: dict, output_path: str, format: str = "pd
     """Render a branded Poetics document. `content` must match the schema at
     brand://schema/document (title, subtitle, date, sections[], separator_title).
 
-    format: "pdf" (recommended — the canonical branded format, full dark-brand
-    fidelity, fonts physically embedded) or "docx" (editable Word, dark cover +
-    light readable body pages — a deliberate compromise, see build-doc.py).
+    Optional: theme ("light" default, "dark"), lang ("en" | "el"), cover_image
+    (a local path or "photo:<id>"), confidential (default true). Documents
+    follow brand://design-system: A4, off-white paper, Instrument Serif and Inter
+    Tight, hairlines, "poeticsvr.com · Confidential" footers.
+
+    format: "pdf" (the version to send, fonts embedded) or "docx" (editable in
+    Word; needs Instrument Serif and Inter Tight installed). Proposals, offers
+    and quotes are not documents: use generate_branded_deck with kind "proposal".
 
     Returns the absolute path to the generated file. Never invent content
     values not present in brand://spec (colors, logo, voice) — the renderer
@@ -186,29 +204,43 @@ def review_against_brand(asset_description: str) -> str:
     for critical (-1.5 to -2) vs minor (-0.5 to -1) issues, cite specific
     values from brand.md for every deduction."""
     spec = (KIT / "brand.md").read_text()
-    return f"""Read this Poetics brand spec:
+    system = (KIT / "design-system.md").read_text()
+    slop = (KIT / "guides/anti-slop.md").read_text()
+    return f"""Read the Poetics brand spec, the design system (decks, proposals and
+documents look like this; social templates still use brand.md's legacy spec), and
+the deck rules:
 
 {spec}
 
 ---
 
-Review the following asset against it. Produce:
+{system}
+
+---
+
+{slop}
+
+---
+
+Review the following asset against them. Produce:
 
 **Brand compliance score: X/10**
 
 **What's on-brand** — list what's correct, name the element and why it passes.
 
 **What needs fixing** — for each issue: Element / Problem (what's wrong and what
-value was used) / Fix (exactly what it should be, citing brand.md) / Severity
-(Critical: breaks brand, -1.5 to -2pts, e.g. wrong canvas/text color, wrong
-font, logo misuse, a named film appearing anywhere, second accent color
-introduced; Minor: inconsistency, -0.5 to -1pt).
+value was used) / Fix (exactly what it should be, citing the token or rule) /
+Severity (Critical: -1.5 to -2pts, e.g. the old dark look on a deck or document,
+wrong fonts, a second accent colour, logo misuse, a named film outside a curation
+deck, an invented figure; Minor: -0.5 to -1pt, e.g. a deck-rule break, spacing,
+a voice slip).
 
 **Summary** — one or two sentences: overall state, single most important fix.
 
 Always check the hard rules first regardless of visual polish: no named or
-visually identifiable films, one accent color only, correct voice register
-(narrator vs. inner voice) for the content type.
+visually identifiable films (except a curation deck), nothing invented, one
+accent colour only on what can be pressed, the website's voice (plain, no em
+dashes, no stock phrases).
 
 Asset to review:
 {asset_description}"""
@@ -235,9 +267,9 @@ And this voice/copy guide:
 
 Write copy about: {topic}
 
-Apply the two-voice system (narrator vs. inner voice), the restraint
-principle, and the hard rules (no invented facts, no named films) exactly as
-documented above."""
+Write in the website's voice exactly as the guide describes: plain, concrete,
+"we" and "you", short sentences, what happens rather than how it feels, no em
+dashes, no hype. Keep the hard rules: no invented facts, no named films."""
 
 
 if __name__ == "__main__":

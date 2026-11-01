@@ -4,9 +4,13 @@ This is the JSON schema for `scripts/build-doc.py` (Word) and `scripts/build-doc
 Both scripts consume the **same payload** — write it once, render to either format.
 
 This schema is tool-agnostic: any AI assistant (or a person) can produce a JSON file matching
-this shape, save it, and run the renderer script directly from a terminal. The brand (colors,
-fonts, logo, layout) is applied entirely by the script — the content author never has to think
-about styling.
+this shape, save it, and run the renderer directly from a terminal. The look comes from
+`design-system.md` (the website's system: A4, off-white paper, Instrument Serif and Inter Tight,
+hairlines, the wordmark, "poeticsvr.com · Confidential" footers) and is applied entirely by the
+script. Write the words in the voice of `guides/writing-on-brand-copy.md`.
+
+Proposals, offers and quotes are not documents: they use the A4 quote sheet
+(`guides/proposal-playbook.md`).
 
 ## Shape
 
@@ -14,7 +18,10 @@ about styling.
 {
   "title":    "Document title",
   "subtitle": "Optional subtitle or omit",
-  "date":     "July 2026 · Author or team name",
+  "date":     "November 2026 · Poetics",
+  "theme":    "light",
+  "lang":     "en",
+  "cover_image": "photo:events-two-visitors-cinematic-11",
   "sections": [
     {
       "heading": "Section heading",
@@ -25,17 +32,19 @@ about styling.
 }
 ```
 
-- `title` — required. Rendered large on the dark cover page.
+- `title` — required. Set large in the display face on the cover. A short sentence with a full stop.
 - `subtitle` — optional, omit or leave `""` to hide.
-- `date` — shown at the bottom of the cover page. Convention: `"Month YYYY · context"`.
+- `date` — shown at the bottom of the cover. Convention: `"Month YYYY · Poetics"` (no personal names unless asked).
 - `sections` — ordered list. Each becomes its own page (PDF) or page break (Word). `heading` is
   optional (renders as an H1 at the top of the section); `html` is required.
-- `separator_title` — optional. If present, adds a divider page (e.g. for an "Appendix") after
+- `separator_title` — optional. If present, adds a quiet divider page (e.g. "Appendix.") after
   the last section.
-- `theme` — optional, PDF renderer only: `"dark"` (default, canonical brand canvas) or
-  `"light"` (white body pages for print-friendly/procurement contexts — the dark brand cover and
-  separator pages are kept, and the body logo mark switches to the dark variant). The Word
-  renderer already renders light body pages by design and ignores this field.
+- `theme` — optional: `"light"` (default, off-white paper) or `"dark"` (the dark set, for screen).
+  Both renderers follow it.
+- `lang` — optional: `"en"` (default) or `"el"`; the footer's own words follow it.
+- `confidential` — optional, default `true`: "poeticsvr.com · Confidential" in every footer.
+- `cover_image` — optional: a photograph for the cover, as a photo library id (`"photo:<id>"`) or
+  a local path.
 
 ## The `html` field
 
@@ -51,38 +60,38 @@ Supported elements:
 | `<p>` | Body paragraph |
 | `<ul><li>` | Bullet list |
 | `<strong>`/`<b>` | Bold inline |
-| `<em>`/`<i>` | Italic inline — in Poetics documents, prefer this for the Cormorant Garamond emphasis voice (short 2–4 word phrases only, per `brand.md`) |
-| `<a href="...">` | Link, inherits body color, no underline |
+| `<em>`/`<i>` | Rendered upright: the system has no italics. Use words, not styling, for emphasis |
+| `<a href="...">` | Link, in the lens blue, underlined (blue means you can act here) |
 | `<br>` | Line break |
 | `<hr>` | Section divider (hairline rule) |
-| `<table><tr><th><td>` | Data table. Add `class="recommended"` to a `<th>`/`<td>` to highlight that column (tiered-comparison proposals) |
-| `<div class="callout">` | Single-column callout box |
-| `<div class="callout-2col">` | Two-column callout — wraps two `.callout` children |
+| `<table><tr><th><td>` | Rows on hairlines, headers in small grey type. Add `class="recommended"` to a column's `<th>`/`<td>` cells to set it on paper-deep |
+| `<div class="callout">` | A titled block under a hairline (never a filled box) |
+| `<div class="callout-2col">` | Two callouts side by side — wraps two `.callout` children |
 | `<div class="callout-title">` / `<div class="callout-body">` | Callout heading / body, used inside a `.callout` div |
-| `<div class="eyebrow">` | Small mono kicker label above a heading (e.g. `01 — The Experience`) |
-| `<div class="pull-quote">` | Inner-voice / testimonial quote. Wraps `.pull-quote-text` (required) and `.pull-quote-attribution` (optional) |
-| `<div class="stat-row">` | Row of big accent numbers. Wraps 2–4 `.stat` children, each with `.stat-value` (required), `.stat-label`, `.stat-sublabel` |
-| `<div class="price-callout">` | Elevated pricing block — the proposal playbook's price figure. Wraps `.price-value`, `.price-note`, `.price-body` |
+| `<div class="eyebrow">` | An overline: small grey sentence-case line above a heading, only when it adds a fact (`As of September 2026`) |
+| `<div class="pull-quote">` | A person's words beside a hairline. Wraps `.pull-quote-text` (required) and `.pull-quote-attribution` (optional: name, role) |
+| `<div class="stat-row">` | Figures on hairlines, in the display face. Wraps 2–4 `.stat` children, each with `.stat-value` (required), `.stat-label`, `.stat-sublabel` |
+| `<div class="price-callout">` | A price set large under a hairline. Wraps `.price-value`, `.price-note`, `.price-body` |
 | `<figure>` / `<figcaption>` | Image with a caption |
-| `<img src="local/path.png">` | Local image only (no remote URLs or data URIs in the Word path) |
+| `<img src="photo:<id>">` or `<img src="local/path.png">` | A library photograph or a local image (no remote URLs) |
 
 Unknown tags are ignored but their text content is preserved.
 
 ### New block structures
 
 ```html
-<div class="eyebrow">01 — The Experience</div>
+<div class="eyebrow">As of September 2026</div>
 
 <div class="pull-quote">
   <div class="pull-quote-text">It was overwhelming, in the best way.</div>
-  <div class="pull-quote-attribution">Marina Spanou, Songwriter &amp; Performer</div>
+  <div class="pull-quote-attribution">Marina Spanou, composer and performer</div>
 </div>
 
 <div class="stat-row">
   <div class="stat">
-    <div class="stat-value">1,500+</div>
-    <div class="stat-label">screenings delivered</div>
-    <div class="stat-sublabel">across three venue types</div>
+    <div class="stat-value">5,000+</div>
+    <div class="stat-label">screenings at live events</div>
+    <div class="stat-sublabel">as of September 2026</div>
   </div>
   <!-- 1-3 more .stat siblings -->
 </div>
@@ -104,9 +113,8 @@ Unknown tags are ignored but their text content is preserved.
 </figure>
 ```
 
-A number that matters gets `stat-row`, not a bullet. A price gets `price-callout`, not a plain
-`callout` — it's the block a client scans for first, per the proposal playbook's pricing rules,
-and it earns a dedicated, more prominent treatment.
+A number that matters gets `stat-row`, not a bullet, with its as-of date. A price gets
+`price-callout`, not a plain `callout`.
 
 ## Running the renderers directly (no AI required)
 
@@ -114,7 +122,7 @@ and it earns a dedicated, more prominent treatment.
 # Word
 python3 scripts/build-doc.py content.json output.docx
 
-# PDF (recommended when the dark brand background matters — see brand.md)
+# PDF: the version to send (add --preview for a cover image)
 python3 scripts/build-doc-pdf.py content.json output.pdf
 ```
 
