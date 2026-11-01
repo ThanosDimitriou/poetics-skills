@@ -18,9 +18,9 @@ spec:
 cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/brand.md"
 ```
 
-This is the source of truth for company facts, logo rules and voice. **Visuals:** decks,
-proposals and documents follow `brand-kit/design-system.md` (the website's design system); only
-the social templates still use `brand.md`'s legacy visual spec. How to write, for everything:
+This is the source of truth for company facts, logo rules and voice. **Visuals:** everything
+(decks, proposals, documents, social assets) follows `brand-kit/design-system.md`, the website's
+design system. How to write, for everything:
 `brand-kit/guides/writing-on-brand-copy.md`. What no generated asset may carry:
 `brand-kit/guides/anti-slop.md`. If it hasn't been populated yet on some point, say so — do not invent values. If the file
 flags an "Open question," surface it rather than picking silently.

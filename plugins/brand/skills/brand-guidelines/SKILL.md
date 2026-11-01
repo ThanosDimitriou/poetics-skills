@@ -22,7 +22,7 @@ Read `${CLAUDE_PLUGIN_ROOT}/GLOBAL_RULES.md` first.
 cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/guides/writing-on-brand-copy.md"   # the voice, for everything
 cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/guides/anti-slop.md"               # what never to do
 cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/design-system.md"                  # visual rules (decks, documents)
-cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/brand.md"                          # company, logo, legacy social spec
+cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/brand.md"                          # company, logo, social sizes
 ```
 
 ## How to answer
@@ -30,9 +30,9 @@ cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/brand.md"                          # compan
 Yes or no first, then the rule, then the reason. Don't pad. If the guidelines don't cover the
 exact situation, say so and give the closest rule; don't invent a firm answer.
 
-**Visual questions:** decks, proposals and documents follow `design-system.md` (one accent, the
-lens blue, only on what can be pressed; space and hairlines, never boxes or shadows; no gradients;
-the spacing guardrail). The social templates still use `brand.md`'s legacy spec.
+**Visual questions:** everything follows `design-system.md` (one accent, the lens blue, only on
+what can be pressed; space and hairlines, never boxes or shadows; no gradients; the spacing
+guardrail).
 
 **Copy and "make this sound like Poetics":** rewrite in the website's voice using
 `writing-on-brand-copy.md`: plain, concrete, "we" and "you", short sentences, what happens

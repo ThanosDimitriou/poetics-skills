@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Poetics social post</title>
+<style>
+/*UI_FONTS*/
+:root { --paper:#EFF0EC; --deep:#E5E8E3; --shade:#C5CBC4; --ink:#121614; --soft:#5B625C; --lens:#16249C; --lens-deep:#0E1769; }
+* { box-sizing: border-box; margin: 0; }
+html, body { height: 100%; }
+body { font: 15px/1.5 'Inter Tight', system-ui, sans-serif; background: var(--paper); color: var(--ink); display: flex; }
+.panel { width: 380px; flex: none; padding: 28px 28px 40px; background: var(--deep); overflow-y: auto; }
+h1 { font: 400 32px/1.1 'Instrument Serif', Georgia, serif; letter-spacing: -0.02em; }
+.intro { color: var(--soft); margin: 8px 0 20px; font-size: 14px; }
+label { display: block; font-size: 13px; color: var(--soft); margin: 16px 0 6px; }
+select, input[type=text], textarea { width: 100%; font: inherit; color: var(--ink); background: var(--paper);
+  border: 1px solid var(--soft); border-radius: 12px; padding: 9px 12px; }
+textarea { min-height: 80px; resize: vertical; }
+input[type=file] { font: inherit; font-size: 13px; }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.check { display: flex; gap: 8px; align-items: center; color: var(--ink); font-size: 14px; margin-top: 18px; }
+.btn { display: block; width: 100%; margin-top: 24px; min-height: 48px; border-radius: 9999px; border: 1px solid var(--lens);
+  background: var(--lens); color: var(--paper); font: 500 15px 'Inter Tight', sans-serif; cursor: pointer; }
+.btn:hover { background: var(--lens-deep); border-color: var(--lens-deep); }
+.issues { margin-top: 18px; font-size: 13px; }
+.issues p { color: var(--ink); padding: 8px 0; border-top: 1px solid var(--shade); }
+.issues .ok { color: var(--soft); }
+.stage { flex: 1; display: flex; align-items: center; justify-content: center; padding: 32px; min-width: 0; }
+canvas { max-width: 100%; max-height: calc(100vh - 64px); height: auto; width: auto; border-radius: 4px;
+  box-shadow: 0 2px 24px rgb(18 22 20 / 0.08); }
+[hidden] { display: none !important; }
+:focus-visible { outline: 2px solid var(--lens); outline-offset: 3px; }
+</style>
+</head>
+<body>
+<div class="panel">
+  <h1>Social post.</h1>
+  <p class="intro">Fill it in, look, export a PNG. Nothing leaves your computer. Write it the way the website does: short, plain, no hype.</p>
+
+  <div class="row">
+    <div><label for="format">Format</label>
+      <select id="format">
+        <option value="4:5">Feed 4:5 (1080×1350)</option>
+        <option value="1:1">Square (1080×1080)</option>
+        <option value="9:16">Story 9:16 (1080×1920)</option>
+      </select></div>
+    <div><label for="theme">Theme</label>
+      <select id="theme"><option value="light">Light</option><option value="dark">Dark</option></select></div>
+  </div>
+
+  <label for="layout">Layout</label>
+  <select id="layout">
+    <option value="cover">Cover: title, line, photo</option>
+    <option value="photo">Photo with caption</option>
+    <option value="statement">Statement: one sentence</option>
+    <option value="rows">Heading and rows</option>
+    <option value="figure">Figure</option>
+    <option value="quote">Quote</option>
+    <option value="closing">Closing: where to write</option>
+  </select>
+
+  <div data-for="cover rows figure"><label for="overline">Overline (only when it adds a fact)</label>
+    <input id="overline" type="text"></div>
+  <div data-for="cover rows statement closing"><label for="title">Heading</label>
+    <textarea id="title"></textarea></div>
+  <div data-for="cover photo statement closing"><label for="body" id="bodyLabel">Line</label>
+    <input id="body" type="text"></div>
+  <div data-for="rows"><label for="rows">Rows (one per line, up to five)</label>
+    <textarea id="rows"></textarea></div>
+  <div data-for="figure" class="row">
+    <div><label for="value">Figure</label><input id="value" type="text"></div>
+    <div><label for="valueLabel">What it counts</label><input id="valueLabel" type="text"></div>
+  </div>
+  <div data-for="quote"><label for="quote">Quote</label><textarea id="quote"></textarea></div>
+  <div data-for="quote" class="row">
+    <div><label for="name">Name</label><input id="name" type="text"></div>
+    <div><label for="role">Role</label><input id="role" type="text"></div>
+  </div>
+  <div data-for="cover photo quote"><label for="photo" id="photoLabel">Photograph</label>
+    <input id="photo" type="file" accept="image/*"></div>
+  <div data-for="cover photo quote"><label for="focal">Keep in frame</label>
+    <select id="focal"><option value="center">Center</option><option value="top">Top</option>
+      <option value="bottom">Bottom</option><option value="left">Left</option><option value="right">Right</option></select></div>
+
+  <div class="row">
+    <div><label for="footer">Footer</label><input id="footer" type="text" value="poeticsvr.com"></div>
+    <div><label for="slide">Slide (optional)</label><input id="slide" type="text" placeholder="2 of 6"></div>
+  </div>
+  <label class="check"><input type="checkbox" id="guides"> Show the safe area (not exported)</label>
+
+  <button class="btn" id="export">Export PNG</button>
+  <div class="issues" id="issues" aria-live="polite"></div>
+</div>
+<div class="stage"><canvas id="canvas" width="1080" height="1350" aria-label="Preview"></canvas></div>
+
+<script>
+const WORDMARK_SVG = __WORDMARK_SVG__;
+const FONT_FACES = /*FONT_FACES*/;
+/*COMMON_JS*/
+
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const $ = id => document.getElementById(id);
+let photo = null;
+const photoImg = bindPhoto('photo', img => { photo = img; render(); });
+
+const SIZES = { '4:5': [1080, 1350], '1:1': [1080, 1080], '9:16': [1080, 1920] };
+
+function frame(format) {
+  const [W, H] = SIZES[format];
+  const M = 90;
+  // A story's top and bottom 250px sit under the app's own interface: keep everything clear.
+  const story = format === '9:16';
+  const markY = story ? 280 : 90;
+  return { W, H, M, markY, top: markY + 28 + 82, bottom: H - (story ? 340 : 150), footY: H - (story ? 280 : 80) };
+}
+
+function render() {
+  const f = frame($('format').value);
+  canvas.width = f.W; canvas.height = f.H;
+  const t = THEMES[$('theme').value];
+  const layout = $('layout').value;
+  const w = f.W - 2 * f.M;
+  document.querySelectorAll('[data-for]').forEach(el => el.hidden = !el.dataset.for.split(' ').includes(layout));
+  $('bodyLabel').textContent = { cover: 'Line under the heading', photo: 'Caption', statement: 'Credit (optional)',
+                                 closing: 'Where to write' }[layout] || 'Line';
+  $('photoLabel').textContent = layout === 'quote' ? 'Portrait (optional)' : 'Photograph';
+
+  ctx.fillStyle = layout === 'statement' ? t.deep : t.paper;
+  ctx.fillRect(0, 0, f.W, f.H);
+
+  const title = $('title').value.trim(), body = $('body').value.trim(), over = $('overline').value.trim();
+
+  if (layout === 'cover') {
+    let y = f.top;
+    if (photo) {
+      const ph = Math.round((f.bottom - f.top) * (f.H > 1500 ? 0.5 : f.H < 1200 ? 0.42 : 0.48));
+      drawAperture(ctx, t, photo, f.M, y, w, ph, 48, $('focal').value);
+      y += ph + 72;
+    }
+    const tt = fit(ctx, title, DISPLAY, 400, [104, 92, 80, 68], w, photo ? 3 : 5);
+    ctx.font = `400 36px ${SANS}`;
+    const lead = body ? wrapLines(ctx, body, w).slice(0, 3) : [];
+    const blockH = (over ? 64 : 0) + tt.lines.length * tt.size * 1.05 + (lead.length ? 36 + lead.length * 36 * 1.45 : 0);
+    let by = Math.max(y, f.bottom - blockH);
+    if (over) { ctx.font = `400 26px ${SANS}`; drawLines(ctx, [over], f.M, by, 26, 1.4, t.soft); by += 64; }
+    ctx.font = `400 ${tt.size}px ${DISPLAY}`;
+    by = drawLines(ctx, tt.lines, f.M, by, tt.size, 1.05, t.ink);
+    if (lead.length) { ctx.font = `400 36px ${SANS}`; drawLines(ctx, lead, f.M, by + 36, 36, 1.45, t.soft); }
+  }
+
+  if (layout === 'photo') {
+    ctx.font = `400 28px ${SANS}`;
+    const cap = body ? wrapLines(ctx, body, w).slice(0, 2) : [];
+    const capH = cap.length ? 24 + cap.length * 28 * 1.45 : 0;
+    drawAperture(ctx, t, photo, f.M, f.top, w, f.bottom - f.top - capH, 48, $('focal').value);
+    if (cap.length) drawLines(ctx, cap, f.M, f.bottom - capH + 24, 28, 1.45, t.soft);
+  }
+
+  if (layout === 'statement') {
+    const tt = fit(ctx, title, DISPLAY, 400, [104, 92, 80, 68], w, f.H > 1500 ? 9 : 7);
+    ctx.font = `400 32px ${SANS}`;
+    const credit = body ? wrapLines(ctx, body, w).slice(0, 2) : [];
+    const blockH = tt.lines.length * tt.size * 1.08 + (credit.length ? 48 + credit.length * 32 * 1.45 : 0);
+    let y = f.top + (f.bottom - f.top - blockH) / 2;
+    ctx.font = `400 ${tt.size}px ${DISPLAY}`;
+    y = drawLines(ctx, tt.lines, f.M, y, tt.size, 1.08, t.ink);
+    if (credit.length) { ctx.font = `400 32px ${SANS}`; drawLines(ctx, credit, f.M, y + 48, 32, 1.45, t.soft); }
+  }
+
+  if (layout === 'rows') {
+    let y = f.top;
+    if (over) { ctx.font = `400 26px ${SANS}`; drawLines(ctx, [over], f.M, y, 26, 1.4, t.soft); y += 64; }
+    const tt = fit(ctx, title, DISPLAY, 400, [88, 76, 66], w, 3);
+    ctx.font = `400 ${tt.size}px ${DISPLAY}`;
+    y = drawLines(ctx, tt.lines, f.M, y, tt.size, 1.08, t.ink) + 72;
+    const rows = $('rows').value.split('\n').map(s => s.trim()).filter(Boolean).slice(0, 5);
+    ctx.font = `400 38px ${SANS}`;
+    for (const r of rows) {
+      hairline(ctx, t.shade, f.M, y, w);
+      const lines = wrapLines(ctx, r, w).slice(0, 2);
+      y = drawLines(ctx, lines, f.M, y + 34, 38, 1.4, t.ink) + 34;
+    }
+    if (rows.length) hairline(ctx, t.shade, f.M, y, w);
+  }
+
+  if (layout === 'figure') {
+    const value = $('value').value.trim(), label = $('valueLabel').value.trim();
+    const vv = fit(ctx, value, DISPLAY, 400, [320, 280, 240, 200, 160], w, 1);
+    ctx.font = `400 40px ${SANS}`;
+    const lab = label ? wrapLines(ctx, label, w * 0.8).slice(0, 3) : [];
+    const blockH = (over ? 64 : 0) + vv.size * 1.0 + (lab.length ? 40 + lab.length * 40 * 1.4 : 0);
+    let y = f.bottom - blockH;
+    if (over) { ctx.font = `400 26px ${SANS}`; drawLines(ctx, [over], f.M, y, 26, 1.4, t.soft); y += 64; }
+    hairline(ctx, t.shade, f.M, y - 30, w);
+    ctx.font = `400 ${vv.size}px ${DISPLAY}`;
+    y = drawLines(ctx, vv.lines, f.M, y, vv.size, 1.0, t.ink);
+    if (lab.length) { ctx.font = `400 40px ${SANS}`; drawLines(ctx, lab, f.M, y + 40, 40, 1.4, t.soft); }
+  }
+
+  if (layout === 'quote') {
+    const q = $('quote').value.trim(), name = $('name').value.trim(), role = $('role').value.trim();
+    const text = q ? `“${q}”` : '';
+    const short = q.length <= 110;
+    const qq = short ? fit(ctx, text, DISPLAY, 400, [84, 74, 64], w, 6) : fit(ctx, text, SANS, 400, [46, 42, 38], w, 10);
+    const lh = short ? 1.12 : 1.45;
+    const speakerH = name ? 72 + 150 : 0;
+    let y = f.top + (f.bottom - f.top - qq.lines.length * qq.size * lh - speakerH) / 2;
+    ctx.font = `400 ${qq.size}px ${short ? DISPLAY : SANS}`;
+    y = drawLines(ctx, qq.lines, f.M, y, qq.size, lh, t.ink);
+    if (name) {
+      y += 72;
+      let x = f.M;
+      if (photo) { drawAperture(ctx, t, photo, x, y, 84, 150, 42, $('focal').value); x += 84 + 32; }
+      ctx.font = `500 34px ${SANS}`; drawLines(ctx, [name], x, y + (photo ? 30 : 0), 34, 1.4, t.ink);
+      if (role) { ctx.font = `400 30px ${SANS}`; drawLines(ctx, [role], x, y + (photo ? 30 : 0) + 50, 30, 1.4, t.soft); }
+    }
+  }
+
+  if (layout === 'closing') {
+    const bandH = Math.min(f.bottom - f.top, f.H > 1500 ? 760 : f.H < 1200 ? 520 : 620);
+    const by = f.top + (f.bottom - f.top - bandH) / 2;
+    ctx.save(); roundRect(ctx, f.M, by, w, bandH, 48); ctx.clip();
+    ctx.fillStyle = t.deep; ctx.fillRect(f.M, by, w, bandH);
+    drawRing(ctx, t.shade, f.M + w - 420, by + bandH - 300, 520);
+    ctx.restore();
+    const iw = w - 144;
+    const tt = fit(ctx, title || 'Tell us about your space.', DISPLAY, 400, [88, 76, 66], iw, 3);
+    const line = body || 'hello@poeticsvr.com';
+    const lineFit = fit(ctx, line, DISPLAY, 400, [56, 48, 40], iw, 1);
+    const blockH = tt.lines.length * tt.size * 1.08 + 36 + lineFit.size * 1.1;
+    let y = by + (bandH - blockH) / 2;
+    ctx.font = `400 ${tt.size}px ${DISPLAY}`;
+    y = drawLines(ctx, tt.lines, f.M + 72, y, tt.size, 1.08, t.ink) + 36;
+    ctx.font = `400 ${lineFit.size}px ${DISPLAY}`;
+    drawLines(ctx, lineFit.lines, f.M + 72, y, lineFit.size, 1.1, t.lens);
+  }
+
+  // Chrome: the wordmark, the footer, the slide count.
+  drawWordmark(ctx, t.ink, f.M, f.markY, 28);
+  ctx.font = `400 24px ${SANS}`; ctx.fillStyle = t.soft; ctx.textBaseline = 'alphabetic';
+  ctx.fillText($('footer').value, f.M, f.footY);
+  const slide = $('slide').value.trim();
+  if (slide) { ctx.textAlign = 'right'; ctx.fillText(slide, f.W - f.M, f.footY); ctx.textAlign = 'left'; }
+
+  if ($('guides').checked) {
+    ctx.save(); ctx.strokeStyle = t.lens; ctx.setLineDash([10, 8]); ctx.lineWidth = 2;
+    ctx.strokeRect(f.M, f.top, w, f.bottom - f.top);
+    if (f.H === 1920) { ctx.strokeRect(0, 250, f.W, f.H - 500); }
+    ctx.restore();
+  }
+
+  const issues = copyCheck({ Overline: over, Heading: title, Line: body, Rows: $('rows').value,
+                             Quote: $('quote').value, 'What it counts': $('valueLabel').value });
+  $('issues').innerHTML = issues.length ? issues.map(i => `<p>${i.replace(/</g, '&lt;')}</p>`).join('')
+                                        : '<p class="ok">Copy check: nothing to fix.</p>';
+}
+window.render = render;
+
+document.querySelectorAll('input, select, textarea').forEach(el => el.addEventListener('input', render));
+$('export').addEventListener('click', () => {
+  const g = $('guides').checked; $('guides').checked = false; render();
+  exportPNG(canvas, `poetics-${$('layout').value}-${$('format').value.replace(':', 'x')}.png`);
+  $('guides').checked = g; render();
+});
+
+// A starting point, in the website's words.
+$('title').value = 'Immersive cinema, anywhere.';
+$('body').value = 'Pop-up VR cinemas for festivals, museums and brands.';
+$('rows').value = 'Pods arrive cabled and ready to play.\nOperators stay for every opening hour.\nGone the next morning.';
+$('value').value = '5,000+';
+$('valueLabel').value = 'screenings at live events';
+$('overline').value = '';
+$('quote').value = 'It was overwhelming, in the best way.';
+$('name').value = 'Marina Spanou';
+$('role').value = 'Composer and performer';
+loadFonts(FONT_FACES).then(render);
+render();
+</script>
+</body>
+</html>

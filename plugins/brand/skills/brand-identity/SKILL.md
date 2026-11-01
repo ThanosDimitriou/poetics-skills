@@ -18,16 +18,14 @@ Read `${CLAUDE_PLUGIN_ROOT}/GLOBAL_RULES.md` first.
 ## Reference files
 
 ```bash
-cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/design-system.md"   # decks, proposals, documents
-cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/brand.md"           # logo rules, company, legacy social spec
+cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/design-system.md"   # how everything looks
+cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/brand.md"           # logo rules, company, social canvas specs
 ```
 
 ## How to answer
 
-**Answer from the system that applies.** Decks, proposals, documents and PDFs follow
-`design-system.md` (the website's system). Only the social templates still use the legacy spec in
-`brand.md`. If the question doesn't say which material, answer with the current system and
-mention that the social templates still use the legacy look.
+**One system for everything:** decks, proposals, documents and social assets all follow
+`design-system.md` (the website's system). Logo files and social sizes are in `brand.md`.
 
 The current system in one breath: seven colour roles in light and dark (paper `#EFF0EC`, ink
 `#121614`, ink-soft `#5B625C`, lens `#16249C` only on what can be pressed; dark theme values in

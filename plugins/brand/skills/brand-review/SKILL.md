@@ -19,15 +19,14 @@ Read `${CLAUDE_PLUGIN_ROOT}/GLOBAL_RULES.md` first.
 ## Reference files
 
 ```bash
-cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/design-system.md"                  # visuals: decks, proposals, documents
+cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/design-system.md"                  # visuals, for everything
 cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/guides/anti-slop.md"               # the deck rules and slop patterns
 cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/guides/writing-on-brand-copy.md"   # the voice
-cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/brand.md"                          # company, logo, legacy social spec
+cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/brand.md"                          # company, logo, social sizes
 ```
 
-Review against the system that applies: decks, proposals and documents against
-`design-system.md`; the social templates against `brand.md`'s legacy spec. Copy, for everything,
-against the voice guide and `anti-slop.md`.
+Review visuals against `design-system.md` (decks, proposals, documents and social assets alike),
+and copy against the voice guide and `anti-slop.md`.
 
 **If it's a deck or proposal made with this kit** (a deck JSON, or you can get one), let the
 renderer check it first. It catches most rule breaks mechanically:

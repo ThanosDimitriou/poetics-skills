@@ -1,12 +1,9 @@
 # Poetics brand spec
 
-The brand facts, logo rules and voice for everything this kit makes. **How things look is in two
-places:**
-
-| Material | Visual system |
-| --- | --- |
-| Decks, proposals, documents and PDFs | [`design-system.md`](design-system.md): the Poetics Website's "Aperture" system (paper and ink, light by default with a dark theme, Instrument Serif and Inter Tight, the lens blue only on what can be pressed) |
-| Social templates (carousel, video thumbnail) | The **legacy spec** in the Color, Typography and Spacing sections below (dark canvas, Inter, Cormorant italics, `#0099FF`), until the editors are migrated |
+The brand facts, logo rules and voice for everything this kit makes. **How things look** (decks,
+proposals, documents, social posts and thumbnails) is in [`design-system.md`](design-system.md):
+the Poetics Website's "Aperture" system (paper and ink, light by default with a dark theme,
+Instrument Serif and Inter Tight, the lens blue only on what can be pressed).
 
 How to write, for every material: [`guides/writing-on-brand-copy.md`](guides/writing-on-brand-copy.md)
 (the website's voice). What never to do: [`guides/anti-slop.md`](guides/anti-slop.md).
@@ -18,9 +15,8 @@ when they're updated (see `INSTALL.md`).
 **Owner:** Thanos Dimitriou (dimitriouathanas@gmail.com)
 **Last updated:** 2026-11-01
 **Sources:** the Poetics Website (`Poetics Website/DESIGN-SYSTEM.md`, `_source/copy/BRIEF.md`,
-`src/data/*.ts`, as of October 2026) for company facts, voice and the design system. The legacy
-visual spec below came from `Poetics Main Site/REDESIGN_GUIDE.md` (July 2026), now superseded for
-everything except the social templates.
+`src/data/*.ts`, as of October 2026) for company facts, voice and the design system. The July 2026
+visual spec (dark canvas, Inter, Cormorant italics, `#0099FF`) is retired; git history has it.
 
 ---
 
@@ -29,7 +25,7 @@ everything except the social templates.
 None at the moment. Two earlier questions are settled by the website:
 
 - **Accent colour:** the website's lens blue, `#16249C` (dark theme `#8F9CFF`), used only on what
-  can be pressed. The legacy `#0099FF` survives only in the social templates.
+  can be pressed.
 - **Company story:** the website's About page now has it (see Company below). Team bios are still
   not written; don't invent them.
 
@@ -79,87 +75,25 @@ methodology.
 
 ---
 
-## Legacy visual spec (social templates only)
-
-The Color, Typography and Spacing sections below describe the July 2026 look. Only the social
-templates (`templates/social-carousel`, `templates/video-thumb`) still use it; decks, proposals and
-documents follow `design-system.md`.
-
-## Color (legacy: social templates)
-
-Dark theme only. Near-black canvas, warm-white text, one accent color used sparingly.
-
-| Token | Hex | Usage |
-|---|---|---|
-| Canvas (website) | `#0A0A0A` | The website rebuild's page background (neutral near-black) |
-| Canvas (decks/docs) | `#06070F` | Background for generated decks, documents, and social — a deep blue-black matching the Athens College deck. This is the canvas the renderers actually use. |
-| Canvas raised | `#111214` | Cards, panels, layered surfaces |
-| Pure black | `#000000` | Full-bleed image sections only |
-| Text primary | `#F4F4F2` | Headlines, primary body text |
-| Text secondary | `#9A9A98` | Secondary text, captions, metadata, eyebrows |
-| Accent | `#0099FF` | See "Open questions" above. Interactive states, links, occasional highlighted value/stat, glow effects. **One accent only — never introduce a second accent color.** Never used for large filled areas or body text. In the reference deck the accent is used *very* sparingly — most slides are pure monochrome white/gray on the blue-black. |
-| Border, subtle | `rgba(255,255,255,0.12)` | Card borders, dividers, rounded photo-container edges |
-| Border, hairline | `rgba(255,255,255,0.08)` | Thin structural rules (e.g. the footer rule) |
-
-**Contrast note:** text secondary was lightened from an earlier `#808080` specifically for AA
-contrast on near-black backgrounds. Don't darken it back down.
-
-**Glow / atmosphere:** the reference deck's backgrounds are full-bleed atmospheric imagery —
-either real photography graded dark (a rim-lit figure in red/blue light, a warm amber silhouette,
-a dark venue) or deep gradient fields with soft multi-color light bleeding from the edges. The
-renderers reproduce this with pre-generated gradient backgrounds (deep blue-black base, soft cool
-glows drifting in from corners) and support dropping in real photo backgrounds (see
-`assets/backgrounds/photo/README.md`). Never render the accent as a flat filled shape; light
-should always feel like a source in the dark, not a color block. Restraint holds: most surfaces
-are near-monochrome; color is a whisper, not a statement.
-
----
-
-## Typography (legacy: social templates)
-
-Self-hosted Google Fonts. Font files are in `assets/fonts/`.
-
-**Note on the two contexts:** the Poetics *website* rebuild uses Bricolage Grotesque as its display
-face. Poetics *documents, decks, and social assets* (what this kit generates) instead use **Inter**
-for display, matching the established Athens College deck aesthetic — a cleaner, more neutral
-grotesque. This was a deliberate decision (2026-07-10): the kit's output should look like the deck,
-not the website. Bricolage font files remain in `assets/fonts/` but are not used by the renderers.
-
-| Role | Family | Files | Usage |
-|---|---|---|---|
-| **Display** | Inter (SemiBold) | `Inter-{SemiBold,Bold}.ttf` | Headlines, titles, display type. Large, sentence case (not title case), tight leading. Neutral geometric grotesque — clean and editorial, not quirky. |
-| **Emphasis** | Cormorant Garamond, italic only | `CormorantGaramond-{Italic,MediumItalic,SemiBoldItalic}.ttf` | 2–4 word emotional emphasis phrases inside headlines or pull quotes ("a new way *to experience* art"). **Always italic, never roman, never body text.** The signature typographic move that expresses the name "Poetics" — use sparingly (at most ~1–2 per page/slide), and only for genuinely emotional/sensory beats. Factual headlines stay in plain Inter. |
-| **Body** | Inter | `Inter-{Light,Regular,Medium,SemiBold}.ttf` | Body copy, UI text, narrator/factual sections. |
-| **Annotation** | Space Mono | `SpaceMono-{Regular,Bold}.ttf` | Eyebrows/overlines (uppercase, wide tracking, gray), metadata, index numbers, hex values, technical notes. Use sparingly — at most one mono annotation per page/slide/viewport. |
-
-**Letter-spacing tokens:**
-
-| Token | Value | Usage |
-|---|---|---|
-| Display tracking | `-0.02em` | Large display/headline text |
-| Wide tracking | `+0.08em` | Uppercase labels, tags |
-| Mono tracking | `+0.05em` | Monospace annotation text |
-
----
-
 ## Logo
 
 These rules apply to every material. Decks, proposals and documents use the website's
 single-colour wordmark, `assets/logos/wordmark-mono.svg`, painted in `ink` for the theme (dark on
-paper, light on the dark theme). The files below are the legacy lockups used by the social
-templates.
+paper, light on the dark theme). The lockups below are for use outside the kit (avatars, partner
+materials, press).
 
 Wordmark: **"P⬭ETICS"** — the O is rendered as a headset-shaped pill, referencing the VR product.
 Official master assets (SVG + PNG) live in `assets/logos/`.
 
-**Naming convention:** "light" = the light-colored (white) logo, for use **on dark backgrounds**;
-"dark" = the dark-colored logo, for use **on light backgrounds**. Since Poetics is dark-canvas by
-default, the **light** variant is the everyday one.
+**Naming convention:** "light" = the light-coloured (white) logo, for use **on dark backgrounds**;
+"dark" = the dark-coloured logo, for use **on light backgrounds**. Poetics is light by default, so
+the **dark** variant is the everyday one.
 
 | File | Format | Use |
 |---|---|---|
-| `wordmark-light.svg` / `.png` | SVG master + 1000×340 PNG | Primary horizontal lockup on dark — headers, footers, covers, deck title slides |
-| `wordmark-dark.svg` / `.png` | SVG master + 1000×340 PNG | Horizontal lockup for the rare light-background context |
+| `wordmark-mono.svg` | SVG, 148×20, no padding | The website's wordmark; the kit paints it in `ink` per theme (`wordmark-mono-ink.png` / `-paper.png` for Word) |
+| `wordmark-dark.svg` / `.png` | SVG master + 1000×340 PNG | Horizontal lockup on light backgrounds |
+| `wordmark-light.svg` / `.png` | SVG master + 1000×340 PNG | Horizontal lockup on dark backgrounds |
 | `mark-light.png` / `mark-dark.png` | 1000×1000 | Standalone square pill mark (transparent) — small placements, favicons, avatars |
 | `mark-light-bg.png` / `mark-dark-bg.png` | 1000×1000 | Square mark on a solid brand-color tile |
 
@@ -189,32 +123,13 @@ The earlier two-voice system (a serif italic "inner voice" for sensory moments) 
 
 ---
 
-## Spacing & structure (legacy: social templates)
-
-Dark canvas, generous negative space, asymmetric editorial layouts rather than centered
-symmetric ones.
-
-| Element | Spec |
-|---|---|
-| Border weight | Hairline only — `1px` at low opacity (`rgba(255,255,255,0.08–0.12)`), never a heavy stroke |
-| Card radius | 12–16px |
-| Card fill | `#111214` (canvas raised) |
-| Rules/dividers | `1px solid rgba(255,255,255,0.12)`, used to structure sections, not decorate them |
-| Frosted glass (buttons/badges over imagery) | Subtle `backdrop-filter` blur, hairline border — used sparingly, for chrome over full-bleed images only |
-
-**Imagery:** full-bleed, graded dark and cool, soft glow, treated as texture rather than
-illustration. No generic stock photography. Text over imagery needs a gradient scrim for
-legibility, not a flat overlay box.
-
----
-
 ## Social canvas specs
 
-Reusable technical export geometry (not brand aesthetic — these dimensions don't change with the
-color/font decisions above).
+Export geometry for social assets. The social post editor (`templates/social-carousel/editor.html`)
+makes 4:5, 1:1 and 9:16; the video thumbnail editor makes 1920 × 1080.
 
-**Primary format:** all carousels design at **1080 × 1350px (4:5)** — works across Instagram,
-LinkedIn, and TikTok without adaptation.
+**Primary format:** carousels at **1080 × 1350px (4:5)**: it works across Instagram, LinkedIn and
+TikTok without adaptation.
 
 | Platform | Format | Dimensions |
 |---|---|---|
@@ -229,10 +144,9 @@ LinkedIn, and TikTok without adaptation.
 **Safe zone — 4:5 carousel (1080 × 1350px):**
 
 ```
-Canvas:    1080 × 1350px
-Safe area: 980 × 1150px (centred, 50px margin all sides)
-Danger:    top 250px and bottom 250px (mobile UI overlap)
-Handle:    @poeticsvr — bottom-right corner, inside safe zone
+4:5 and 1:1: 90px margins; the wordmark top-left; the footer (poeticsvr.com) bottom-left,
+             an optional "2 of 6" bottom-right.
+9:16 story:  the top and bottom 250px sit under the app's own interface: nothing goes there.
 ```
 
 Design at 1× (1080px wide). Don't design at 2× or 3× and scale down — causes blurring on export.
@@ -241,8 +155,7 @@ Design at 1× (1080px wide). Don't design at 2× or 3× and scale down — cause
 
 ## What this spec does not cover
 
-- Motion/animation design (scroll effects, shaders, transitions) — that's specific to the live
-  website build and doesn't translate to static documents/decks/social assets. See
-  `Poetics Main Site/REDESIGN_GUIDE.md` §6 if you're working on the site itself.
-- A full "about us" narrative / team bios (see Open questions above).
-- Print-specific guidance (paper stock, spot colors) — not needed yet.
+- Motion (the website's few approved animations): see `Poetics Website/DESIGN-SYSTEM.md`, Motion.
+  Decks and social assets don't move.
+- Team bios (see Open questions).
+- Print production (paper stock, spot colours): not needed yet.

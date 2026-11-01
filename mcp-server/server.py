@@ -34,9 +34,8 @@ mcp = FastMCP("poetics-brand")
 
 @mcp.resource("brand://spec")
 def brand_spec() -> str:
-    """The Poetics brand spec: company facts, logo rules, voice summary, and the
-    legacy visual spec the social templates still use. Decks, proposals and
-    documents look the way brand://design-system says."""
+    """The Poetics brand spec: company facts, logo rules, voice summary, social
+    canvas sizes. How everything looks is brand://design-system."""
     return (KIT / "brand.md").read_text()
 
 
@@ -182,10 +181,11 @@ def get_logo_path(variant: str = "wordmark", background: str = "dark") -> str:
 @mcp.tool()
 def get_social_template_path(template: str) -> str:
     """Return the absolute path to a self-contained HTML social asset editor.
-    template: "social-carousel" (1080x1350 carousel slides) or "video-thumb"
-    (1920x1080 video thumbnails). Open the returned path in a browser — it's
-    a local file, no server needed. The user fills the form and exports a PNG
-    themselves; this tool cannot complete that interactive step for them.
+    template: "social-carousel" (the social post editor: 4:5, 1:1 and 9:16
+    posts, carousel slides and stories) or "video-thumb" (1920x1080). Both draw
+    in brand://design-system, check the copy live, and export a PNG. Open the
+    returned path in a browser (a local file, no server). The user fills the
+    form and exports; this tool can't click Export for them.
     """
     if template not in ("social-carousel", "video-thumb"):
         raise ValueError('template must be "social-carousel" or "video-thumb"')
@@ -206,9 +206,8 @@ def review_against_brand(asset_description: str) -> str:
     spec = (KIT / "brand.md").read_text()
     system = (KIT / "design-system.md").read_text()
     slop = (KIT / "guides/anti-slop.md").read_text()
-    return f"""Read the Poetics brand spec, the design system (decks, proposals and
-documents look like this; social templates still use brand.md's legacy spec), and
-the deck rules:
+    return f"""Read the Poetics brand spec, the design system (how decks, proposals,
+documents and social assets look), and the deck rules:
 
 {spec}
 
