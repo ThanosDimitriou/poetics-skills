@@ -15,26 +15,30 @@ description: >
 
 Read `${CLAUDE_PLUGIN_ROOT}/GLOBAL_RULES.md` first.
 
----
-
-## Reference file
-
-The full visual identity spec: colors, typography, logo, spacing, voice/tone, company facts.
+## Reference files
 
 ```bash
-cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/brand.md"
+cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/design-system.md"   # decks, proposals, documents
+cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/brand.md"           # logo rules, company, legacy social spec
 ```
 
----
+## How to answer
 
-## How to use this skill
+**Answer from the system that applies.** Decks, proposals, documents and PDFs follow
+`design-system.md` (the website's system). Only the social templates still use the legacy spec in
+`brand.md`. If the question doesn't say which material, answer with the current system and
+mention that the social templates still use the legacy look.
 
-Answer the question using only what's in `brand.md`. If a section hasn't been populated (see its
-"Open questions" section), say so — do not invent values.
+The current system in one breath: seven colour roles in light and dark (paper `#EFF0EC`, ink
+`#121614`, ink-soft `#5B625C`, lens `#16249C` only on what can be pressed; dark theme values in
+the file), Instrument Serif 400 for display and Inter Tight 400/500 for text, three radii (pill,
+lens, small), one spacing scale, the single-colour wordmark. Read the file for anything more
+precise than that.
 
-When sharing color values, include both hex and the usage note from the spec. When sharing type
-specs, include family, weight, and role together — a partial answer causes more problems than it
-solves.
-
-If the question touches the accent color, mention the open discrepancy noted in `brand.md`
-("Open questions for Thanos" #1) rather than stating `#0099FF` as unconditionally final.
+- **Colours:** give the hex and the role ("lens `#16249C`: links, buttons and the one action;
+  never decoration"). Mention the dark-theme value when it matters.
+- **Type:** family, weight, size token and role together. A partial answer causes more problems
+  than it solves.
+- **Logo:** the rules in `brand.md` apply to everything; decks and documents use
+  `assets/logos/wordmark-mono.svg` painted in ink.
+- If something isn't specified, say so. Never invent a value.

@@ -1,32 +1,22 @@
 #!/usr/bin/env python3
-"""build-doc.py - render a branded Poetics document as .docx via python-docx.
+"""build-doc.py - render a Poetics document as an editable .docx (python-docx).
 
 Runs standalone, no AI required:
     python3 build-doc.py <content.json> <output.docx>
 
-content.json schema is documented in schemas/doc-content-schema.md (identical
-schema is shared with build-doc-pdf.py, so one payload renders to either
-format).
+Same content.json as build-doc-pdf.py (schemas/doc-content-schema.md). The PDF is the version to
+send; the .docx is for people who need to edit in Word.
 
--- Design compromise (read this before changing colors) -------------------
-brand.md specifies a dark-canvas-only aesthetic. Word documents are read and
-printed differently than web/PDF, so this renderer makes one pragmatic
-trade-off, same one fabric (the Workable reference this was adapted from)
-made: the COVER page is fully dark and on-brand (wordmark, glow background,
-Inter display type). The BODY pages use a light, readable page with brand
-headings, because a fully dark multi-page Word document prints and
-screen-reads poorly and most Word themes fight a forced dark background.
-If strict full-document dark-brand fidelity matters, render to PDF instead
-(build-doc-pdf.py), which is the canonical branded document format.
+Documents follow brand-kit/design-system.md (the website's design system): A4, off-white paper
+(Word shows it as the page colour; it doesn't print unless "print background colours" is on),
+ink text, Instrument Serif headings, Inter Tight text, hairlines instead of filled boxes, the
+website's wordmark, "poeticsvr.com · Confidential" and the page number in the footer.
+"theme": "dark" switches to the dark set.
 
--- Fonts --------------------------------------------------------------------
-Poetics documents use Inter for display (headings) and body, plus Cormorant
-Garamond italic for emphasis only (see brand.md). This renderer maps headings
-and body to Inter automatically; any inline <em>/<i> text is set in Cormorant
-Garamond italic, not just an italicized Inter, to match the brand's "signature
-move" rule. True binary font embedding is not done here (Word requires
-per-style obfuscated font parts); render to PDF for guaranteed embedding on
-machines without these fonts installed.
+Fonts are named, not embedded (Word needs them installed): install
+assets/fonts/InstrumentSerif-Regular.ttf and InterTight-Variable.ttf, or Word falls back to
+Georgia and Arial. Inter Tight's 500 weight isn't selectable in Word, so headings use size, not
+weight. There are no italics: <em> renders upright.
 """
 
 import json
@@ -74,70 +64,82 @@ from docx.shared import Emu, Inches, Pt, RGBColor  # noqa: E402
 
 # -- Spec constants (from brand.md) --------------------------------------------
 
-BODY_FONT = "Inter"
-DISPLAY_FONT = "Inter"          # headlines use Inter (SemiBold), matching the deck aesthetic
-ITALIC_FONT = "Cormorant Garamond"
+BODY_FONT = "Inter Tight"
+DISPLAY_FONT = "Instrument Serif"
 FALLBACK_FONT = "Arial"
-LINE = 1.3
+DISPLAY_FALLBACK = "Georgia"
+LINE = 1.35
 
-PAGE_W_IN = 8.5
-PAGE_H_IN = 11
-MARGIN_SIDE_IN = 0.75
-MARGIN_TB_IN = 0.75
+PAGE_W_IN = 210 / 25.4          # A4
+PAGE_H_IN = 297 / 25.4
+MARGIN_SIDE_IN = 20 / 25.4
+MARGIN_TOP_IN = 30 / 25.4
+MARGIN_BOTTOM_IN = 22 / 25.4
 
-ACCENT = "0099FF"
-TEXT_ON_DARK = "F4F4F2"
-TEXT_ON_DARK_SECONDARY = "9A9A98"
-TEXT_ON_LIGHT = "17181A"       # near-black, for legibility on white body pages
-TEXT_ON_LIGHT_SECONDARY = "5B5C5E"
-
-# Type scale: (size_pt, bold, hex_color, display_font)
-STYLES = {
-    "title":    (40, True,  TEXT_ON_DARK, True),
-    "subtitle": (16, False, TEXT_ON_DARK_SECONDARY, False),
-    "date":     (11, False, TEXT_ON_DARK_SECONDARY, False),
-    "h1":       (24, True,  ACCENT, True),
-    "h2":       (17, True,  ACCENT, True),
-    "h3":       (13, True,  TEXT_ON_LIGHT, True),
-    "h4":       (12, True,  TEXT_ON_LIGHT, False),
-    "h5":       (11, True,  TEXT_ON_LIGHT_SECONDARY, False),
-    "h6":       (11, False, TEXT_ON_LIGHT_SECONDARY, False),
-    "body":     (11, False, TEXT_ON_LIGHT, False),
+# design-system.md colour roles, light theme. main() swaps in the dark set for "theme": "dark".
+THEMES = {
+    "light": {"paper": "EFF0EC", "paper_deep": "E5E8E3", "shade": "C5CBC4", "ink": "121614",
+              "ink_soft": "5B625C", "lens": "16249C", "wordmark": "wordmark-mono-ink.png"},
+    "dark": {"paper": "121614", "paper_deep": "1C211E", "shade": "3A423D", "ink": "F4F5F3",
+             "ink_soft": "8A918B", "lens": "8F9CFF", "wordmark": "wordmark-mono-paper.png"},
 }
+PAPER, PAPER_DEEP, SHADE, INK, INK_SOFT, LENS = (THEMES["light"][k] for k in
+                                                ("paper", "paper_deep", "shade", "ink", "ink_soft", "lens"))
+
+# Type scale: (size_pt, bold, colour role, display_font). Colours resolve at render time.
+STYLES = {
+    "title":    (44, False, "ink", True),
+    "subtitle": (13, False, "ink_soft", False),
+    "date":     (9, False, "ink_soft", False),
+    "h1":       (26, False, "ink", True),
+    "h2":       (13.5, False, "ink", False),
+    "h3":       (11.5, False, "ink", False),
+    "h4":       (10.5, False, "ink", False),
+    "h5":       (9, False, "ink_soft", False),
+    "h6":       (9, False, "ink_soft", False),
+    "body":     (10.5, False, "ink", False),
+}
+
+
+def C(role):
+    """A colour role's hex for the current theme."""
+    return globals()[role.upper()]
 
 HEADING_SPACE = {
-    "h1": (24, 12), "h2": (20, 10), "h3": (16, 8),
-    "h4": (14, 6), "h5": (14, 6), "h6": (14, 6),
+    "h1": (0, 14), "h2": (18, 5), "h3": (14, 4),
+    "h4": (12, 4), "h5": (12, 4), "h6": (12, 4),
 }
-
-TABLE_BORDER = "D8DADC"
-TABLE_HEADER_BG = "F2F3F4"
-CALLOUT_BG = "13161C"          # dark callout card, echoes the brand's raised-surface color
-CALLOUT_TEXT = TEXT_ON_DARK
-RECOMMENDED_HEADER_BG = "D6EEFF"   # accent-tinted header cell for a highlighted table column
-RECOMMENDED_BODY_BG = "EAF6FF"     # accent-tinted body cell, same column
 
 VOID_TAGS = {"br", "img", "hr"}
 BLOCK_TAGS = {"h1", "h2", "h3", "h4", "h5", "h6", "p", "ul", "ol", "table", "div", "hr", "figure"}
 
 KIT_ROOT = pathlib.Path(__file__).resolve().parent.parent
-LOGO_WORDMARK = KIT_ROOT / "assets/logos/wordmark-light.png"
-LOGO_MARK = KIT_ROOT / "assets/logos/mark-light.png"
+WORDMARK = KIT_ROOT / "assets/logos" / THEMES["light"]["wordmark"]
 
 
-def _bg(slot, default_name):
-    """Return a photo override from assets/backgrounds/photo/ if present, else the
-    generated gradient. slot is e.g. 'doc-cover'; checks common image extensions."""
-    photo_dir = KIT_ROOT / "assets/backgrounds/photo"
-    for ext in (".jpg", ".jpeg", ".png", ".webp"):
-        cand = photo_dir / f"{slot}{ext}"
-        if cand.exists():
-            return cand
-    return KIT_ROOT / "assets/backgrounds" / default_name
+def set_page_colour(doc, hex_fill):
+    """Word's page colour: shown on screen, printed only with 'print background colours' on."""
+    bg = OxmlElement("w:background")
+    bg.set(qn("w:color"), hex_fill)
+    doc.element.insert(0, bg)
+    settings = doc.settings.element
+    if settings.find(qn("w:displayBackgroundShape")) is None:
+        settings.append(OxmlElement("w:displayBackgroundShape"))
 
 
-COVER_BG_IMG = _bg("doc-cover", "doc-cover-bg.jpg")
-SECTION_BG_IMG = _bg("doc-section", "doc-section-bg.jpg")
+def rule(element_pr_parent, side, hex_color, sz=4, space=8):
+    """A hairline on one side of a paragraph."""
+    pPr = element_pr_parent.get_or_add_pPr()
+    pBdr = pPr.find(qn("w:pBdr"))
+    if pBdr is None:
+        pBdr = OxmlElement("w:pBdr")
+        pPr.append(pBdr)
+    b = OxmlElement(f"w:{side}")
+    b.set(qn("w:val"), "single")
+    b.set(qn("w:sz"), str(sz))
+    b.set(qn("w:space"), str(space))
+    b.set(qn("w:color"), hex_color)
+    pBdr.append(b)
 
 
 # -- Low-level XML helpers ----------------------------------------------------
@@ -283,55 +285,14 @@ def add_font_fallback(doc, primary, alt=FALLBACK_FONT):
         return
 
 
-def add_full_page_background(header, img_path):
-    if not img_path.exists():
-        return
-    page_w = Emu(int(PAGE_W_IN * 914400))
-    page_h = Emu(int(PAGE_H_IN * 914400))
-    run = header.paragraphs[0].add_run()
-    run.add_picture(str(img_path), width=page_w, height=page_h)
-    drawing = run._r.find(qn("w:drawing"))
-    inline = drawing.find(qn("wp:inline"))
-    if inline is None:
-        return
-    anchor = OxmlElement("wp:anchor")
-    for k, v in {
-        "behindDoc": "1", "distT": "0", "distB": "0", "distL": "0", "distR": "0",
-        "simplePos": "0", "locked": "0", "layoutInCell": "1",
-        "allowOverlap": "1", "relativeHeight": "0",
-    }.items():
-        anchor.set(k, v)
-    sp = OxmlElement("wp:simplePos")
-    sp.set("x", "0")
-    sp.set("y", "0")
-    anchor.append(sp)
-    for tag in ("wp:positionH", "wp:positionV"):
-        pos = OxmlElement(tag)
-        pos.set("relativeFrom", "page")
-        off = OxmlElement("wp:posOffset")
-        off.text = "0"
-        pos.append(off)
-        anchor.append(pos)
-    for tag in ("wp:extent", "wp:effectExtent"):
-        el = inline.find(qn(tag))
-        if el is not None:
-            anchor.append(el)
-    anchor.append(OxmlElement("wp:wrapNone"))
-    for tag in ("wp:docPr", "wp:cNvGraphicFramePr"):
-        el = inline.find(qn(tag))
-        if el is not None:
-            anchor.append(el)
-    graphic = inline.find(qn("a:graphic"))
-    if graphic is not None:
-        anchor.append(graphic)
-    drawing.remove(inline)
-    drawing.append(anchor)
-
-
-def add_page_number(paragraph):
-    paragraph.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+def add_page_number(paragraph, label="poeticsvr.com · Confidential"):
+    """Footer: the site and the confidential mark at the left, the page number at the right."""
+    from docx.enum.text import WD_TAB_ALIGNMENT
+    paragraph.paragraph_format.tab_stops.add_tab_stop(Inches(PAGE_W_IN - 2 * MARGIN_SIDE_IN),
+                                                      WD_TAB_ALIGNMENT.RIGHT)
+    style_run(paragraph.add_run(label + "\t"), 8, False, C("ink_soft"))
     run = paragraph.add_run()
-    style_run(run, 9, False, TEXT_ON_LIGHT_SECONDARY)
+    style_run(run, 8, False, C("ink_soft"))
     begin = OxmlElement("w:fldChar")
     begin.set(qn("w:fldCharType"), "begin")
     instr = OxmlElement("w:instrText")
@@ -345,7 +306,7 @@ def add_page_number(paragraph):
 
 
 def add_hyperlink(paragraph, url, runs_fmt_text):
-    """Links use the accent color, per brand.md ('interactive states, links')."""
+    """Links use the lens colour: blue means you can act here (design-system.md)."""
     part = paragraph.part
     r_id = part.relate_to(
         url,
@@ -355,7 +316,7 @@ def add_hyperlink(paragraph, url, runs_fmt_text):
     hyperlink = OxmlElement("w:hyperlink")
     hyperlink.set(qn("r:id"), r_id)
     for text, fmt in runs_fmt_text:
-        font = ITALIC_FONT if fmt.get("italic") else BODY_FONT
+        font = BODY_FONT
         r = OxmlElement("w:r")
         rPr = OxmlElement("w:rPr")
         rFonts = OxmlElement("w:rFonts")
@@ -366,12 +327,13 @@ def add_hyperlink(paragraph, url, runs_fmt_text):
         sz.set(qn("w:val"), str(int(STYLES["body"][0] * 2)))
         rPr.append(sz)
         color = OxmlElement("w:color")
-        color.set(qn("w:val"), ACCENT)
+        color.set(qn("w:val"), C("lens"))
         rPr.append(color)
+        u = OxmlElement("w:u")
+        u.set(qn("w:val"), "single")
+        rPr.append(u)
         if fmt.get("bold"):
             rPr.append(OxmlElement("w:b"))
-        if fmt.get("italic"):
-            rPr.append(OxmlElement("w:i"))
         r.append(rPr)
         t = OxmlElement("w:t")
         t.set(qn("xml:space"), "preserve")
@@ -384,9 +346,12 @@ def add_hyperlink(paragraph, url, runs_fmt_text):
 # -- Run / paragraph styling --------------------------------------------------
 
 def style_run(run, size_pt, bold, hex_color, italic=False, display=False):
-    """Picks the font by role: italic -> Cormorant Garamond (brand's emphasis
-    voice), display -> Inter SemiBold (headings), else Inter (body)."""
-    font = ITALIC_FONT if italic else (DISPLAY_FONT if display else BODY_FONT)
+    """Display -> Instrument Serif (headings, figures), else Inter Tight. hex_color may be a
+    colour role ("ink", "ink_soft", ...). There are no italics in the system: always upright."""
+    font = DISPLAY_FONT if display else BODY_FONT
+    if hex_color in THEMES["light"]:
+        hex_color = C(hex_color)
+    italic = False
     run.font.name = font
     rpr = run._element.get_or_add_rPr()
     rfonts = rpr.find(qn("w:rFonts"))
@@ -399,15 +364,6 @@ def style_run(run, size_pt, bold, hex_color, italic=False, display=False):
     run.font.bold = bold
     run.font.italic = italic
     run.font.color.rgb = RGBColor.from_string(hex_color)
-
-
-def set_tracking(run, em_value, size_pt):
-    """Approximate CSS letter-spacing (in em) for mono/eyebrow-style labels.
-    Word exposes tracking as w:spacing in twentieths of a point on rPr."""
-    rpr = run._element.get_or_add_rPr()
-    spacing = OxmlElement("w:spacing")
-    spacing.set(qn("w:val"), str(int(size_pt * em_value * 20)))
-    rpr.append(spacing)
 
 
 def new_paragraph(container, space_before=None, space_after=None, line=LINE):
@@ -610,7 +566,7 @@ def render_figure(container, node):
         render_image(container, img_node)
     if caption:
         p = new_paragraph(container, space_after=12)
-        style_run(p.add_run(caption), 9, False, TEXT_ON_LIGHT_SECONDARY)
+        style_run(p.add_run(caption), 8.5, False, C("ink_soft"))
 
 
 def render_hr(container):
@@ -621,16 +577,15 @@ def render_hr(container):
     bottom.set(qn("w:val"), "single")
     bottom.set(qn("w:sz"), "4")
     bottom.set(qn("w:space"), "1")
-    bottom.set(qn("w:color"), TABLE_BORDER)
+    bottom.set(qn("w:color"), C("shade"))
     pBdr.append(bottom)
     pPr.append(pBdr)
 
 
 def render_eyebrow(container, children):
-    p = new_paragraph(container, space_before=6, space_after=6)
-    run = p.add_run(inline_text(children).upper())
-    style_run(run, 9, False, TEXT_ON_LIGHT_SECONDARY)
-    set_tracking(run, 0.10, 9)
+    """An overline: caption size, ink-soft, sentence case, no tracking."""
+    p = new_paragraph(container, space_before=0, space_after=6)
+    style_run(p.add_run(inline_text(children)), 9, False, C("ink_soft"))
 
 
 def render_pull_quote(container, children):
@@ -650,21 +605,16 @@ def render_pull_quote(container, children):
     pBdr = OxmlElement("w:pBdr")
     left = OxmlElement("w:left")
     left.set(qn("w:val"), "single")
-    left.set(qn("w:sz"), "12")
+    left.set(qn("w:sz"), "4")
     left.set(qn("w:space"), "10")
-    left.set(qn("w:color"), ACCENT)
+    left.set(qn("w:color"), C("shade"))
     pBdr.append(left)
     pPr.append(pBdr)
-    render_inline(p, text_node["children"], 16, TEXT_ON_LIGHT)
-    for run in p.runs:
-        run.font.italic = True
-        run.font.name = ITALIC_FONT
+    render_inline(p, text_node["children"], 14, C("ink"))
     if attribution:
         ap = new_paragraph(container, space_after=14)
         ap.paragraph_format.left_indent = Pt(20)
-        run = ap.add_run(attribution.upper())
-        style_run(run, 9, False, TEXT_ON_LIGHT_SECONDARY)
-        set_tracking(run, 0.08, 9)
+        style_run(ap.add_run(attribution), 9.5, False, C("ink_soft"))
 
 
 def render_stat_row(container, children):
@@ -679,7 +629,6 @@ def render_stat_row(container, children):
     set_table_cell_margins(table, 6, 8, 4, 8)
     for i, stat in enumerate(stats):
         cell = table.cell(0, i)
-        set_cell_bg(cell, "FFFFFF")
         fill_stat_cell(cell, stat["children"])
     new_paragraph(container, space_after=8)
 
@@ -695,12 +644,13 @@ def fill_stat_cell(cell, src):
         p.paragraph_format.line_spacing = 1.1
         if ch["tag"] == "div" and has_class(ch, "stat-value"):
             p.paragraph_format.space_after = Pt(4)
-            style_run(p.add_run(inline_text(ch["children"])), 24, False, ACCENT, display=True)
+            rule(p._p, "top", C("shade"), sz=4, space=8)
+            style_run(p.add_run(inline_text(ch["children"])), 32, False, C("ink"), display=True)
         elif ch["tag"] == "div" and has_class(ch, "stat-label"):
             p.paragraph_format.space_after = Pt(2)
-            render_inline(p, ch["children"], 10, TEXT_ON_LIGHT)
+            render_inline(p, ch["children"], 9.5, C("ink_soft"))
         elif ch["tag"] == "div" and has_class(ch, "stat-sublabel"):
-            render_inline(p, ch["children"], 9, TEXT_ON_LIGHT_SECONDARY)
+            render_inline(p, ch["children"], 8.5, C("ink_soft"))
         else:
             first = True  # unrecognized child, don't consume a blank paragraph
 
@@ -716,18 +666,16 @@ def render_price_callout(container, children):
     tcBorders = OxmlElement("w:tcBorders")
     top = OxmlElement("w:top")
     top.set(qn("w:val"), "single")
-    top.set(qn("w:sz"), "24")
+    top.set(qn("w:sz"), "4")
     top.set(qn("w:space"), "0")
-    top.set(qn("w:color"), ACCENT)
+    top.set(qn("w:color"), C("shade"))
     tcBorders.append(top)
     tcPr.append(tcBorders)
     fill_price_cell(cell, children)
-    pad_cell_paragraphs(cell, CALLOUT_PAD_H)
     new_paragraph(container, space_after=4)
 
 
 def fill_price_cell(cell, src):
-    set_cell_bg(cell, CALLOUT_BG)
     cell.paragraphs[0].text = ""
     first = True
     for ch in src:
@@ -738,13 +686,12 @@ def fill_price_cell(cell, src):
         p.paragraph_format.line_spacing = LINE
         if ch["tag"] == "div" and has_class(ch, "price-value"):
             p.paragraph_format.space_after = Pt(2)
-            style_run(p.add_run(inline_text(ch["children"])), 26, False, ACCENT, display=True)
+            style_run(p.add_run(inline_text(ch["children"])), 38, False, C("ink"), display=True)
         elif ch["tag"] == "div" and has_class(ch, "price-note"):
-            p.paragraph_format.space_after = Pt(8)
-            run = p.add_run(inline_text(ch["children"]).upper())
-            style_run(run, 10, True, CALLOUT_TEXT)
+            p.paragraph_format.space_after = Pt(6)
+            style_run(p.add_run(inline_text(ch["children"])), 10, False, C("ink_soft"))
         elif ch["tag"] == "div" and has_class(ch, "price-body"):
-            render_inline(p, ch["children"], 11, CALLOUT_TEXT)
+            render_inline(p, ch["children"], 10.5, C("ink"))
         else:
             first = True
 
@@ -785,7 +732,7 @@ def render_table(container, table_node):
     table.alignment = WD_TABLE_ALIGNMENT.LEFT
     align_table_full_width(table)
     set_col_widths(table, [CONTENT_W_IN / ncols] * ncols)
-    set_table_borders(table, TABLE_BORDER, sz=6)
+    set_table_borders(table, C("shade"), sz=4)
     set_table_cell_margins(table, 5)
 
     for ri, cells in enumerate(matrix):
@@ -795,15 +742,13 @@ def render_table(container, table_node):
             cell.vertical_alignment = WD_ALIGN_VERTICAL.TOP
             node = cells[ci] if ci < len(cells) else None
             recommended = node is not None and has_class(node, "recommended")
-            if is_header:
-                set_cell_bg(cell, RECOMMENDED_HEADER_BG if recommended else TABLE_HEADER_BG)
-            else:
-                set_cell_bg(cell, RECOMMENDED_BODY_BG if recommended else "FFFFFF")
-            render_cell(cell, node, bold=is_header, accent=recommended and is_header)
+            if recommended:
+                set_cell_bg(cell, C("paper_deep"))
+            render_cell(cell, node, bold=False, header=is_header, first=(ci == 0 and not is_header))
     new_paragraph(container, space_after=4)
 
 
-def render_cell(cell, node, bold=False, accent=False):
+def render_cell(cell, node, bold=False, header=False, first=False):
     cell.paragraphs[0].text = ""
     if node is None:
         return
@@ -815,9 +760,7 @@ def render_cell(cell, node, bold=False, accent=False):
     else:
         p = cell.paragraphs[0]
         p.paragraph_format.line_spacing = LINE
-        size, _, color, _ = STYLES["body"]
-        if accent:
-            color = ACCENT
+        size, color = (8.5, C("ink_soft")) if header else (9.5, C("ink"))
         segs = collect_inline_segments(node["children"], {"bold": bold})
         if not segs:
             return
@@ -830,8 +773,7 @@ def render_cell(cell, node, bold=False, accent=False):
                 add_hyperlink(p, val, fmt)
 
 
-CALLOUT_PAD_V = 19
-CALLOUT_PAD_H = 18
+CALLOUT_PAD_V = 8
 
 
 def render_callout(container, children):
@@ -842,13 +784,21 @@ def render_callout(container, children):
     set_table_cell_margins(table, CALLOUT_PAD_V, 0, CALLOUT_PAD_V, 0)
     cell = table.cell(0, 0)
     fill_callout_cell(cell, children)
-    pad_cell_paragraphs(cell, CALLOUT_PAD_H)
     new_paragraph(container, space_after=4)
     return table
 
 
 def fill_callout_cell(cell, src):
-    set_cell_bg(cell, CALLOUT_BG)
+    """A hairline above, title in ink, body in ink-soft. Never a filled box."""
+    tcPr = cell._tc.get_or_add_tcPr()
+    tcBorders = OxmlElement("w:tcBorders")
+    top = OxmlElement("w:top")
+    top.set(qn("w:val"), "single")
+    top.set(qn("w:sz"), "4")
+    top.set(qn("w:space"), "0")
+    top.set(qn("w:color"), C("shade"))
+    tcBorders.append(top)
+    tcPr.append(tcBorders)
     cell.paragraphs[0].text = ""
     first_done = False
     for ch in src:
@@ -856,12 +806,12 @@ def fill_callout_cell(cell, src):
             p = cell.paragraphs[0] if not first_done else cell.add_paragraph()
             p.paragraph_format.line_spacing = LINE
             p.paragraph_format.space_after = Pt(6)
-            style_run(p.add_run(inline_text(ch["children"])), 11, True, CALLOUT_TEXT)
+            style_run(p.add_run(inline_text(ch["children"])), 11, False, C("ink"))
             first_done = True
         elif isinstance(ch, dict) and ch["tag"] == "div" and has_class(ch, "callout-body"):
             p = cell.paragraphs[0] if not first_done else cell.add_paragraph()
             p.paragraph_format.line_spacing = LINE
-            render_inline(p, ch["children"], 11, CALLOUT_TEXT)
+            render_inline(p, ch["children"], 10.5, C("ink_soft"))
             first_done = True
         elif isinstance(ch, dict) and ch["tag"] in BLOCK_TAGS:
             render_block(cell, ch)
@@ -869,7 +819,7 @@ def fill_callout_cell(cell, src):
         elif isinstance(ch, str) and ch.strip():
             p = cell.paragraphs[0] if not first_done else cell.add_paragraph()
             p.paragraph_format.line_spacing = LINE
-            style_run(p.add_run(ch.strip()), 11, False, CALLOUT_TEXT)
+            style_run(p.add_run(ch.strip()), 10.5, False, C("ink_soft"))
             first_done = True
 
 
@@ -886,78 +836,83 @@ def render_callout_2col(container, node):
     set_col_widths(table, [box_in, gap_in, box_in])
     set_table_cell_margins(table, CALLOUT_PAD_V, 0, CALLOUT_PAD_V, 0)
     fill_callout_cell(table.cell(0, 0), callouts[0]["children"])
-    pad_cell_paragraphs(table.cell(0, 0), CALLOUT_PAD_H)
+
     if len(callouts) > 1:
         fill_callout_cell(table.cell(0, 2), callouts[1]["children"])
-        pad_cell_paragraphs(table.cell(0, 2), CALLOUT_PAD_H)
+        pass
     table.cell(0, 1).paragraphs[0].text = ""
     new_paragraph(container, space_after=4)
 
 
 # -- Page builders ------------------------------------------------------------
 
-def build_cover(doc, title, subtitle, date):
-    sec = doc.sections[0]
+def page_setup(sec, top=None):
     sec.page_width = Inches(PAGE_W_IN)
     sec.page_height = Inches(PAGE_H_IN)
-    sec.top_margin = Inches(0.9)
-    sec.bottom_margin = Inches(0.75)
+    sec.top_margin = Inches(top if top is not None else MARGIN_TOP_IN)
+    sec.bottom_margin = Inches(MARGIN_BOTTOM_IN)
     sec.left_margin = Inches(MARGIN_SIDE_IN)
     sec.right_margin = Inches(MARGIN_SIDE_IN)
 
-    if COVER_BG_IMG.exists():
-        add_full_page_background(sec.header, COVER_BG_IMG)
+
+def spacer(doc, pt):
+    p = doc.add_paragraph()
+    p.paragraph_format.space_after = Pt(0)
+    p.paragraph_format.space_before = Pt(0)
+    p.paragraph_format.line_spacing = Pt(pt)
+    return p
+
+
+def build_cover(doc, title, subtitle, date, footer_label, cover_image=""):
+    sec = doc.sections[0]
+    page_setup(sec, top=20 / 25.4)
+    footer = sec.footer
+    style_run(footer.paragraphs[0].add_run(footer_label), 8, False, C("ink_soft"))
 
     logo_p = doc.add_paragraph()
     logo_p.paragraph_format.space_after = Pt(0)
-    if LOGO_WORDMARK.exists():
-        logo_p.add_run().add_picture(str(LOGO_WORDMARK), height=Pt(20))
+    if WORDMARK.exists():
+        logo_p.add_run().add_picture(str(WORDMARK), height=Pt(16))
 
-    for _ in range(12):
-        sp = doc.add_paragraph()
-        sp.paragraph_format.space_after = Pt(0)
-        sp.paragraph_format.line_spacing = 1.0
-        style_run(sp.add_run(""), 18, False, TEXT_ON_DARK)
+    if cover_image and pathlib.Path(cover_image).exists():
+        spacer(doc, 40)
+        img_p = doc.add_paragraph()
+        img_p.add_run().add_picture(str(cover_image), width=Inches(PAGE_W_IN - 2 * MARGIN_SIDE_IN))
+        spacer(doc, 120)
+    else:
+        spacer(doc, 420)
 
     title_p = doc.add_paragraph()
-    title_p.paragraph_format.space_after = Pt(12)
+    title_p.paragraph_format.space_after = Pt(10)
     title_p.paragraph_format.line_spacing = 1.05
     style_run(title_p.add_run(title), *STYLES["title"])
-
     if subtitle:
         sub_p = doc.add_paragraph()
         sub_p.paragraph_format.space_after = Pt(8)
         style_run(sub_p.add_run(subtitle), *STYLES["subtitle"])
-
     if date:
         date_p = doc.add_paragraph()
-        date_p.paragraph_format.space_before = Pt(24)
+        date_p.paragraph_format.space_before = Pt(36)
         style_run(date_p.add_run(date), *STYLES["date"])
 
 
-def start_body_section(doc):
+def start_body_section(doc, footer_label):
     sec = doc.add_section(WD_SECTION.NEW_PAGE)
-    sec.page_width = Inches(PAGE_W_IN)
-    sec.page_height = Inches(PAGE_H_IN)
-    sec.top_margin = Inches(MARGIN_TB_IN)
-    sec.bottom_margin = Inches(MARGIN_TB_IN)
-    sec.left_margin = Inches(MARGIN_SIDE_IN)
-    sec.right_margin = Inches(MARGIN_SIDE_IN)
-
+    page_setup(sec)
     pg = OxmlElement("w:pgNumType")
-    pg.set(qn("w:start"), "1")
+    pg.set(qn("w:start"), "2")
     sec._sectPr.append(pg)
 
     header = sec.header
     header.is_linked_to_previous = False
-    if LOGO_MARK.exists():
-        mark_p = header.paragraphs[0]
-        mark_p.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-        mark_p.add_run().add_picture(str(LOGO_MARK), height=Pt(16))
+    hp = header.paragraphs[0]
+    hp.paragraph_format.space_after = Pt(28)   # clear space below the wordmark (the guardrail)
+    if WORDMARK.exists():
+        hp.add_run().add_picture(str(WORDMARK), height=Pt(11))
 
     footer = sec.footer
     footer.is_linked_to_previous = False
-    add_page_number(footer.paragraphs[0])
+    add_page_number(footer.paragraphs[0], footer_label)
     return sec
 
 
@@ -970,25 +925,10 @@ def add_section_page_break(doc):
 
 
 def build_separator(doc, title):
-    sec = doc.add_section(WD_SECTION.NEW_PAGE)
-    sec.page_width = Inches(PAGE_W_IN)
-    sec.page_height = Inches(PAGE_H_IN)
-    sec.top_margin = Inches(MARGIN_TB_IN)
-    sec.bottom_margin = Inches(MARGIN_TB_IN)
-    sec.left_margin = Inches(MARGIN_SIDE_IN)
-    sec.right_margin = Inches(MARGIN_SIDE_IN)
-
-    header = sec.header
-    header.is_linked_to_previous = False
-    if SECTION_BG_IMG.exists():
-        add_full_page_background(header, SECTION_BG_IMG)
-
-    for _ in range(16):
-        sp = doc.add_paragraph()
-        sp.paragraph_format.space_after = Pt(0)
+    add_section_page_break(doc)
+    spacer(doc, 520)
     p = doc.add_paragraph()
-    p.paragraph_format.space_before = Pt(24)
-    style_run(p.add_run(title), 24, True, TEXT_ON_DARK, display=True)
+    style_run(p.add_run(title), 40, False, C("ink"), display=True)
 
 
 # -- Main ---------------------------------------------------------------------
@@ -1006,18 +946,39 @@ def main():
     sections = data.get("sections", []) or []
     separator_title = data.get("separator_title", "")
 
+    global PAPER, PAPER_DEEP, SHADE, INK, INK_SOFT, LENS, WORDMARK
+    theme = THEMES.get(data.get("theme", "light"), THEMES["light"])
+    PAPER, PAPER_DEEP, SHADE, INK, INK_SOFT, LENS = (theme[k] for k in
+                                                    ("paper", "paper_deep", "shade", "ink", "ink_soft", "lens"))
+    WORDMARK = KIT_ROOT / "assets/logos" / theme["wordmark"]
+    confidential = {"el": "Εμπιστευτικό"}.get(data.get("lang"), "Confidential")
+    footer_label = "poeticsvr.com" + (f" · {confidential}" if data.get("confidential", True) else "")
+    cover_image = data.get("cover_image", "")
+    if cover_image.startswith("photo:"):
+        try:
+            import importlib.util as _ilu
+            spec = _ilu.spec_from_file_location("photo_library", pathlib.Path(__file__).parent / "photo-library.py")
+            lib = _ilu.module_from_spec(spec)
+            spec.loader.exec_module(lib)
+            cover_image = str(lib.resolve(cover_image[6:]) or "")
+        except Exception:
+            cover_image = ""
+    elif cover_image and not pathlib.Path(cover_image).is_absolute():
+        cover_image = str(pathlib.Path(content_path).resolve().parent / cover_image)
+
     doc = Document()
+    set_page_colour(doc, PAPER)
     normal = doc.styles["Normal"]
     normal.font.name = BODY_FONT
     normal.font.size = Pt(STYLES["body"][0])
     normal.element.rPr.rFonts.set(qn("w:eastAsia"), BODY_FONT)
     set_theme_fonts(doc, FALLBACK_FONT)
     add_font_fallback(doc, BODY_FONT)
-    add_font_fallback(doc, DISPLAY_FONT)
-    add_font_fallback(doc, ITALIC_FONT, alt="Georgia")
+    add_font_fallback(doc, DISPLAY_FONT, alt=DISPLAY_FALLBACK)
+    normal.font.color.rgb = RGBColor.from_string(INK)
 
-    build_cover(doc, title, subtitle, date)
-    start_body_section(doc)
+    build_cover(doc, title, subtitle, date, footer_label, cover_image)
+    start_body_section(doc, footer_label)
 
     for i, section in enumerate(sections):
         if i > 0:

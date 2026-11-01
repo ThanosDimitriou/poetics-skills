@@ -23,9 +23,16 @@ the full routing rules.
 ## Reference files
 
 ```bash
-cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/brand.md"
-cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/schemas/doc-content-schema.md"
+cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/schemas/doc-content-schema.md"     # the content JSON
+cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/guides/writing-on-brand-copy.md"   # the voice
+cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/design-system.md"                  # how it looks (applied by the scripts)
+cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/brand.md"                          # company facts
 ```
+
+Documents follow the website's design system, like decks: A4, off-white paper (or `"theme":
+"dark"`), Instrument Serif headings, Inter Tight text, hairlines instead of boxes, the
+wordmark, and "poeticsvr.com · Confidential" with page numbers in every footer. The scripts
+apply all of it; your job is the content.
 
 ---
 
@@ -42,14 +49,14 @@ User request
 │
 └── No existing file → Create mode
     │
-    ├── Output: Word doc (.docx)?
-    │   └── python3 "${CLAUDE_PLUGIN_ROOT}/brand-kit/scripts/build-doc.py" \
-    │         /tmp/<name>.json <output.docx>
-    │       Dark cover page + light, readable body pages (see the script's docstring for why).
+    ├── Output: PDF? (default: the version to send, fonts embedded)
+    │   └── python3 "${CLAUDE_PLUGIN_ROOT}/brand-kit/scripts/build-doc-pdf.py" \
+    │         /tmp/<name>.json <output.pdf> --preview
     │
-    └── Output: PDF? (recommended — the canonical branded format, full dark-brand fidelity)
-        └── python3 "${CLAUDE_PLUGIN_ROOT}/brand-kit/scripts/build-doc-pdf.py" \
-              /tmp/<name>.json <output.pdf>
+    └── Output: Word doc (.docx)? (only when someone must edit it in Word)
+        └── python3 "${CLAUDE_PLUGIN_ROOT}/brand-kit/scripts/build-doc.py" \
+              /tmp/<name>.json <output.docx>
+            Same look; needs Instrument Serif and Inter Tight installed to show as designed.
 ```
 
 Both renderers consume the same content JSON schema — write it once. Build the content as
@@ -79,5 +86,17 @@ given):
 For content extraction mode, ask only if the source doesn't make the audience or key message
 obvious — one question maximum.
 
-**Never name or visually identify a specific film** in generated content — describe the program
-by theme only, per `brand.md`.
+## Writing rules
+
+The website's voice (`writing-on-brand-copy.md`): plain, concrete, "we" and "you", short
+sentences, headings as short sentences with a full stop, no em dashes, no hype. Overlines
+(`eyebrow`) only when they add a fact; true counts, not threes; figures with their as-of date;
+hello@poeticsvr.com only; no names of the people who made it unless asked. The PDF renderer warns
+on em dashes, stock phrases, other emails and team names: fix them.
+
+Photographs: `<img src="photo:<id>">` uses the Poetics photo library (see the deck skill), or a
+local path. `"cover_image"` puts one on the cover.
+
+**Never name or visually identify a specific film**: describe the program by theme only.
+**Proposals, offers and quotes are not documents**: they go to `brand-proposals` (the A4 quote
+sheet).

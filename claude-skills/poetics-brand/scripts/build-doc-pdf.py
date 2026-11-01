@@ -1,50 +1,36 @@
 #!/usr/bin/env python3
-"""build-doc-pdf.py - render a branded Poetics document as PDF via HTML + Playwright.
+"""build-doc-pdf.py - render a Poetics document (report, brief, one-pager) as an A4 PDF.
 
-This is the CANONICAL branded document format: unlike build-doc.py (Word),
-this renders the full document on the dark brand canvas end-to-end, matching
-brand.md exactly (fonts physically embed, glow backgrounds render, accent
-color is correct). Use this whenever brand fidelity matters more than
-in-place editability.
+Documents follow brand-kit/design-system.md, the website's design system: off-white paper and
+ink (light by default, "theme": "dark" for the dark set), Instrument Serif headings, Inter Tight
+text, hairlines instead of boxes, the single-colour wordmark, and "poeticsvr.com · Confidential"
+with page numbers in every footer. Fonts are embedded, so the PDF looks the same everywhere.
+
+Proposals, offers and quotes are NOT documents: they are the A4 quote sheet from build-deck.py
+(see guides/proposal-playbook.md).
 
 Runs standalone, no AI required:
-    python3 build-doc-pdf.py <content.json> <output.pdf>
+    python3 build-doc-pdf.py <content.json> <output.pdf> [--preview]
 
-content.json schema: see schemas/doc-content-schema.md (same schema shared
-with build-doc.py).
+--preview also writes <output>-preview.png (the cover) for a quick look.
 
-Optional "theme" field: "dark" (default, the canonical brand canvas) or
-"light" - white body pages for print-friendly/procurement contexts, with the
-dark brand cover (and separator) kept. Mirrors build-doc.py's dark-cover/
-light-body compromise.
+content.json: see schemas/doc-content-schema.md (shared with build-doc.py). Top-level fields:
+  title (required), subtitle, date, sections: [{heading, html}], separator_title,
+  theme: "light" (default) | "dark", lang: "en" (default) | "el", confidential: true (default),
+  cover_image: a local path or a photo library id ("photo:<id>").
 
--- HTML escaping rules ------------------------------------------------------
-The "html" field is trusted HTML - the caller is responsible for escaping
-all user-supplied strings before passing them in. Use html.escape(text) on
-any value that comes from user input before embedding it in tags. This
-script escapes title, subtitle, date, heading, and separator_title
-automatically.
+-- HTML escaping ---------------------------------------------------------------
+"html" is trusted HTML: escape user-supplied text before embedding it. title, subtitle, date,
+heading and separator_title are escaped automatically.
 
--- Supported HTML elements in "html" ----------------------------------------
-  <h2>-<h6>        sub-headings (h1 is reserved for "heading" field)
-  <p>              body paragraph
-  <ul><li>         bullet list
-  <strong>/<em>    bold / italic inline (italic renders in Cormorant Garamond)
-  <a href="...">   link
-  <table><tr><th><td>          data table (break-inside: avoid)
-  <div class="callout">        single-column callout box
-  <div class="callout-2col">   two-column callout
-  <div class="eyebrow">        small mono kicker label above a heading
-  <div class="pull-quote">     inner-voice / testimonial quote (see schema for structure)
-  <div class="stat-row">       big accent-number row (see schema for structure)
-  <div class="price-callout">  elevated pricing block, the proposal playbook's price figure
-  <th class="recommended">     highlighted column in a tiered comparison table
-  <hr>                         section divider
-  <figure>/<figcaption>        image with caption
-See schemas/doc-content-schema.md for the exact nested structure each block expects.
+-- Supported HTML in "html" ------------------------------------------------------
+  <h2>-<h6>, <p>, <ul>/<ol><li>, <strong>, <em> (set upright: there are no italics), <a href>,
+  <br>, <hr>, <table> (class="recommended" on a column's cells), <figure>/<figcaption>/<img>,
+  div.callout (.callout-title, .callout-body), div.callout-2col, div.eyebrow (an overline),
+  div.pull-quote (.pull-quote-text, .pull-quote-attribution), div.stat-row (.stat > .stat-value,
+  .stat-label, .stat-sublabel), div.price-callout (.price-value, .price-note, .price-body).
 """
 
-import asyncio
 import base64
 import html as html_lib
 import importlib.util as _ilu
@@ -54,446 +40,312 @@ import pathlib
 import re
 import sys
 
+HERE = pathlib.Path(__file__).resolve().parent
 
-# -- Preflight checks ---------------------------------------------------------
+
+def _load(name, filename):
+    spec = _ilu.spec_from_file_location(name, HERE / filename)
+    mod = _ilu.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+_ba = _load("_brand_assets", "_brand_assets.py")
+bd = _load("build_deck", "build-deck.py")   # shared tokens, fonts, wordmark, photo library, lint
+
+
+# -- Preflight ----------------------------------------------------------------------
 
 def check_dependencies():
-    """Verify (and, on a fresh machine, install) the renderer's dependencies.
-    Every command uses fixed arguments (no user input), so there is no
-    shell-injection surface."""
+    """Install Playwright on a fresh machine, and use the system Chrome when Playwright's own
+    browser isn't downloaded (some networks block that download). Fixed arguments only."""
     import importlib
     import subprocess
-
-    def have(mod):
-        try:
-            importlib.import_module(mod)
-            return True
-        except ImportError:
-            return False
-
-    for mod, pip_name in (("playwright", "playwright"),):
-        if have(mod):
-            continue
-        print(f"Installing {pip_name} (one-time setup)...", file=sys.stderr)
-        result = subprocess.run(
-            [sys.executable, "-m", "pip", "install", "--break-system-packages", "-q", pip_name],
-            capture_output=True, text=True,
-        )
-        if result.returncode != 0:
-            # Older pip (pre-PEP 668) doesn't recognize --break-system-packages.
-            result = subprocess.run(
-                [sys.executable, "-m", "pip", "install", "-q", pip_name],
-                capture_output=True, text=True,
-            )
-        if result.returncode != 0 or not have(mod):
-            print(f"ERROR: could not install {pip_name}. "
-                  f"Run manually: pip install {pip_name}", file=sys.stderr)
-            if result.stderr:
-                print(result.stderr.strip()[:500], file=sys.stderr)
-            sys.exit(1)
-
-    chromium_ok = False
+    try:
+        importlib.import_module("playwright")
+    except ImportError:
+        print("Installing playwright (one-time setup)...", file=sys.stderr)
+        r = subprocess.run([sys.executable, "-m", "pip", "install", "--break-system-packages", "-q", "playwright"])
+        if r.returncode != 0:
+            subprocess.run([sys.executable, "-m", "pip", "install", "-q", "playwright"], check=True)
     try:
         from playwright.sync_api import sync_playwright
         with sync_playwright() as pw:
             exe = pw.chromium.executable_path
-        chromium_ok = bool(exe) and os.path.exists(exe)
+        ok = bool(exe) and os.path.exists(exe)
     except Exception:
-        chromium_ok = False
-    if not chromium_ok:
+        ok = False
+    if not ok:
         channel = _ba.pick_browser_channel()
         if channel:
-            # System Chrome/Edge renders identically — skip the 110 MB download
-            # (which also fails outright on networks that block the Playwright CDN).
-            os.environ.setdefault('POETICS_BROWSER_CHANNEL', channel)
-            print(f"Bundled Chromium not installed — using system browser "
-                  f"(channel: {channel}).", file=sys.stderr)
-            return
-        print("Installing Chromium for Playwright (one-time, about 110 MB)...", file=sys.stderr)
-        result = subprocess.run(
-            [sys.executable, "-m", "playwright", "install", "chromium"],
-            capture_output=True, text=True,
-        )
-        if result.returncode != 0:
-            print("ERROR: could not install Chromium. "
-                  "Run manually: python3 -m playwright install chromium", file=sys.stderr)
-            if result.stderr:
-                print(result.stderr.strip()[:500], file=sys.stderr)
-            sys.exit(1)
+            os.environ.setdefault("POETICS_BROWSER_CHANNEL", channel)
+            print(f"Bundled Chromium not installed: using system browser ({channel}).", file=sys.stderr)
+        else:
+            print("Installing Chromium for Playwright (one-time, about 110 MB)...", file=sys.stderr)
+            subprocess.run([sys.executable, "-m", "playwright", "install", "chromium"], check=True)
 
 
-# -- Asset discovery ------------------------------------------------------------
-
-def find_kit_root():
-    script_parent = pathlib.Path(__file__).resolve().parent.parent
-    candidates = [
-        os.environ.get('BRAND_KIT_ROOT', ''),
-        str(script_parent),
-    ]
-    for c in candidates:
-        if c and pathlib.Path(c, 'brand.md').exists():
-            return c
-    raise FileNotFoundError(
-        'Cannot locate brand-kit root (expected to find brand.md there). '
-        'Set BRAND_KIT_ROOT or run from within the repo.'
-    )
-
-
-def b64(path):
-    p = pathlib.Path(path)
-    if not p.exists():
-        raise FileNotFoundError(f'Asset not found: {path}')
-    return base64.b64encode(p.read_bytes()).decode()
-
-
-def _bg(root, slot, default_name):
-    """Photo override from assets/backgrounds/photo/ if present, else the gradient."""
-    photo_dir = pathlib.Path(root) / 'assets/backgrounds/photo'
-    for ext in ('.jpg', '.jpeg', '.png', '.webp'):
-        cand = photo_dir / f'{slot}{ext}'
-        if cand.exists():
-            return cand
-    return pathlib.Path(root) / 'assets/backgrounds' / default_name
-
-
-def load_assets(root):
-    r = pathlib.Path(root)
-    fonts = r / 'assets/fonts'
-    required = {
-        'cover_bg':   _bg(root, 'doc-cover', 'doc-cover-bg.jpg'),
-        'section_bg': _bg(root, 'doc-section', 'doc-section-bg.jpg'),
-        'logo_wordmark': r / 'assets/logos/wordmark-light.png',
-        'logo_mark':  r / 'assets/logos/mark-light.png',
-        'logo_mark_dark': r / 'assets/logos/mark-dark.png',
-        'inter_reg':  fonts / 'Inter-Regular.ttf',
-        'inter_med':  fonts / 'Inter-Medium.ttf',
-        'inter_sb':   fonts / 'Inter-SemiBold.ttf',
-        'inter_bold': fonts / 'Inter-Bold.ttf',
-        'cormorant_it':  fonts / 'CormorantGaramond-Italic.ttf',
-        'mono_reg':   fonts / 'SpaceMono-Regular.ttf',
-    }
-    missing = [str(v) for v in required.values() if not v.exists()]
-    if missing:
-        raise FileNotFoundError('Missing assets:\n' + '\n'.join(f'  {m}' for m in missing))
-
-    css_path = r / 'scripts/doc-pdf-styles.css'
-    if not css_path.exists():
-        raise FileNotFoundError(f'CSS not found: {css_path}')
-    light_css_path = r / 'scripts/doc-pdf-styles-light.css'
-
-    assets = {k: b64(str(v)) for k, v in required.items()}
-    assets['css'] = css_path.read_text()
-    assets['css_light'] = light_css_path.read_text() if light_css_path.exists() else ''
-    return assets
-
-
-# -- HTML builder -----------------------------------------------------------------
+# -- Content helpers ------------------------------------------------------------------
 
 def e(text):
-    """Escape user-provided plain text for safe HTML insertion."""
     return html_lib.escape(str(text))
 
 
 def validate_section_html(sections):
-    try:
-        from lxml import etree
-    except ImportError:
-        return
-
     errors = []
     for i, section in enumerate(sections):
-        raw = section.get('html', '')
-        if not raw.strip():
-            continue
-        etree.fromstring(f'<div>{raw}</div>', parser=etree.HTMLParser(recover=True))
-        for tag in ('div', 'table', 'tr', 'ul', 'ol'):
-            opens = len(re.findall(rf'<{tag}[\s>/]', raw))
-            closes = raw.count(f'</{tag}>')
+        raw = section.get("html", "")
+        for tag in ("div", "table", "tr", "ul", "ol"):
+            opens = len(re.findall(rf"<{tag}[\s>/]", raw))
+            closes = raw.count(f"</{tag}>")
             if opens != closes:
-                errors.append(f'Section {i} ("{section.get("heading","untitled")}"): '
-                               f'unbalanced <{tag}> ({opens} open, {closes} close)')
-
-    if errors:
-        print('WARNING: malformed HTML detected in sections (will attempt to render anyway):')
-        for err in errors:
-            print(f'  {err}')
+                errors.append(f'section {i + 1} ("{section.get("heading", "untitled")}"): '
+                              f"unbalanced <{tag}> ({opens} open, {closes} close)")
+    for err in errors:
+        print(f"WARNING: malformed HTML in {err}", file=sys.stderr)
 
 
-_ba_path = pathlib.Path(__file__).parent / '_brand_assets.py'
-_ba_spec = _ilu.spec_from_file_location('_brand_assets', _ba_path)
-_ba = _ilu.module_from_spec(_ba_spec)
-_ba_spec.loader.exec_module(_ba)  # type: ignore[union-attr]
-_IMAGE_EXTS = _ba.IMAGE_EXTS
-_IMAGE_MIME = _ba.IMAGE_MIME
-_EMBED_ALLOWED_ROOTS = _ba.make_allowed_roots(__file__)
+def embed_local_images(html_str, extra_roots=()):
+    roots = tuple(_ba.make_allowed_roots(__file__)) + tuple(extra_roots)
+
+    def src_replacer(m):
+        q, src = m.group(1), m.group(2)
+        if src.startswith("data:") or src.startswith("http"):
+            return m.group(0)
+        if src.startswith("photo:"):
+            uri = bd.resolve_image(src)
+        else:
+            uri = _ba.resolve_local_image(src, roots)
+        if not uri:
+            print(f"WARNING: image not found or outside the allowed folders: {src}", file=sys.stderr)
+            return m.group(0)
+        return f"src={q}{uri}{q}"
+
+    return re.sub(r"<img\b[^>]*>", lambda t: re.sub(r"""\bsrc=([\"'])([^\"']*)\1""", src_replacer, t.group(0)),
+                  html_str)
 
 
-def embed_local_images(html_str):
-    def img_replacer(img_match):
-        tag = img_match.group(0)
-
-        def src_replacer(m):
-            q, src = m.group(1), m.group(2)
-            if src.startswith('data:') or src.startswith('http'):
-                return m.group(0)
-            path = pathlib.Path(src).resolve()
-            ext = path.suffix.lower().lstrip('.')
-            if ext not in _IMAGE_EXTS:
-                return m.group(0)
-            if not any(path.is_relative_to(r) for r in _EMBED_ALLOWED_ROOTS):
-                print(f'WARNING: image outside allowed paths, skipping embed: {src}')
-                return m.group(0)
-            if not path.exists():
-                print(f'WARNING: image not found, skipping embed: {src}')
-                return m.group(0)
-            mime = _IMAGE_MIME[ext]
-            data = base64.b64encode(path.read_bytes()).decode()
-            return f'src={q}data:{mime};base64,{data}{q}'
-
-        return re.sub(r"""\bsrc=([\"'])([^\"']*)\1""", src_replacer, tag)
-
-    return re.sub(r'<img\b[^>]*>', img_replacer, html_str)
+def lint(data):
+    """The same copy rules as decks (guides/anti-slop.md), as warnings."""
+    def plain(h):
+        return re.sub(r"<[^>]+>", " ", html_lib.unescape(h or ""))
+    texts = [("title", data.get("title", "")), ("subtitle", data.get("subtitle", ""))]
+    for i, s in enumerate(data.get("sections", []), 1):
+        texts += [(f"section {i} heading", s.get("heading", "")), (f"section {i}", plain(s.get("html", "")))]
+    for where, t in texts:
+        bd.lint_text(where, t)
+        for m in bd.EMAIL_RE.findall(t):
+            if m.lower() != bd.HOUSE_EMAIL:
+                bd.warn(where, f"email {m}: use {bd.HOUSE_EMAIL} only")
+        m = bd.TAGLINE_RE.search(t)
+        if m:
+            bd.warn(where, f'sounds like AI copy ("{m.group(0)}"): say it plainly')
+        if not data.get("allow_team_names"):
+            m = bd.TEAM_RE.search(t)
+            if m:
+                bd.warn(where, f'names the team ("{m.group(0)}"): leave the makers out unless asked')
 
 
-def build_html(data, assets):
-    title = e(data.get('title', 'Document title'))
-    subtitle = e(data.get('subtitle', ''))
-    date = e(data.get('date', ''))
-    sections = data.get('sections', [])
-    sep = data.get('separator_title', '')
-    light = data.get('theme', 'dark') == 'light'
-    # Light theme: white body pages need the dark logo mark; the cover and
-    # separator keep the dark canvas (and the light wordmark) either way.
-    body_mark = assets['logo_mark_dark'] if light else assets['logo_mark']
-    theme_css = f'\n{assets["css_light"]}' if light else ''
+# -- HTML -------------------------------------------------------------------------------
 
-    font_css = f"""
-@font-face {{ font-family: 'Inter'; font-weight: 400; font-style: normal;
-  src: url('data:font/ttf;base64,{assets["inter_reg"]}') format('truetype'); }}
-@font-face {{ font-family: 'Inter'; font-weight: 500; font-style: normal;
-  src: url('data:font/ttf;base64,{assets["inter_med"]}') format('truetype'); }}
-@font-face {{ font-family: 'Inter'; font-weight: 600; font-style: normal;
-  src: url('data:font/ttf;base64,{assets["inter_sb"]}') format('truetype'); }}
-@font-face {{ font-family: 'Inter'; font-weight: 700; font-style: normal;
-  src: url('data:font/ttf;base64,{assets["inter_bold"]}') format('truetype'); }}
-@font-face {{ font-family: 'Cormorant Garamond'; font-weight: 400; font-style: italic;
-  src: url('data:font/ttf;base64,{assets["cormorant_it"]}') format('truetype'); }}
-@font-face {{ font-family: 'Space Mono'; font-weight: 400; font-style: normal;
-  src: url('data:font/ttf;base64,{assets["mono_reg"]}') format('truetype'); }}"""
+DOC_CSS = """
+:root { --display: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
+        --sans: 'Inter Tight', ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif; }
+html { __THEME__; background: var(--paper); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--sans); font-size: 10.5pt; line-height: 1.6; color: var(--ink);
+       -webkit-font-smoothing: antialiased; font-kerning: normal; }
 
-    subtitle_html = f'<div class="cover-subtitle">{subtitle}</div>' if subtitle else ''
+/* A4, the paper colour into the margins, the wordmark top-left, the footer bottom. */
+@page { size: 210mm 297mm; margin: 34mm 20mm 24mm; background: var(--paper);
+  @top-left { content: __WORDMARK__; vertical-align: bottom; padding-bottom: 12mm; }
+  @bottom-left { content: "__FOOTER__"; font: 8pt 'Inter Tight', sans-serif; color: var(--ink-soft);
+                 vertical-align: top; padding-top: 6mm; }
+  @bottom-right { content: counter(page) " __OF__ " counter(pages); font: 8pt 'Inter Tight', sans-serif;
+                  color: var(--ink-soft); vertical-align: top; padding-top: 6mm; } }
+@page :first { @top-left { content: none; } @bottom-right { content: none; } }
 
-    body_sections = ''
-    for section in sections:
-        heading_html = f'<h1>{e(section["heading"])}</h1>' if section.get('heading') else ''
-        header_html = (
-            f'<div class="page-header">'
-            f'<img src="data:image/png;base64,{body_mark}" alt="Poetics"></div>'
-        )
-        section_html = embed_local_images(section.get('html', ''))
-        body_sections += f'''
-<div class="body-section">
-  {header_html}
-  {heading_html}
-  {section_html}
-</div>'''
+/* Cover: the wordmark, the title in the display face, an optional photograph, the date. */
+.cover { height: 236mm; display: flex; flex-direction: column; break-after: page; }
+.cover .wordmark { height: 16pt; width: auto; color: var(--ink); align-self: flex-start; }
+.cover .middle { margin-top: auto; }
+.cover .photo { margin: 18mm 0 14mm; height: 92mm; border-radius: 16pt; overflow: hidden; background: var(--paper-deep); }
+.cover .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cover-title { font-family: var(--display); font-weight: 400; font-size: 44pt; line-height: 1.05;
+               letter-spacing: -0.02em; max-width: 16ch; text-wrap: balance; }
+.cover-subtitle { font-size: 13pt; line-height: 1.5; color: var(--ink-soft); margin-top: 12pt; max-width: 40em; }
+.cover-date { font-size: 9pt; color: var(--ink-soft); margin-top: 18mm; }
 
-    separator_html = ''
-    if sep:
-        separator_html = f'''
-<div class="page-fixed separator">
-  <div class="page-bg" style="background-image:url(\'data:image/jpeg;base64,{assets["section_bg"]}\')"></div>
-  <div class="page-content">
-    <h1>{e(sep)}</h1>
-  </div>
-</div>'''
+/* Body */
+.body-section { break-before: page; }
+.body-section:first-of-type { break-before: auto; }
+h1 { font-family: var(--display); font-weight: 400; font-size: 26pt; line-height: 1.1; letter-spacing: -0.02em;
+     margin: 0 0 16pt; max-width: 22ch; text-wrap: balance; }
+h2 { font-size: 13.5pt; font-weight: 500; line-height: 1.3; margin: 20pt 0 6pt; }
+h3 { font-size: 11.5pt; font-weight: 500; line-height: 1.35; margin: 16pt 0 4pt; }
+h4 { font-size: 10.5pt; font-weight: 500; margin: 12pt 0 4pt; }
+h5, h6 { font-size: 9pt; font-weight: 400; color: var(--ink-soft); margin: 12pt 0 4pt; }
+h2, h3, h4, h5, h6 { break-after: avoid; text-wrap: balance; }
+p { margin: 0 0 9pt; max-width: 42em; text-wrap: pretty; }
+strong, b { font-weight: 500; }
+em, i { font-style: normal; }
+a { color: var(--lens); text-decoration: underline; text-decoration-thickness: 0.5pt; text-underline-offset: 2pt; }
+ul, ol { margin: 0 0 10pt 14pt; max-width: 42em; }
+li { margin-bottom: 4pt; padding-left: 2pt; }
+li::marker { color: var(--ink-soft); }
+hr { border: 0; border-top: 0.75pt solid var(--shade); margin: 16pt 0; }
+
+/* Tables: rows on hairlines; a recommended column on paper-deep. */
+table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 6pt 0 14pt; break-inside: avoid; font-size: 9.5pt; }
+th { text-align: left; font-weight: 400; font-size: 8.5pt; color: var(--ink-soft); padding: 0 10pt 6pt 0; vertical-align: bottom; }
+td { border-top: 0.75pt solid var(--shade); padding: 7pt 10pt 7pt 0; vertical-align: top; }
+tr:last-child td { border-bottom: 0.75pt solid var(--shade); }
+td:first-child { font-weight: 500; }
+th.recommended, td.recommended { background: var(--paper-deep); padding-left: 10pt; }
+th.recommended { color: var(--ink); border-radius: 9pt 9pt 0 0; padding-top: 6pt; }
+tr:last-child td.recommended { border-radius: 0 0 9pt 9pt; }
+
+/* Callouts: a hairline above, never a box. */
+.callout { border-top: 0.75pt solid var(--shade); padding-top: 9pt; margin: 12pt 0 14pt; break-inside: avoid; }
+.callout-title { font-weight: 500; font-size: 11pt; margin-bottom: 4pt; }
+.callout-body { color: var(--ink-soft); }
+.callout-2col { display: grid; grid-template-columns: 1fr 1fr; column-gap: 18pt; margin: 12pt 0 14pt; }
+.callout-2col .callout { margin: 0; }
+
+.eyebrow { font-size: 9pt; color: var(--ink-soft); margin: 0 0 6pt; }
+
+.pull-quote { border-left: 0.75pt solid var(--shade); padding-left: 14pt; margin: 16pt 0 18pt; break-inside: avoid; }
+.pull-quote-text { font-size: 14pt; line-height: 1.5; max-width: 34em; }
+.pull-quote-attribution { font-size: 9.5pt; color: var(--ink-soft); margin-top: 8pt; }
+
+.stat-row { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; column-gap: 18pt; margin: 12pt 0 16pt; break-inside: avoid; }
+.stat { border-top: 0.75pt solid var(--shade); padding-top: 9pt; }
+.stat-value { font-family: var(--display); font-size: 34pt; line-height: 1; letter-spacing: -0.02em; }
+.stat-label { font-size: 9.5pt; color: var(--ink-soft); margin-top: 6pt; }
+.stat-sublabel { font-size: 8.5pt; color: var(--ink-soft); margin-top: 2pt; }
+
+.price-callout { border-top: 0.75pt solid var(--shade); padding-top: 10pt; margin: 16pt 0; break-inside: avoid; }
+.price-value { font-family: var(--display); font-size: 40pt; line-height: 1; letter-spacing: -0.02em; }
+.price-note { font-size: 10pt; color: var(--ink-soft); margin-top: 6pt; }
+.price-body { margin-top: 8pt; max-width: 42em; }
+
+figure { margin: 12pt 0 14pt; break-inside: avoid; }
+figure img, p img { width: 100%; height: auto; border-radius: 12pt; display: block; }
+figcaption { font-size: 8.5pt; color: var(--ink-soft); margin-top: 6pt; }
+
+/* Separator: a quiet page with the title set low. */
+.separator { break-before: page; height: 236mm; display: flex; align-items: flex-end; }
+.separator h1 { font-size: 40pt; margin: 0; }
+"""
+
+
+def wordmark_uri(ink):
+    svg = (bd.LOGOS / "wordmark-mono.svg").read_text(encoding="utf-8").replace('fill="#121614"', f'fill="{ink}"')
+    svg = re.sub(r'\swidth="[^"]*"', ' width="111"', svg, count=1)
+    svg = re.sub(r'\sheight="[^"]*"', ' height="15"', svg, count=1)
+    return 'url("data:image/svg+xml;base64,' + base64.b64encode(svg.encode()).decode() + '")'
+
+
+def build_html(data, extra_roots=()):
+    theme = data.get("theme", "light")
+    if theme not in bd.THEMES:
+        theme = "light"
+    lang = data.get("lang", "en") if data.get("lang") in bd.LABELS else "en"
+    labels = bd.LABELS[lang]
+    tokens = bd.THEMES[theme]
+    footer = "poeticsvr.com" + (f" · {labels['confidential']}" if data.get("confidential", True) else "")
+    css = (DOC_CSS.replace("__THEME__", bd.theme_vars(theme))
+           .replace("__WORDMARK__", wordmark_uri(tokens["ink"]))
+           .replace("__FOOTER__", footer.replace('"', '\\"'))
+           .replace("__OF__", labels["of"]))
+
+    photo = ""
+    if data.get("cover_image"):
+        uri = bd.resolve_image(data["cover_image"])
+        if uri:
+            photo = f'<div class="photo"><img src="{uri}" alt=""></div>'
+        else:
+            print(f"WARNING: cover_image not found: {data['cover_image']}", file=sys.stderr)
+
+    sections = ""
+    for s in data.get("sections", []):
+        head = f"<h1>{e(s['heading'])}</h1>" if s.get("heading") else ""
+        sections += f'<section class="body-section">{head}{embed_local_images(s.get("html", ""), extra_roots)}</section>\n'
+    sep = f'<section class="separator"><h1>{e(data["separator_title"])}</h1></section>' if data.get("separator_title") else ""
+    sub = f'<div class="cover-subtitle">{e(data["subtitle"])}</div>' if data.get("subtitle") else ""
+    date = f'<div class="cover-date">{e(data["date"])}</div>' if data.get("date") else ""
 
     return f"""<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<style>{font_css}
-{assets["css"]}{theme_css}
-</style>
-</head>
+<html lang="{lang}">
+<head><meta charset="utf-8"><title>{e(data.get('title', 'Poetics'))}</title>
+<style>
+{bd.font_face_css()}
+{css}
+</style></head>
 <body>
-
-<div class="page-fixed cover">
-  <div class="page-bg" style="background-image:url('data:image/jpeg;base64,{assets["cover_bg"]}')"></div>
-  <div class="page-content">
-    <div class="cover-logo"><img src="data:image/png;base64,{assets["logo_wordmark"]}" alt="Poetics"></div>
-    <div class="cover-middle">
-      <div class="cover-title">{title}</div>
-      {subtitle_html}
-    </div>
-    <div class="cover-date">{date}</div>
-  </div>
-</div>
-
-{body_sections}
-{separator_html}
-
-</body>
-</html>"""
+<section class="cover">
+  {bd.wordmark_svg()}
+  {photo}
+  <div class="middle"><div class="cover-title">{e(data.get('title', ''))}</div>{sub}</div>
+  {date}
+</section>
+{sections}{sep}
+</body></html>"""
 
 
-# -- Playwright renderer -------------------------------------------------------
+# -- Render ------------------------------------------------------------------------------
 
-async def render_pdf(html_path, pdf_path, preview_path=None, light=False):
-    from playwright.async_api import async_playwright
+def render_pdf(html, pdf_path, preview_path=None):
+    import tempfile
+    from playwright.sync_api import sync_playwright
+    with tempfile.TemporaryDirectory() as tmp:
+        page_path = pathlib.Path(tmp) / "doc.html"
+        page_path.write_text(html, encoding="utf-8")
+        with sync_playwright() as p:
+            browser = p.chromium.launch(channel=os.environ.get("POETICS_BROWSER_CHANNEL") or None)
+            page = browser.new_page(viewport={"width": 794, "height": 1123})
+            page.goto(page_path.as_uri())
+            page.evaluate("document.fonts.ready")
+            page.wait_for_timeout(300)
+            if preview_path:
+                page.screenshot(path=preview_path, clip={"x": 0, "y": 0, "width": 794, "height": 1123})
+            page.pdf(path=str(pdf_path), print_background=True, prefer_css_page_size=True)
+            browser.close()
 
-    async with async_playwright() as p:
-        browser = await p.chromium.launch(
-            channel=os.environ.get('POETICS_BROWSER_CHANNEL') or None)
-        page = await browser.new_page(viewport={'width': 816, 'height': 1056})
-        await page.goto(pathlib.Path(html_path).as_uri())
-
-        try:
-            await page.evaluate("document.fonts.ready")
-            await page.wait_for_timeout(500)
-        except Exception:
-            await page.wait_for_timeout(1500)
-
-        font_loaded = await page.evaluate("document.fonts.check('16px \"Inter\"')")
-        if not font_loaded:
-            print('WARNING: Inter did not load — PDF will use fallback font.')
-
-        if preview_path:
-            await page.screenshot(
-                path=preview_path,
-                clip={'x': 0, 'y': 0, 'width': 816, 'height': 1056},
-                full_page=False
-            )
-            print(f'Preview screenshot: {preview_path}')
-
-        # Zero margins: page blocks are exactly 8.5x11in, so any PDF margin
-        # shrinks the printable area below 11in and every page spills onto a
-        # near-blank overflow page (with an unpainted white strip at the
-        # bottom). Bottom clearance for flowed content and the page-number
-        # overlay comes from .body-section padding in the CSS instead.
-        await page.pdf(
-            path=pdf_path,
-            format='Letter',
-            print_background=True,
-            display_header_footer=False,
-            margin={'top': '0', 'bottom': '0', 'left': '0', 'right': '0'}
-        )
-        await browser.close()
-
-    # Page numbers from page 2 onward via reportlab overlay, if available.
-    try:
-        import io as _io
-        from reportlab.pdfgen import canvas as rl_canvas
-        from reportlab.lib.pagesizes import letter
-        from pypdf import PdfReader, PdfWriter
-        from pypdf.generic import DecodedStreamObject, NameObject, ArrayObject
-
-        reader = PdfReader(pdf_path)
-        writer = PdfWriter()
-        for i, pg in enumerate(reader.pages):
-            writer.add_page(pg)
-            if i == 0:
-                continue
-
-            buf = _io.BytesIO()
-            c = rl_canvas.Canvas(buf, pagesize=letter)
-            c.setFont('Helvetica', 9)
-            if light:
-                c.setFillColorRGB(0.431, 0.431, 0.416)  # #6E6E6A - AA on white
-            else:
-                c.setFillColorRGB(0.604, 0.604, 0.596)  # #9A9A98
-            c.drawRightString(letter[0] - 36, 25, str(i + 1))
-            c.save()
-            buf.seek(0)
-
-            overlay = PdfReader(buf).pages[0]
-            ov_stream = overlay['/Contents'].get_object()
-            ns = DecodedStreamObject()
-            ns.set_data(ov_stream.get_data())
-            ref = writer._add_object(ns)
-            wp = writer.pages[i]
-            ck = NameObject('/Contents')
-            if ck in wp:
-                existing = wp.raw_get(ck)
-                if isinstance(existing, ArrayObject):
-                    existing.append(ref)
-                else:
-                    wp[ck] = ArrayObject([existing, ref])
-            else:
-                wp[ck] = ArrayObject([ref])
-
-        out = _io.BytesIO()
-        writer.write(out)
-        pathlib.Path(pdf_path).write_bytes(out.getvalue())
-    except ImportError:
-        pass  # reportlab/pypdf not installed — ship without page numbers rather than fail
-    except (AttributeError, KeyError, TypeError, OSError) as ex:
-        print(f'WARNING: could not add page numbers ({ex})')
-
-
-# -- Entry point ----------------------------------------------------------------
 
 def main():
+    args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    if len(args) != 2:
+        sys.exit("usage: build-doc-pdf.py <content.json> <output.pdf> [--preview]")
+    content_path, out = pathlib.Path(args[0]), pathlib.Path(args[1])
+    try:
+        data = json.loads(content_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as err:
+        sys.exit(f"ERROR: cannot read {content_path}: {err}")
+    if not data.get("title"):
+        sys.exit('ERROR: content JSON needs a "title"')
+    if not data.get("sections"):
+        sys.exit('ERROR: content JSON needs at least one entry in "sections"')
+
     check_dependencies()
-
-    if len(sys.argv) < 3:
-        print('Usage: build-doc-pdf.py <content.json> <output.pdf>')
-        print(__doc__)
-        sys.exit(1)
-
-    content_path = pathlib.Path(sys.argv[1])
-    output_path = sys.argv[2]
-
-    if not content_path.exists():
-        print(f'ERROR: content file not found: {content_path}')
-        sys.exit(1)
-
-    with open(content_path) as f:
-        try:
-            data = json.load(f)
-        except json.JSONDecodeError as ex:
-            print(f'ERROR: invalid JSON in {content_path}: {ex}')
-            sys.exit(1)
-
-    if not data.get('title'):
-        print('ERROR: content JSON must include a "title" field')
-        sys.exit(1)
-    if not data.get('sections'):
-        print('ERROR: content JSON must include at least one entry in "sections"')
-        sys.exit(1)
-
-    validate_section_html(data['sections'])
-
-    root = find_kit_root()
-    assets = load_assets(root)
-    html = build_html(data, assets)
-
-    stem = pathlib.Path(output_path).stem
-    tmp_html = pathlib.Path('/tmp') / f'{stem}.tmp.html'
-    tmp_html.write_text(html)
-
-    preview_path = None
-    if '--no-preview' not in sys.argv:
-        preview_path = str(pathlib.Path('/tmp') / f'{stem}-preview.png')
-
-    try:
-        asyncio.run(render_pdf(str(tmp_html.resolve()), output_path, preview_path,
-                               light=data.get('theme', 'dark') == 'light'))
-    finally:
-        if tmp_html.exists():
-            tmp_html.unlink()
-
-    print(f'PDF saved: {output_path}')
-    if preview_path and pathlib.Path(preview_path).exists():
-        print(f'Cover preview: {preview_path}')
+    validate_section_html(data["sections"])
+    lint(data)
+    bd._ALLOWED_EXTRA.append(content_path.resolve().parent)
+    html = build_html(data, extra_roots=(content_path.resolve().parent,))
+    preview = str(out.with_name(out.stem + "-preview.png")) if "--preview" in sys.argv else None
+    render_pdf(html, out, preview)
+    print(f"Wrote {out}")
+    if preview:
+        print(f"Cover preview: {preview}")
+    seen = []
+    for w in bd.WARNINGS:
+        if w not in seen:
+            seen.append(w)
+    if seen:
+        print(f"\n{len(seen)} warning(s):", file=sys.stderr)
+        for w in seen:
+            print(f"  - {w}", file=sys.stderr)
 
 
-if __name__ == '__main__':
-    try:
-        main()
-    except FileNotFoundError as ex:
-        print(f'ERROR: {ex}')
-        sys.exit(1)
-    except Exception as ex:
-        print(f'ERROR: unexpected failure — {ex}')
-        raise
+if __name__ == "__main__":
+    main()

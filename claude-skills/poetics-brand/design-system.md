@@ -135,6 +135,22 @@ relationship always gets the same gap.
   image folder (`$POETICS_PHOTO_ROOT` overrides); slides use `"image": "photo:<id>"`. Browse with
   `scripts/photo-library.py sheet`.
 
+## Documents
+
+Reports, briefs and one-pagers (`scripts/build-doc-pdf.py`, and `build-doc.py` for an editable
+Word file) use the same system on A4:
+
+- Off-white paper into the margins (or the dark set with `"theme": "dark"`), ink text.
+- A cover with the wordmark, an optional photograph in a lens, the title in the display face, the
+  date. Body pages carry the wordmark top-left with clear space below it, and
+  "poeticsvr.com · Confidential" with the page number in the footer.
+- Section headings in Instrument Serif (26pt), sub-headings in Inter Tight, body 10.5pt.
+- Tables, callouts, figures and prices on hairlines; a recommended table column on paper-deep.
+  No filled boxes, no shadows, no italics.
+
+The Word file names the fonts rather than embedding them: install Instrument Serif and Inter
+Tight to see it as designed. The PDF is the version to send.
+
 ## Spacing guardrail
 
 Every render is checked (`build-deck.py --check`), and a deck that fails isn't finished:

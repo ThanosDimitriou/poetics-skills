@@ -6,10 +6,12 @@ hand.
 
 ## The short version
 
-1. Give an AI tool `brand.md` as context (paste it, or upload it if the tool supports files).
-2. Ask it to produce content — not a styled document, just structured content matching the
-   relevant schema (`schemas/doc-content-schema.md` for docs/PDFs, or the `deck.json` /
-   carousel-editor shape for decks/social).
+1. Give an AI tool `brand.md`, `guides/writing-on-brand-copy.md` (the voice) and, for decks,
+   `guides/deck-copy.md` as context (paste them, or upload them if the tool supports files).
+2. Ask it to produce content: not a styled document, just structured content matching the
+   relevant shape (`schemas/doc-content-schema.md` for documents; a starter from
+   `templates/decks/` for decks and proposals, with every field described at the top of
+   `scripts/build-deck.py`).
 3. Run the matching script yourself from a terminal. **The script applies the brand, not the
    AI.** This is the point of the split: no matter which assistant wrote the content, the output
    file is identically on-brand, because styling is mechanical, not AI-generated.
@@ -36,7 +38,7 @@ the renderer script yourself.
 
 Everything here works by hand too:
 
-- Read `brand.md` for the colors/fonts/voice rules directly.
+- Read `design-system.md` for how things look and `guides/writing-on-brand-copy.md` for the voice.
 - Write a `content.json` file yourself following `schemas/doc-content-schema.md`.
 - Run the script from a terminal: `python3 scripts/build-doc.py content.json output.docx`.
 - For social assets, open `templates/social-carousel/editor.html` or

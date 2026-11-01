@@ -1,35 +1,23 @@
 # Deck copy: the website's voice, on slides
 
-A deck should sound like poeticsvr.com: the same company, the same person writing. The voice stays
-the same; only the length changes (a slide says less than a web section). Researched 2026-10-31
-from the website's brief and copy, plain-language guides and brand-voice practice (sources below).
+**The voice itself is in `guides/writing-on-brand-copy.md`** (one guide for everything Poetics
+writes). This file adds only what's specific to decks and proposals: a slide says less than a web
+section, and the audience reads it in seconds. Researched 2026-10-31 from the website's brief and
+copy, plain-language slide guides and brand-voice practice (sources below).
 
-## The voice, from the website brief
+## On a slide
 
-> Plain, concrete, in the first person plural. Short sentences. Active verbs. The company is
-> confident about operations and modest about art. Describe what happens, never how it feels:
-> the photography carries the feeling.
-
-- **We and you.** "We install it in a day." "You give us the room."
-- **What happens, not how it feels.** "Pods arrive cabled and ready to play." Not "a seamless,
-  unforgettable journey".
-- **Confident about operations, modest about art.** State logistics flatly. Don't sell the films
-  with adjectives.
-- **The smallest familiar word.** "Use", not "leverage". "Price", not "investment" (except as a
-  document label). No metaphors.
-- **Write it the way you'd say it across a table.** If you wouldn't say it out loud to a museum
-  director, don't put it on a slide.
-
-## Headings
-
-Website headings are short plain sentences with a full stop: "We run it ourselves.", "Tell us about
-your space.", "What we have done so far.", "How programs are chosen.", "Why the name." Decks do the
-same.
-
-- One short sentence, or a label when a label is enough ("Price.", "Terms.").
-- Always a full stop. Never a question ("Shall we lock the program?" is out).
-- Say what the page shows. No wordplay, no mood, no invitation.
-- Sentence case. No colon-subtitles ("Curation: our approach").
+- **The heading is the point.** A short plain sentence with a full stop, saying what the page
+  shows: "We run it ourselves.", "What we have done so far." Twelve words at most, two lines at
+  most. A label is fine when it's enough: "Price.", "Terms."
+- **Read the headings alone, in order.** Together they should tell the whole story. If they don't,
+  fix the headings before touching layout.
+- **One line per row.** A bullet, row or column text is one short line (the renderer warns past
+  14–20 words). Detail goes to the speaker notes.
+- **Leads are one sentence.** Paragraphs only in proposals (E5 text), and short.
+- **The true count.** Two figures, four services, five steps. Not everything in threes.
+- **Overlines only to add a fact** (a date, "As of September 2026", a document type), on a quarter
+  of the pages at most.
 
 ## Before and after
 
@@ -49,40 +37,14 @@ From our own earlier drafts, which read as AI copy:
 | Who has sat in the seat | Some of our visitors. |
 | A person picks every program, for the place. | How we choose programs. |
 | From yes to opening day | Schedule. |
-| Next: original work and a festival. | What comes next. |
 | We curate immersive films and bring them to the people who would never look for them. | You give us the room. We install the cinema. |
 
-## Phrases that give it away
+## Phrases the renderer flags
 
-The renderer warns on these (and on everything in `anti-slop.md`):
-
-- Invitations and chat: ready when you are, let's, shall we, here's, take a look, we'd love to,
-  don't hesitate, look no further, rest assured, sit back.
-- Framing that announces itself: as we understood it, at a glance, a closer look, simply put,
-  the best part, what if, imagine, picture this.
-- The website's banned list: journey, seamless, unforgettable, magical, cutting-edge,
-  revolutionary, solution, leverage, unlock, next-generation, elevate, transform your space.
-- Brochure words: bespoke, tailor-made, hassle-free, worry-free, peace of mind, all in one place.
-
-## Reuse the website's own lines
-
-These are approved and already in the voice. Prefer them over new wording:
-
-- Immersive cinema, anywhere.
-- You give us the room. We install the cinema.
-- We review hundreds of titles and choose a handful for your audience. A program runs 10–50 minutes.
-- Each pod is one seat: a swivel chair, a headset and noise-cancelling headphones.
-- Pods arrive cabled and ready to play.
-- Trained operators run the room and control the equipment through Poetics Pods, our own software.
-- We install it in a day and it is gone the next morning.
-- A person reviews hundreds of titles and picks a handful that match the place and the people.
-- Tell us about your space.
-
-## Numbers
-
-From the brief: every figure carries its as-of date once per deck ("As of September 2026"). Round
-numbers keep their qualifier (5,000+). Don't repeat a figure on two pages. Don't turn a rating into
-a percentage.
+Invitations and chat ("ready when you are", "let's", "shall we", "here's", "we'd love to"),
+framing that announces itself ("as we understood it", "at a glance", "a closer look", "imagine"),
+the website's banned list, brochure words ("bespoke", "hassle-free"), em dashes, exclamation
+marks, questions as headings, headings without a full stop, title case.
 
 ## Sources
 
