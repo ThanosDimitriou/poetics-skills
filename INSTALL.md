@@ -59,8 +59,11 @@ python3 -m pip install --user playwright pillow
 ```
 
 **3. Optional: the photo library.** Decks can use Poetics' own photographs by name. They live in
-the website project, not in this repo (it's public, and the photos show real people). If you have
-a copy of the Poetics Website repo, point the kit at its image folder, for example:
+the website project, not in this repo (it's public, and the photos show real people). Ask for
+`Poetics Photos.zip` and follow [PHOTOS-SETUP.md](PHOTOS-SETUP.md): you attach the zip in Claude
+Code with a ready-made prompt and it does the rest.
+
+If you have a copy of the Poetics Website repo instead, point the kit at its image folder, for example:
 
 ```bash
 echo 'export POETICS_PHOTO_ROOT="$HOME/Data/Projects/Poetics Website/src/assets/images"' >> ~/.zshrc
