@@ -32,7 +32,8 @@ exact situation, say so and give the closest rule; don't invent a firm answer.
 
 **Visual questions:** everything follows `design-system.md` (one accent, the lens blue, only on
 what can be pressed; space and hairlines, never boxes or shadows; no gradients; the spacing
-guardrail).
+guardrail). The social feed styles are the exception: a shade under type, a blue ground, grain
+and duotone are allowed there, in those forms only (`design-system.md`, "Social feed styles").
 
 **Copy and "make this sound like Poetics":** rewrite in the website's voice using
 `writing-on-brand-copy.md`: plain, concrete, "we" and "you", short sentences, what happens

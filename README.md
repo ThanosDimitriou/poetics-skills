@@ -7,6 +7,9 @@ single branding spec that updates everything downstream when it changes.
 actually use (no AI, ChatGPT/Gemini, Claude Code, or VS Code/Cursor/Windsurf/JetBrains/Claude
 Desktop via MCP).
 
+**Set up? Read [`HANDBOOK.md`](HANDBOOK.md)**: what to ask for, how to work with Claude on it, the
+rules, and what to do when something looks off.
+
 ## Four ways to use this
 
 ### 1. Any AI tool, or by hand — `brand-kit/`

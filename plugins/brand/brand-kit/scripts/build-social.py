@@ -50,15 +50,23 @@ INK, PAPER, LENS = (18, 22, 20), (239, 240, 236), (22, 36, 156)
 MARGIN, COLUMN = 90, 900
 
 
-def font_face(family, weight, file):
+GREEK = "U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF"
+
+
+def font_face(family, weight, file, urange=None):
     data = base64.b64encode((KIT / "assets/fonts" / file).read_bytes()).decode()
-    return f"@font-face{{font-family:'{family}';font-weight:{weight};src:url(data:font/woff2;base64,{data}) format('woff2');}}"
+    rng = f"unicode-range:{urange};" if urange else ""
+    return (f"@font-face{{font-family:'{family}';font-weight:{weight};font-display:block;{rng}"
+            f"src:url(data:font/woff2;base64,{data}) format('woff2');}}")
 
 
-FONTS = "".join([
+FONTS = "".join([  # Latin and Greek: the same families as the decks
     font_face("Instrument Serif", 400, "InstrumentSerif-Regular-latin.woff2"),
+    font_face("Instrument Serif", 400, "NotoSerifDisplay-w70-greek.woff2", GREEK),
     font_face("Inter Tight", 400, "InterTight-400-latin.woff2"),
+    font_face("Inter Tight", 400, "InterTight-400-greek.woff2", GREEK),
     font_face("Inter Tight", 500, "InterTight-500-latin.woff2"),
+    font_face("Inter Tight", 500, "InterTight-500-greek.woff2", GREEK),
 ])
 WORDMARK = (KIT / "assets/logos/wordmark-mono.svg").read_text().replace('width="148" height="20"', 'width="100%" height="100%"')
 
