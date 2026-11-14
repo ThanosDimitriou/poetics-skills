@@ -3,8 +3,8 @@
 **Decks follow this file.** It is the website's design system (`Poetics Website/DESIGN-SYSTEM.md`,
 the "Aperture" system, as of website commit `caa2f43`, 2026-10-29) translated to a 1920 × 1080
 slide. Where the two disagree, the website wins: update this file to match. `brand.md` still owns
-company facts, voice and the logo rules; documents and social assets stay on `brand.md`'s older
-visual spec until they are migrated.
+company facts, voice and the logo rules. Decks, proposals, documents and social assets all follow
+this file.
 
 `scripts/build-deck.py` applies everything below mechanically. Read this to make content decisions
 (which slide type, how much text, which photograph), not to hand-write CSS.
@@ -169,12 +169,13 @@ draw the same system on a canvas (the Aperture look; the other feed styles are b
 
 The editors above draw one look, Aperture on a flat ground. Feed posts and stories compete for a
 thumb, so there are three layouts, built from a JSON deck by `scripts/build-social.py` (examples
-in `templates/social-styles/examples/`; the Claude Code app, not claude.ai chat):
+in `templates/social-styles/examples/`, each with a picture of how it renders; the Claude Code app,
+not claude.ai chat):
 
 | Layout | Treatments | Use it for |
 |---|---|---|
 | **type** | ground: `paper`, `paper-deep`, `dark`, `dark-deep`, `lens` (brand blue). Light grain. Optional empty pill, drawn as a line | An idea, a question, a statement. Philosophy and "why" posts, the problem a film or a venue has |
-| **photo** | `natural`: full-bleed, a soft dark shade under the type. `duotone`: the photograph in ink, lens blue and paper, with grain | Ads and energy: the showcase post, a first-time-visitor story, anything that should stop a scroll |
+| **photo** | `natural`: full-bleed, a soft dark shade under the type. `duotone`: the photograph in ink, lens blue and paper, with grain | Ads and energy: a promoted post, a first-time-visitor story, anything that should stop a scroll |
 | **framed** | arrangements `cover`, `rows`, `lens`, `pair`, `close`: light ground, every photograph in a pill or lens | B2B proof and offers: agencies, venues, brands. The nearest to the website |
 
 **What stays the same everywhere:** the colour tokens (no other hex), Instrument Serif for display
@@ -195,7 +196,7 @@ fill the 900px column, up to a maximum, so nothing overflows. A story keeps its 
   `natural` photographs and `framed` slides; `"grain": false` turns it off everywhere.
 
 **Choosing:** one layout per post. A `photo` carousel may carry a `type` slide between its photos
-(the showcase post does); `framed` stays framed. Two posts that will sit side by side on the
+(`examples/photo-post.json` does); `framed` stays framed. Two posts that will sit side by side on the
 grid or be pinned together get different layouts, so the covers don't read as one post.
 Say less than you think: one to three lines a slide, one short sub line at most, no footers, no
 slide counts. A photograph with identifiable people needs consent for advertising use before a post

@@ -2,38 +2,38 @@
  "slides": [
   {
    "layout": "photo",
-   "photo": "athens-literature-festival-two-visitors-magenta-09",
-   "focal": "50% 40%",
+   "photo": "home-install-headset-stool-01",
+   "focal": "40% 50%",
    "valign": "bottom",
    "lines": [
     {
      "t": "Immersive cinema,",
-     "size": 128
+     "max": 128
     },
     {
      "t": "anywhere.",
-     "size": 268
+     "max": 268
     }
    ]
   },
   {
    "layout": "type",
+   "ground": "dark-deep",
    "valign": "center",
    "lines": [
     {
      "t": "You give",
-     "size": 296
+     "max": 296
     },
     {
      "t": "us the",
-     "size": 296
+     "max": 296
     },
     {
      "t": "room.",
-     "size": 296
+     "max": 296
     }
-   ],
-   "ground": "dark-deep"
+   ]
   },
   {
    "layout": "photo",
@@ -43,33 +43,11 @@
    "lines": [
     {
      "t": "We install",
-     "size": 200
+     "max": 200
     },
     {
      "t": "the cinema.",
-     "size": 200
-    }
-   ]
-  },
-  {
-   "layout": "photo",
-   "photo": "tedxauth-room-operator-02",
-   "focal": "50% 50%",
-   "scrim": false
-  },
-  {
-   "layout": "photo",
-   "photo": "athens-literature-festival-two-visitors-warm-08",
-   "focal": "50% 40%",
-   "valign": "bottom",
-   "lines": [
-    {
-     "t": "5,000+",
-     "size": 340
-    },
-    {
-     "t": "screenings.",
-     "size": 120
+     "max": 200
     }
    ]
   },
@@ -81,15 +59,15 @@
    "lines": [
     {
      "t": "Festivals.",
-     "size": 168
+     "max": 168
     },
     {
      "t": "Museums.",
-     "size": 168
+     "max": 168
     },
     {
      "t": "Brands.",
-     "size": 168
+     "max": 168
     }
    ]
   },
@@ -101,11 +79,11 @@
    "lines": [
     {
      "t": "Tell us about",
-     "size": 154
+     "max": 154
     },
     {
      "t": "your space.",
-     "size": 154
+     "max": 154
     }
    ],
    "link": "hello@poeticsvr.com"

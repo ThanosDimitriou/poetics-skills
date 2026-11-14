@@ -1,0 +1,92 @@
+{
+ "slides": [
+  {
+   "layout": "photo",
+   "photo": "home-install-headset-stool-01",
+   "focal": "40% 50%",
+   "valign": "bottom",
+   "lines": [
+    {
+     "t": "Immersive cinema,",
+     "max": 128
+    },
+    {
+     "t": "anywhere.",
+     "max": 268
+    }
+   ]
+  },
+  {
+   "layout": "type",
+   "ground": "dark-deep",
+   "valign": "center",
+   "lines": [
+    {
+     "t": "You give",
+     "max": 296
+    },
+    {
+     "t": "us the",
+     "max": 296
+    },
+    {
+     "t": "room.",
+     "max": 296
+    }
+   ]
+  },
+  {
+   "layout": "photo",
+   "photo": "art-tech-technopolis-station-stool-06",
+   "focal": "50% 50%",
+   "valign": "bottom",
+   "lines": [
+    {
+     "t": "We install",
+     "max": 200
+    },
+    {
+     "t": "the cinema.",
+     "max": 200
+    }
+   ]
+  },
+  {
+   "layout": "photo",
+   "photo": "athens-literature-festival-single-seat-06",
+   "focal": "50% 50%",
+   "valign": "bottom",
+   "lines": [
+    {
+     "t": "Festivals.",
+     "max": 168
+    },
+    {
+     "t": "Museums.",
+     "max": 168
+    },
+    {
+     "t": "Brands.",
+     "max": 168
+    }
+   ]
+  },
+  {
+   "layout": "photo",
+   "photo": "art-tech-technopolis-station-empty-room-07",
+   "focal": "50% 50%",
+   "valign": "bottom",
+   "lines": [
+    {
+     "t": "Tell us about",
+     "max": 154
+    },
+    {
+     "t": "your space.",
+     "max": 154
+    }
+   ],
+   "link": "hello@poeticsvr.com"
+  }
+ ]
+}

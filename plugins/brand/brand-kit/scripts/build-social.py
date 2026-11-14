@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """build-social.py - render Poetics feed posts and stories (Instagram, LinkedIn, TikTok) to PNG.
 
-    python3 build-social.py deck.json [OUT_DIR]
+    python3 build-social.py deck.json [OUT_DIR] [--tile 360]
+
+--tile sets the width of each slide in contact-sheet.png (default 270).
 
 The social styles (see design-system.md, "Social feed styles"): three layouts, a few treatments.
 
@@ -266,6 +268,9 @@ def main():
     args = sys.argv[1:]
     if not args or args[0] in ("-h", "--help"):
         print(__doc__); return 0
+    tile = None                                   # --tile N: width of each slide in contact-sheet.png
+    if "--tile" in args:
+        k = args.index("--tile"); tile = int(args[k + 1]); del args[k:k + 2]
     src = pathlib.Path(args[0]).resolve()
     out = pathlib.Path(args[1]).resolve() if len(args) > 1 else src.parent
     deck = json.loads(src.read_text())
@@ -301,8 +306,8 @@ def main():
             problems += len(bad)
             print(name, "ok" if not bad else "PROBLEM " + "; ".join(bad))
         # contact sheet: all slides side by side, for a quick look
-        w = 252 if story else 270; h = 448 if story else 338
-        cols = min(4, len(names)); rows = -(-len(names) // cols)
+        w = tile or (252 if story else 270); h = round(w * (16 / 9 if story else 5 / 4))
+        cols = min(3 if tile and tile >= 340 else 4, len(names)); rows = -(-len(names) // cols)
         tiles = "".join(f'<img src="{(out / n).as_uri()}" style="width:{w}px;height:{h}px;margin:0 10px 10px 0">' for n in names)
         sheet = out / "_sheet.html"
         sheet.write_text(f'<body style="margin:0;background:#1e1e1e;padding:10px 0 0 10px;width:{cols * (w + 10) + 10}px">{tiles}</body>')

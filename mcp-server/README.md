@@ -22,6 +22,7 @@ client, Claude Code plugin or MCP, picks it up immediately.
 - `generate_branded_document(content, output_path, format)` — writes a branded `.pdf` or `.docx`
 - `generate_branded_deck(deck, output_path)` — writes a branded `.html`, `.pdf`, or `.pptx` deck
 - `get_logo_path(variant, background)` — resolves the correct logo file for a given background
+- `generate_social_post(deck, output_dir)` — renders a feed carousel or story (type, photo or framed style) to PNGs
 - `get_social_template_path(template)` — path to the carousel / video-thumb HTML editor
 
 **Prompts** (reusable templates):

@@ -79,11 +79,14 @@ the feed relaxes. Copy a starting deck from `${CLAUDE_PLUGIN_ROOT}/brand-kit/tem
 
 | Layout | Look | Use it for | Example |
 |---|---|---|---|
-| `type` | Solid ground, big serif, grain; `lens` ground is brand blue | Ideas, questions, "why" | `philosophy.json` |
-| `photo` | Full-bleed photograph, shade under the type; `"treatment": "duotone"` | Ads, energy, stories | `showcase.json` |
-| `framed` | Light, photographs in pills and lenses | Agencies, venues, B2B proof | `agencies.json` |
+| `type` | Solid ground, big serif, grain; `lens` ground is brand blue | Ideas, questions, "why" | `type-post.json` |
+| `photo` | Full-bleed photograph, shade under the type; `"treatment": "duotone"` | Ads, energy, stories | `photo-post.json` |
+| `framed` | Light, photographs in pills and lenses | Agencies, venues, B2B proof | `framed-post.json` |
 
-`styles.json` has one slide of each look to copy from. Photographs are ids from the photo library
+Each example has a picture next to it (`photo-post.jpg`, `framed-post.jpg`, `type-post.jpg`): look
+at the one for the layout you chose before you write the deck, so you aim at the same quality.
+`styles.json` (and `styles.jpg`) has one slide of each look to copy from. The examples use only
+photographs without people. Photographs are ids from the photo library
 (`photos/index.json`) or file paths. The workflow: draft the copy first (short lines, one idea a
 slide, nothing the website doesn't say), pick the layout from the table, render, look at the
 contact sheet, fix the PROBLEM and COPY lines. If two posts will be pinned together, give them

@@ -6,16 +6,16 @@
    "top": 200,
    "lines": [
     {
-     "t": "Poetics is",
+     "t": "Type, paper.",
      "max": 170
     },
     {
-     "t": "a question.",
+     "t": "An idea.",
      "max": 330
     }
    ],
    "outline": {
-    "text": "Named after a book by Aristotle.",
+    "text": "An empty oval, drawn as a line.",
     "h": 380,
     "bottom": 150
    }
@@ -26,15 +26,15 @@
    "top": 380,
    "lines": [
     {
-     "t": "Immersive films",
+     "t": "Type, brand blue.",
      "max": 86
     },
     {
-     "t": "win prizes.",
+     "t": "A statement.",
      "max": 290
     },
     {
-     "t": "Then they wait.",
+     "t": "Then a pause.",
      "max": 290
     }
    ],
@@ -46,30 +46,32 @@
   {
    "layout": "photo",
    "treatment": "duotone",
-   "photo": "about-fitting-headset-03",
-   "focal": "62% 50%",
+   "photo": "home-install-headset-stool-01",
+   "focal": "40% 50%",
+   "valign": "bottom",
    "lines": [
     {
-     "t": "Your first",
-     "max": 240
+     "t": "Photo, duotone.",
+     "max": 128
     },
     {
-     "t": "headset.",
-     "max": 330
+     "t": "Ink, blue.",
+     "max": 300
     }
    ]
   },
   {
    "layout": "photo",
-   "photo": "athens-literature-festival-two-visitors-magenta-09",
-   "focal": "50% 40%",
+   "photo": "athens-literature-festival-single-seat-06",
+   "focal": "50% 50%",
+   "valign": "bottom",
    "lines": [
     {
-     "t": "Immersive cinema,",
+     "t": "Photo, natural.",
      "max": 128
     },
     {
-     "t": "anywhere.",
+     "t": "Full bleed.",
      "max": 268
     }
    ]
@@ -77,15 +79,15 @@
   {
    "layout": "framed",
    "arrangement": "cover",
-   "photo": "events-three-stations-purple-07",
-   "focal": "50% 45%",
+   "photo": "tedxauth-stools-logo-05",
+   "focal": "50% 55%",
    "lines": [
     {
-     "t": "Something to",
+     "t": "Framed, cover.",
      "max": 190
     },
     {
-     "t": "queue for.",
+     "t": "A pill.",
      "max": 300
     }
    ]
@@ -93,15 +95,16 @@
   {
    "layout": "framed",
    "arrangement": "lens",
-   "photo": "events-multi-station-venue-03",
+   "photo": "lbvr-station-pods-window-01",
+   "focal": "50% 50%",
    "h": 640,
    "lines": [
     {
-     "t": "Cinema that",
+     "t": "Framed, lens.",
      "max": 190
     },
     {
-     "t": "comes to you.",
+     "t": "Rounded.",
      "max": 190
     }
    ]

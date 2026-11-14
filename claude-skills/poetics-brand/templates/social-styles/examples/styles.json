@@ -1,0 +1,113 @@
+{
+ "slides": [
+  {
+   "layout": "type",
+   "ground": "paper",
+   "top": 200,
+   "lines": [
+    {
+     "t": "Type, paper.",
+     "max": 170
+    },
+    {
+     "t": "An idea.",
+     "max": 330
+    }
+   ],
+   "outline": {
+    "text": "An empty oval, drawn as a line.",
+    "h": 380,
+    "bottom": 150
+   }
+  },
+  {
+   "layout": "type",
+   "ground": "lens",
+   "top": 380,
+   "lines": [
+    {
+     "t": "Type, brand blue.",
+     "max": 86
+    },
+    {
+     "t": "A statement.",
+     "max": 290
+    },
+    {
+     "t": "Then a pause.",
+     "max": 290
+    }
+   ],
+   "outline": {
+    "h": 120,
+    "bottom": 130
+   }
+  },
+  {
+   "layout": "photo",
+   "treatment": "duotone",
+   "photo": "home-install-headset-stool-01",
+   "focal": "40% 50%",
+   "valign": "bottom",
+   "lines": [
+    {
+     "t": "Photo, duotone.",
+     "max": 128
+    },
+    {
+     "t": "Ink, blue.",
+     "max": 300
+    }
+   ]
+  },
+  {
+   "layout": "photo",
+   "photo": "athens-literature-festival-single-seat-06",
+   "focal": "50% 50%",
+   "valign": "bottom",
+   "lines": [
+    {
+     "t": "Photo, natural.",
+     "max": 128
+    },
+    {
+     "t": "Full bleed.",
+     "max": 268
+    }
+   ]
+  },
+  {
+   "layout": "framed",
+   "arrangement": "cover",
+   "photo": "tedxauth-stools-logo-05",
+   "focal": "50% 55%",
+   "lines": [
+    {
+     "t": "Framed, cover.",
+     "max": 190
+    },
+    {
+     "t": "A pill.",
+     "max": 300
+    }
+   ]
+  },
+  {
+   "layout": "framed",
+   "arrangement": "lens",
+   "photo": "lbvr-station-pods-window-01",
+   "focal": "50% 50%",
+   "h": 640,
+   "lines": [
+    {
+     "t": "Framed, lens.",
+     "max": 190
+    },
+    {
+     "t": "Rounded.",
+     "max": 190
+    }
+   ]
+  }
+ ]
+}

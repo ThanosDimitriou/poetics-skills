@@ -90,6 +90,23 @@ Approved, already in the voice:
 | You feel the wonder. You feel the presence. | Visitors watch a short program in a single-seat pod. (Let the photograph do the rest.) |
 | Ready when you are. | Write to us. |
 
+## Social posts
+
+The same voice, read in a second. Each slide is a few big words, so every word has to earn its place.
+
+- **One idea a slide.** Split a sentence across slides rather than shrinking it: "You give us the
+  room." on one, "We install the cinema." on the next.
+- **One to three short lines.** No footers, no slide counts, no second paragraph. A line under the
+  headline only when it adds a fact ("Six pods at one conference.").
+- **The first slide is a plain fact, a plain promise or a real question.** No bait, no "you won't
+  believe", no wordplay.
+- **A number keeps its date,** on the slide or in the caption ("As of September 2026").
+- **The last slide offers one path:** "Tell us about your space." and hello@poeticsvr.com, or
+  poeticsvr.com. Nothing else.
+- **The caption** starts with the slide's own line, then two or three plain sentences, then the
+  path. Three to five lowercase hashtags at the end, no emoji.
+- **Alt text** says what the photograph shows and repeats the words on the slide.
+
 ## Before you ship
 
 - Would a sentence survive in a generic tech landing page? Then it's too abstract: replace it with

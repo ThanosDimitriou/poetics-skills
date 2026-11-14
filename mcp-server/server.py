@@ -156,6 +156,36 @@ def generate_branded_deck(deck: dict, output_path: str) -> str:
 
 
 @mcp.tool()
+def generate_social_post(deck: dict, output_dir: str) -> str:
+    """Render a Poetics Instagram/LinkedIn/TikTok carousel or story to PNGs in
+    the feed styles (brand://design-system, "Social feed styles"). `deck` is
+    {format?: "post" | "story", grain?: bool, slides: [...]}; each slide has a
+    layout: "type" (solid ground, big serif lines), "photo" (full-bleed
+    photograph, optional "treatment": "duotone") or "framed" (light, photographs
+    in pills and lenses; "arrangement": cover | rows | lens | pair | close).
+    Lines are [{t, max}], sized to fill the column up to max. See
+    brand-kit/scripts/build-social.py's docstring for every field, and
+    brand-kit/templates/social-styles/examples/ for a deck and a picture of each
+    layout. Photographs are ids from the photo library or file paths.
+
+    Writes 01-<layout>.png onward (1080x1350, or 1080x1920 for a story) and a
+    contact-sheet.png into output_dir. The renderer checks margins, the story
+    safe zone and the copy; if it reports problems the call fails and shows
+    them. Needs Playwright and Chrome. Returns the output directory.
+    """
+    out = pathlib.Path(output_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as f:
+        json.dump(deck, f)
+        tmp_path = f.name
+    try:
+        _run("build-social.py", tmp_path, str(out))
+    finally:
+        pathlib.Path(tmp_path).unlink(missing_ok=True)
+    return str(out.resolve())
+
+
+@mcp.tool()
 def get_logo_path(variant: str = "wordmark", background: str = "dark") -> str:
     """Return the absolute path to the correct Poetics logo file for a given
     background. variant: "wordmark" (horizontal lockup) or "mark" (standalone

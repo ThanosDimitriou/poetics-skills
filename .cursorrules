@@ -11,7 +11,9 @@ the brand mechanically from structured content you provide. See `brand-kit/schem
 content format each script expects.
 
 For social carousels or video thumbnails, open the self-contained editors in
-`brand-kit/templates/*/editor.html` directly in a browser.
+`brand-kit/templates/*/editor.html` directly in a browser. For a finished feed carousel or story
+(type, photo or framed style), write a deck JSON from `brand-kit/templates/social-styles/examples/`
+and run `brand-kit/scripts/build-social.py`; read "Social feed styles" in `brand-kit/design-system.md` first.
 
 For richer tool-calling (not just this file's static context), this repo also has an MCP server
 at `mcp-server/` — see its README to connect it.

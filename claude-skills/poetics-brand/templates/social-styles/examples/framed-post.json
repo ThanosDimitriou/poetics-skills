@@ -2,8 +2,9 @@
  "slides": [
   {
    "layout": "framed",
-   "photo": "events-three-stations-purple-07",
-   "focal": "50% 45%",
+   "arrangement": "cover",
+   "photo": "tedxauth-stools-logo-05",
+   "focal": "50% 55%",
    "lines": [
     {
      "t": "Something to",
@@ -13,50 +14,33 @@
      "t": "queue for.",
      "max": 300
     }
-   ],
-   "arrangement": "cover"
+   ]
   },
   {
    "layout": "framed",
+   "arrangement": "rows",
    "rows": [
     {
      "t": "We curate.",
-     "photo": "home-curate-gallery-wall-01",
-     "focal": "50% 40%"
+     "photo": "events-single-station-gallery-04",
+     "focal": "50% 50%"
     },
     {
      "t": "We install.",
-     "photo": "events-single-station-gallery-04",
-     "focal": "50% 45%"
+     "photo": "home-install-headset-stool-01",
+     "focal": "50% 50%"
     },
     {
      "t": "We operate.",
-     "photo": "home-operate-fitting-headset-01",
+     "photo": "athens-literature-festival-single-seat-06",
      "focal": "50% 45%"
     }
-   ],
-   "arrangement": "rows"
+   ]
   },
   {
    "layout": "framed",
-   "photo": "events-operators-visitors-12",
-   "focal": "50% 45%",
-   "h": 640,
-   "lines": [
-    {
-     "t": "We run",
-     "max": 190
-    },
-    {
-     "t": "every session.",
-     "max": 190
-    }
-   ],
-   "arrangement": "lens"
-  },
-  {
-   "layout": "framed",
-   "photo": "events-multi-station-venue-03",
+   "arrangement": "lens",
+   "photo": "lbvr-station-pods-window-01",
    "focal": "50% 50%",
    "h": 640,
    "lines": [
@@ -68,19 +52,19 @@
      "t": "comes to you.",
      "max": 190
     }
-   ],
-   "arrangement": "lens"
+   ]
   },
   {
    "layout": "framed",
+   "arrangement": "pair",
    "photos": [
     {
      "photo": "art-tech-technopolis-station-empty-room-07",
      "focal": "50% 50%"
     },
     {
-     "photo": "home-install-headset-stool-01",
-     "focal": "40% 50%"
+     "photo": "art-tech-technopolis-station-stool-06",
+     "focal": "50% 50%"
     }
    ],
    "lines": [
@@ -96,13 +80,13 @@
      "t": "A cinema.",
      "max": 150
     }
-   ],
-   "arrangement": "pair"
+   ]
   },
   {
    "layout": "framed",
-   "photo": "events-visitors-colorful-room-06",
-   "focal": "50% 50%",
+   "arrangement": "close",
+   "photo": "events-single-station-gallery-04",
+   "focal": "50% 55%",
    "lines": [
     {
      "t": "Tell us about",
@@ -113,8 +97,7 @@
      "max": 190
     }
    ],
-   "link": "hello@poeticsvr.com",
-   "arrangement": "close"
+   "link": "hello@poeticsvr.com"
   }
  ]
 }

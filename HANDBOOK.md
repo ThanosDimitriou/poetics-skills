@@ -183,8 +183,10 @@ quickest route to a good post is to react to the copy before it is drawn.
 ### The deck file (for anyone running it by hand)
 
 The renderer reads a JSON deck. Start from an example in
-`brand-kit/templates/social-styles/examples/` (`showcase.json`, `agencies.json`,
-`philosophy.json`, and `styles.json`, which has one slide of each look).
+`brand-kit/templates/social-styles/examples/` (`photo-post.json`, `framed-post.json`,
+`type-post.json`, and `styles.json`, which has one slide of each look). Each has a picture next to
+it (`photo-post.jpg` and so on): open it to see what the result should look like. The examples use
+only photographs without people.
 
 ```bash
 python3 brand-kit/scripts/build-social.py my-deck.json out
@@ -234,7 +236,7 @@ public and the photos show real people).
   library sheet so you can see what is there.
 - **Set up.** The files default to the website's image folder; `POETICS_PHOTO_ROOT` points
   elsewhere. Colleagues without the website project get a zip and a setup prompt:
-  [PHOTOS-SETUP.md](PHOTOS-SETUP.md) (it may still be on its own branch until that change is merged).
+  [PHOTOS-SETUP.md](PHOTOS-SETUP.md).
 - **No library?** Send the photos you want used.
 - **Missing photo.** A deck shows an empty frame and warns; the social renderer stops and tells
   you which id wasn't found.
@@ -340,7 +342,7 @@ open stay open until someone with the answer settles them; don't let Claude pick
 ### Releasing a change
 
 1. Commit the change. Bump the version in `plugins/brand/.claude-plugin/plugin.json` and
-   `marketplace.json` (the plugin is at 0.5.0).
+   `marketplace.json` (the plugin is at 0.5.1).
 2. Colleagues on Claude Code update: `claude plugin marketplace update poetics`, then
    `claude plugin install brand@poetics`, then a new session.
 3. Colleagues using a cloned repo: `git pull`.
@@ -385,7 +387,7 @@ three layouts with a few treatments is easier to use than many templates.
 - "Instagram carousel promoting Poetics to agencies and venues. Framed style. Six slides. Then a
   story version."
 - "A philosophical carousel about why we're called Poetics. Type layout, no photographs on the
-  cover. It will be pinned next to our showcase post, so make the cover look different."
+  cover. It will be pinned next to our photo post, so make the cover look different."
 - "Story version of this post." (give the deck or the folder)
 
 **Checks and answers**

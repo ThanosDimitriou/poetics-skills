@@ -1,0 +1,103 @@
+{
+ "slides": [
+  {
+   "layout": "type",
+   "ground": "paper",
+   "top": 200,
+   "lines": [
+    {
+     "t": "Poetics is",
+     "max": 170
+    },
+    {
+     "t": "a question.",
+     "max": 330
+    }
+   ],
+   "outline": {
+    "text": "Named after a book by Aristotle.",
+    "h": 380,
+    "bottom": 150
+   }
+  },
+  {
+   "layout": "type",
+   "ground": "dark-deep",
+   "valign": "center",
+   "lines": [
+    {
+     "t": "How a story",
+     "max": 230
+    },
+    {
+     "t": "moves the",
+     "max": 230
+    },
+    {
+     "t": "people who",
+     "max": 230
+    },
+    {
+     "t": "watch it.",
+     "max": 230
+    }
+   ]
+  },
+  {
+   "layout": "photo",
+   "treatment": "duotone",
+   "photo": "art-tech-technopolis-station-stool-06",
+   "focal": "50% 50%",
+   "valign": "bottom",
+   "lines": [
+    {
+     "t": "Now you watch",
+     "max": 128
+    },
+    {
+     "t": "from the inside.",
+     "max": 170
+    }
+   ]
+  },
+  {
+   "layout": "type",
+   "ground": "lens",
+   "top": 380,
+   "lines": [
+    {
+     "t": "Immersive films",
+     "max": 86
+    },
+    {
+     "t": "win prizes.",
+     "max": 290
+    },
+    {
+     "t": "Then they wait.",
+     "max": 290
+    }
+   ],
+   "outline": {
+    "h": 120,
+    "bottom": 130
+   }
+  },
+  {
+   "layout": "type",
+   "ground": "dark-deep",
+   "valign": "center",
+   "link": "poeticsvr.com",
+   "lines": [
+    {
+     "t": "A new kind",
+     "max": 260
+    },
+    {
+     "t": "of poiesis.",
+     "max": 260
+    }
+   ]
+  }
+ ]
+}

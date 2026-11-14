@@ -165,6 +165,16 @@ layouts: cover, photo, statement, rows, figure, quote, closing) or
 check the copy live and export a PNG. Draft the text with the user in the website's voice; they
 add the photo and click Export.
 
+For a **whole carousel or story in the feed styles** (type: solid ground and big serif; photo:
+full-bleed photograph, optional duotone; framed: light, photographs in pills and lenses), read
+"Social feed styles" in `design-system.md`, look at the pictures in
+`templates/social-styles/examples/` (`photo-post.jpg`, `framed-post.jpg`, `type-post.jpg`), write
+a deck JSON like the ones next to them, and render it with `scripts/build-social.py`. That needs
+Chrome with Playwright, which the chat sandbox may not have: if it can't run, give the user the
+slide-by-slide copy and the deck JSON, and tell them to render it in Claude Code
+(`python3 scripts/build-social.py deck.json out`) or build the slides one by one in the editor. The
+photo library isn't available in chat: ask for photographs, or let them add them later.
+
 ### Brand review ("review this", "is this on-brand", "brand audit")
 
 Produce:

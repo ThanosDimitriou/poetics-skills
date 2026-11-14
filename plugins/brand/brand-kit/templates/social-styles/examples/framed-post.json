@@ -1,0 +1,103 @@
+{
+ "slides": [
+  {
+   "layout": "framed",
+   "arrangement": "cover",
+   "photo": "tedxauth-stools-logo-05",
+   "focal": "50% 55%",
+   "lines": [
+    {
+     "t": "Something to",
+     "max": 190
+    },
+    {
+     "t": "queue for.",
+     "max": 300
+    }
+   ]
+  },
+  {
+   "layout": "framed",
+   "arrangement": "rows",
+   "rows": [
+    {
+     "t": "We curate.",
+     "photo": "events-single-station-gallery-04",
+     "focal": "50% 50%"
+    },
+    {
+     "t": "We install.",
+     "photo": "home-install-headset-stool-01",
+     "focal": "50% 50%"
+    },
+    {
+     "t": "We operate.",
+     "photo": "athens-literature-festival-single-seat-06",
+     "focal": "50% 45%"
+    }
+   ]
+  },
+  {
+   "layout": "framed",
+   "arrangement": "lens",
+   "photo": "lbvr-station-pods-window-01",
+   "focal": "50% 50%",
+   "h": 640,
+   "lines": [
+    {
+     "t": "Cinema that",
+     "max": 190
+    },
+    {
+     "t": "comes to you.",
+     "max": 190
+    }
+   ]
+  },
+  {
+   "layout": "framed",
+   "arrangement": "pair",
+   "photos": [
+    {
+     "photo": "art-tech-technopolis-station-empty-room-07",
+     "focal": "50% 50%"
+    },
+    {
+     "photo": "art-tech-technopolis-station-stool-06",
+     "focal": "50% 50%"
+    }
+   ],
+   "lines": [
+    {
+     "t": "A space.",
+     "max": 150
+    },
+    {
+     "t": "An audience.",
+     "max": 150
+    },
+    {
+     "t": "A cinema.",
+     "max": 150
+    }
+   ]
+  },
+  {
+   "layout": "framed",
+   "arrangement": "close",
+   "photo": "events-single-station-gallery-04",
+   "focal": "50% 55%",
+   "lines": [
+    {
+     "t": "Tell us about",
+     "max": 190
+    },
+    {
+     "t": "your event.",
+     "max": 190
+    }
+   ],
+   "link": "hello@poeticsvr.com"
+  }
+ ]
+}

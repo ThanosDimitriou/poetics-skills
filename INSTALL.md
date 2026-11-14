@@ -26,8 +26,9 @@ appear in a claude.ai conversation, and Path E does nothing in Claude Code.
   never guesses one.
 - **"Curated program for [venue]"**: a curation deck of the titles you choose, with facts and
   links checked against official sources.
-- **"Write a one-pager / report / brief"**, **"social carousel"**, **"is this on-brand?"**,
-  **"what are our colors?"**
+- **"Write a one-pager / report / brief"**, **"social carousel"**, **"Instagram story"**,
+  **"is this on-brand?"**, **"what are our colors?"**. A feed carousel or story comes out as PNG
+  slides in one of three styles (type, photo, framed).
 
 You get an HTML file, a PDF, and an overview image of every page to review.
 
@@ -177,6 +178,9 @@ the tool's instructions, ask it to write the JSON, save it, and run the command 
 
 **Social carousel or video thumbnail:** open the editor in a browser, no install:
 `brand-kit/templates/social-carousel/editor.html` or `brand-kit/templates/video-thumb/editor.html`.
+For a whole carousel or story in the feed styles, copy a deck from
+`brand-kit/templates/social-styles/examples/`, edit it, and run
+`python3 brand-kit/scripts/build-social.py my-deck.json out` (needs Playwright and Chrome).
 
 More: [`brand-kit/guides/using-outside-claude-code.md`](brand-kit/guides/using-outside-claude-code.md).
 
