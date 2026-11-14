@@ -151,7 +151,7 @@ body{{background:#777}}
 .scrim.bottom{{background:linear-gradient(to top,rgba(8,10,9,.80) 0%,rgba(8,10,9,.55) 30%,rgba(8,10,9,.12) 58%,rgba(8,10,9,0) 70%)}}
 .scrim.top{{background:linear-gradient(to bottom,rgba(8,10,9,.80) 0%,rgba(8,10,9,.55) 30%,rgba(8,10,9,.12) 58%,rgba(8,10,9,0) 70%)}}
 .scrim.center{{background:rgba(8,10,9,.42)}}
-.scrim.mark{{background:linear-gradient(to bottom,rgba(8,10,9,.80) 0%,rgba(8,10,9,.55) 9%,rgba(8,10,9,0) 24%)}}
+.scrim.top-only{{background:linear-gradient(to bottom,rgba(8,10,9,.86) 0%,rgba(8,10,9,.66) 10%,rgba(8,10,9,.28) 20%,rgba(8,10,9,0) 32%)}}
 .grain{{position:absolute;inset:0;pointer-events:none}}
 .mark{{position:absolute;left:{MARGIN}px;top:{mark_top}px;width:{36 * 148 / 20:.0f}px;height:36px}}
 .txt{{position:absolute;left:{MARGIN}px;right:{MARGIN}px;display:flex;flex-direction:column}}
@@ -195,7 +195,7 @@ body{{background:#777}}
             if s.get("lines") and s.get("scrim", True):
                 body += f'<div class="scrim {valign}"></div>'
             else:
-                body += '<div class="scrim mark"></div>'
+                body += '<div class="scrim top-only"></div>'
             sub = f'<div class="sub" style="color:rgba(244,245,243,.78)">{esc(s["sub"])}</div>' if s.get("sub") else ""
             link = f'<div class="link" style="color:{g["accent"]}">{esc(s["link"])}</div>' if s.get("link") else ""
             if s.get("lines"):
