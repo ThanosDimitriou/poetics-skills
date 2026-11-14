@@ -1,0 +1,110 @@
+{
+ "slides": [
+  {
+   "layout": "type",
+   "ground": "paper",
+   "top": 200,
+   "lines": [
+    {
+     "t": "Poetics is",
+     "max": 170
+    },
+    {
+     "t": "a question.",
+     "max": 330
+    }
+   ],
+   "outline": {
+    "text": "Named after a book by Aristotle.",
+    "h": 380,
+    "bottom": 150
+   }
+  },
+  {
+   "layout": "type",
+   "ground": "lens",
+   "top": 380,
+   "lines": [
+    {
+     "t": "Immersive films",
+     "max": 86
+    },
+    {
+     "t": "win prizes.",
+     "max": 290
+    },
+    {
+     "t": "Then they wait.",
+     "max": 290
+    }
+   ],
+   "outline": {
+    "h": 120,
+    "bottom": 130
+   }
+  },
+  {
+   "layout": "photo",
+   "treatment": "duotone",
+   "photo": "about-fitting-headset-03",
+   "focal": "62% 50%",
+   "lines": [
+    {
+     "t": "Your first",
+     "max": 240
+    },
+    {
+     "t": "headset.",
+     "max": 330
+    }
+   ]
+  },
+  {
+   "layout": "photo",
+   "photo": "athens-literature-festival-two-visitors-magenta-09",
+   "focal": "50% 40%",
+   "lines": [
+    {
+     "t": "Immersive cinema,",
+     "max": 128
+    },
+    {
+     "t": "anywhere.",
+     "max": 268
+    }
+   ]
+  },
+  {
+   "layout": "framed",
+   "arrangement": "cover",
+   "photo": "events-three-stations-purple-07",
+   "focal": "50% 45%",
+   "lines": [
+    {
+     "t": "Something to",
+     "max": 190
+    },
+    {
+     "t": "queue for.",
+     "max": 300
+    }
+   ]
+  },
+  {
+   "layout": "framed",
+   "arrangement": "lens",
+   "photo": "events-multi-station-venue-03",
+   "h": 640,
+   "lines": [
+    {
+     "t": "Cinema that",
+     "max": 190
+    },
+    {
+     "t": "comes to you.",
+     "max": 190
+    }
+   ]
+  }
+ ]
+}

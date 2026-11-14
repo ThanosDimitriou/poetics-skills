@@ -1,0 +1,114 @@
+{
+ "slides": [
+  {
+   "layout": "photo",
+   "photo": "athens-literature-festival-two-visitors-magenta-09",
+   "focal": "50% 40%",
+   "valign": "bottom",
+   "lines": [
+    {
+     "t": "Immersive cinema,",
+     "size": 128
+    },
+    {
+     "t": "anywhere.",
+     "size": 268
+    }
+   ]
+  },
+  {
+   "layout": "type",
+   "valign": "center",
+   "lines": [
+    {
+     "t": "You give",
+     "size": 296
+    },
+    {
+     "t": "us the",
+     "size": 296
+    },
+    {
+     "t": "room.",
+     "size": 296
+    }
+   ],
+   "ground": "dark-deep"
+  },
+  {
+   "layout": "photo",
+   "photo": "art-tech-technopolis-station-stool-06",
+   "focal": "50% 50%",
+   "valign": "bottom",
+   "lines": [
+    {
+     "t": "We install",
+     "size": 200
+    },
+    {
+     "t": "the cinema.",
+     "size": 200
+    }
+   ]
+  },
+  {
+   "layout": "photo",
+   "photo": "tedxauth-room-operator-02",
+   "focal": "50% 50%",
+   "scrim": false
+  },
+  {
+   "layout": "photo",
+   "photo": "athens-literature-festival-two-visitors-warm-08",
+   "focal": "50% 40%",
+   "valign": "bottom",
+   "lines": [
+    {
+     "t": "5,000+",
+     "size": 340
+    },
+    {
+     "t": "screenings.",
+     "size": 120
+    }
+   ]
+  },
+  {
+   "layout": "photo",
+   "photo": "athens-literature-festival-single-seat-06",
+   "focal": "50% 50%",
+   "valign": "bottom",
+   "lines": [
+    {
+     "t": "Festivals.",
+     "size": 168
+    },
+    {
+     "t": "Museums.",
+     "size": 168
+    },
+    {
+     "t": "Brands.",
+     "size": 168
+    }
+   ]
+  },
+  {
+   "layout": "photo",
+   "photo": "art-tech-technopolis-station-empty-room-07",
+   "focal": "50% 50%",
+   "valign": "bottom",
+   "lines": [
+    {
+     "t": "Tell us about",
+     "size": 154
+    },
+    {
+     "t": "your space.",
+     "size": 154
+    }
+   ],
+   "link": "hello@poeticsvr.com"
+  }
+ ]
+}

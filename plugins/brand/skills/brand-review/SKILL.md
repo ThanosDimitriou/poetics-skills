@@ -45,7 +45,9 @@ can't judge.
    or price; confidential material; a personal email or the makers named without being asked.
 2. **Visual system:** the colour roles (blue only on what can be pressed, one accent, off-white
    paper, never `#FFFFFF`); Instrument Serif and Inter Tight at the right sizes; the wordmark;
-   space and hairlines, not boxes, shadows or gradients; the spacing guardrail (72px clear below
+   space and hairlines, not boxes, shadows or gradients (the social feed styles allow the shade under
+   type, a blue ground, grain and duotone, in those forms only: `design-system.md`, "Social feed
+   styles"); the spacing guardrail (72px clear below
    the wordmark, no overlaps, nothing crowding the footer).
 3. **Deck rules:** say less, white space, few overlines, true counts not threes, filler pages
    justified, footer "poeticsvr.com · Confidential", the closing page offers only the email.

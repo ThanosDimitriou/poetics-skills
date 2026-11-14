@@ -68,7 +68,9 @@ offer / tiered / pitch). Trigger phrases: "write a proposal", "proposal for", "m
 **pitch deck** with photographs and a story is a standard deck: that routes to `brand-decks`.
 
 **For avatars, video thumbnails, or social carousels**, route to `brand-templates`, which opens
-the relevant self-contained editor in `brand-kit/templates/`.
+the relevant self-contained editor in `brand-kit/templates/`. A finished feed carousel or story
+(type, photo or framed style, e.g. for a promoted post) is rendered by `brand-kit/scripts/build-social.py`;
+`brand-templates` says how.
 
 **For "is this on-brand" / review requests**, route to `brand-review`.
 

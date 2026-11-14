@@ -22,8 +22,8 @@ brand-kit/                (a link to plugins/brand/brand-kit, the real folder)
 ├── design-system.md      ← how decks, proposals and documents look (the website's system)
 ├── assets/                 logos, self-hosted fonts
 ├── photos/                 the photo library index (the photos stay on the owner's machine)
-├── scripts/                build-deck.py, build-doc-pdf.py, build-doc.py, audit-deck.py, photo-library.py
-├── templates/              deck starters (decks/), the social post and video thumbnail editors (_src/ + build-social-editors.py)
+├── scripts/                build-deck.py, build-doc-pdf.py, build-doc.py, audit-deck.py, photo-library.py, build-social.py
+├── templates/              deck starters (decks/), the social post and video thumbnail editors (_src/ + build-social-editors.py), social feed style examples (social-styles/)
 ├── schemas/                the document content schema
 └── guides/                 voice, deck copy, anti-slop, proposal playbook, using it outside Claude Code
 ```
@@ -104,4 +104,5 @@ proposal); every proposal is a practical A4 quote sheet; documents are A4 report
 one-pagers. `build-deck.py --check` renders every page and reports overflow and spacing problems.
 
 The social post editor (4:5, 1:1, 9:16) and the video thumbnail editor work offline in a browser,
-with a live copy check. Not written yet: team bios.
+with a live copy check. Feed posts and stories in three more styles (type, photo, framed) come from
+`scripts/build-social.py`. Not written yet: team bios.

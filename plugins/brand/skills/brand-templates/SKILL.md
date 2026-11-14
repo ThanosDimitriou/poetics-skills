@@ -7,7 +7,7 @@ description: >
   Use this skill for social media assets and video thumbnails. Trigger on: "social carousel",
   "LinkedIn carousel", "Instagram carousel", "case study post", "video thumb", "video thumbnail",
   "youtube thumbnail", "thumbnail for a video", "social template", "Instagram post", "LinkedIn
-  post", "brand template", "brand starter".
+  post", "Instagram story", "promoted post", "ad creative", "brand template", "brand starter".
 
 ---
 
@@ -23,7 +23,7 @@ cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/design-system.md"                  # the lo
 cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/brand.md"                          # social canvas specs
 ```
 
-## The two editors
+## The two editors (Aperture look)
 
 Self-contained HTML files: open them in a browser (double-click works, no server, nothing is
 uploaded). They draw in the website's design system (paper and ink, light or dark, Instrument
@@ -61,6 +61,34 @@ website's voice: short plain sentences with a full stop, no em dashes, no hype, 
 overlines only when they add a fact, no asterisks (there are no italics). The editor's copy check
 flags what slips through. The user picks the photo (their own file, or one from the Poetics photo
 library folder) and exports; you can't click Export for them.
+
+## Feed styles: build a whole post or story yourself
+
+The editor makes one slide at a time and only in the Aperture look. For a finished carousel or
+story (Claude Code only: it needs Playwright and Chrome), write a JSON deck and render it:
+
+```bash
+python3 "${CLAUDE_PLUGIN_ROOT}/brand-kit/scripts/build-social.py" deck.json OUT_DIR
+```
+
+It writes `01-….png` onward (1080 × 1350, or 1080 × 1920 with `"format": "story"`) and a
+`contact-sheet.png`, checks every slide (margins, wordmark clearance, the story's 250px, text over
+photographs) and the copy, and exits non-zero if something is wrong. Read the "Social feed styles"
+section of `design-system.md` first: it says which layout to use for what and which brand rules
+the feed relaxes. Copy a starting deck from `${CLAUDE_PLUGIN_ROOT}/brand-kit/templates/social-styles/examples/`:
+
+| Layout | Look | Use it for | Example |
+|---|---|---|---|
+| `type` | Solid ground, big serif, grain; `lens` ground is brand blue | Ideas, questions, "why" | `philosophy.json` |
+| `photo` | Full-bleed photograph, shade under the type; `"treatment": "duotone"` | Ads, energy, stories | `showcase.json` |
+| `framed` | Light, photographs in pills and lenses | Agencies, venues, B2B proof | `agencies.json` |
+
+`styles.json` has one slide of each look to copy from. Photographs are ids from the photo library
+(`photos/index.json`) or file paths. The workflow: draft the copy first (short lines, one idea a
+slide, nothing the website doesn't say), pick the layout from the table, render, look at the
+contact sheet, fix the PROBLEM and COPY lines. If two posts will be pinned together, give them
+different layouts. Say in your reply which brand rules the style relaxes, and that photographs
+showing identifiable people need consent for advertising use.
 
 ## Formats the editors don't cover
 

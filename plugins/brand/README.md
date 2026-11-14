@@ -19,7 +19,7 @@ The repo root's `brand-kit` is a symlink to it. See `brand-kit/brand.md` for the
 | brand-documents | Branded Word and PDF documents, rendered by bundled scripts |
 | brand-proposals | Proposals, offers and quotes: practical A4 quote sheets (quote / offer / tiered / pitch) per `brand-kit/guides/proposal-playbook.md`, rendered by the deck renderer |
 | brand-decks | Decks in the website's design system: standard, curation and proposal variants, as an HTML presenter with PDF/PPTX export |
-| brand-templates | Social carousels and video thumbnails via self-contained HTML editors |
+| brand-templates | Social posts, stories and video thumbnails: HTML editors, plus feed styles (type, photo, framed) rendered by `build-social.py` |
 | brand-review | Reviews any asset against the brand, returns a structured compliance score |
 | company | "What is Poetics" boilerplate for decks/docs/proposal intros |
 
