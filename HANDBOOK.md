@@ -49,7 +49,7 @@ Installing it is a separate page: [INSTALL.md](INSTALL.md).
 | A price in front of a client | "Quote for [client], [event], [dates], 4 pods, €[price] excl. VAT, in Greek" | A4 quote sheet (PDF) | brand-proposals |
 | A report, brief or one-pager | "One-pager for programmers on how a pop-up cinema works. PDF" | A4 PDF, or a Word file if it must be edited | brand-documents |
 | An Instagram, LinkedIn or TikTok post or story | "Instagram carousel for agencies and venues, 6 slides, then a story version" | PNG slides at 4:5 or 9:16, plus a caption | brand-templates |
-| One social slide, by hand | "Open the social post editor" | An editor you use in the browser, exports a PNG | brand-templates |
+| A post or carousel, by hand | "Open the social studio" | A browser studio: all feed styles, drag to adjust, exports PNG, ZIP, PDF | brand-templates |
 | A video thumbnail | "YouTube thumbnail for [video]" | 1920 × 1080 PNG from the thumbnail editor | brand-templates |
 | A check of something | Attach it: "Review this against the brand" | A score out of 10, what passes, what to fix | brand-review |
 | An answer | "Can I use the blue for a button?" "Does this sound like Poetics?" | Yes or no, the rule, the reason | brand-guidelines |
@@ -143,16 +143,24 @@ Figures get an as-of date. A price is set as a price, not a bullet.
 
 Two ways to make social assets. Pick by the job.
 
-| | Editor | Feed styles |
+| | Social studio | Renderer |
 |---|---|---|
-| What it is | An HTML page you open in a browser | A renderer Claude runs |
-| Good for | One slide, made by hand, no install | A whole carousel or story, planned and rendered together |
-| Output | One PNG per export | All slides, a contact sheet, checks |
-| Look | Aperture: flat ground, photos in rounded frames | Three layouts (below) |
-| Needs | A browser | Claude Code (Chrome and Playwright). Not claude.ai chat |
+| What it is | An HTML page you open in a browser | A script Claude runs |
+| Good for | Making or finishing a post by hand: drag, reframe, resize | A whole carousel planned and rendered by Claude |
+| Output | PNG, a ZIP of all slides, a LinkedIn PDF, a project file | All slides, a contact sheet, checks |
+| Look | The three feed layouts | The same three layouts, the same pixels |
+| Needs | A browser, nothing else | Claude Code (Chrome and Playwright). Not claude.ai chat |
 
-The editor's files are `brand-kit/templates/social-carousel/editor.html` (4:5, 1:1, 9:16) and
-`video-thumb/editor.html` (1920 × 1080). They work offline by double-click.
+Both use the same deck JSON: ask Claude for a deck, open it in the studio, adjust by hand; or save
+from the studio and have Claude render it. The studio is
+`brand-kit/templates/social-carousel/editor.html` (4:5, 1:1, 9:16); the thumbnail editor is
+`video-thumb/editor.html` (1920 × 1080). Both work offline by double-click.
+
+**Using the studio:** pick a format and the wordmark rule at the top, or start from an example
+carousel. For each slide choose a style, type the lines (each has its own size), add photos and
+click one into the selected frame. Drag text to move it, drag a photo to reframe it, scroll to zoom.
+The strip at the bottom adds, duplicates, deletes and reorders slides. Fix what Checks lists, then
+export. Save project keeps everything, photos included, to carry on later.
 
 ### The three layouts
 
@@ -299,7 +307,7 @@ else (tokens, fonts, wordmark, voice, the content rules) still applies.
 | `COPY` or a copy warning | Say the plain fact instead. The warning names the phrase |
 | Greek text looks off | Greek is supported; if something is wrong, tell Claude the slide and the line |
 | It asks a question you already answered | Say it again in one line; skip nothing you want kept |
-| You're in claude.ai chat and can't render posts | Feed styles need Claude Code. In chat, ask for the copy and use the editor |
+| You're in claude.ai chat and can't render posts | Ask for the copy (or a deck JSON) and make it in the social studio |
 | Claude refuses a film name or a price | By design. Supply the fact, or leave it out |
 
 If you can't tell whether something is allowed, ask: "Is this on-brand: [the thing]?" The

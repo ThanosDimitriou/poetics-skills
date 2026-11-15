@@ -41,9 +41,9 @@ Everything here works by hand too:
 - Read `design-system.md` for how things look and `guides/writing-on-brand-copy.md` for the voice.
 - Write a `content.json` file yourself following `schemas/doc-content-schema.md`.
 - Run the script from a terminal: `python3 scripts/build-doc.py content.json output.docx`.
-- For social assets, open `templates/social-carousel/editor.html` or
-  `templates/video-thumb/editor.html` directly in a browser (double-click the file) — no server,
-  no upload, just fill in the form and click export.
+- For social assets, open `templates/social-carousel/editor.html` (the social studio: posts,
+  carousels and stories in every feed style) or `templates/video-thumb/editor.html` directly in a
+  browser (double-click the file). No server, no upload. The studio also opens a deck JSON.
 - For a whole feed carousel or story (the type, photo and framed styles), copy a deck from
   `templates/social-styles/examples/`, edit it, and run
   `python3 scripts/build-social.py my-deck.json out` (needs Playwright and Chrome).

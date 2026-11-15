@@ -48,7 +48,7 @@ scripts/
   _brand_assets.py                      supporting file — don't edit or call directly
 templates/
   decks/                                standard, curation, proposal, quote, catalog (deck JSON)
-  social-carousel/editor.html           self-contained HTML editor — open in a browser
+  social-carousel/editor.html           the social studio: self-contained, open in a browser
   video-thumb/editor.html               self-contained HTML editor — open in a browser
 schemas/
   doc-content-schema.md                 the JSON schema build-doc.py / build-doc-pdf.py consume
@@ -159,11 +159,11 @@ people who made the deck unless asked; the only email is hello@poeticsvr.com; ev
 ### Social assets ("carousel", "Instagram/LinkedIn post", "video thumbnail")
 
 Give the user the right self-contained editor (an HTML file to open in a browser, offline):
-`templates/social-carousel/editor.html` for posts, carousel slides and stories (4:5, 1:1, 9:16;
-layouts: cover, photo, statement, rows, figure, quote, closing) or
-`templates/video-thumb/editor.html` for 1920×1080 thumbnails. Both draw in the design system,
-check the copy live and export a PNG. Draft the text with the user in the website's voice; they
-add the photo and click Export.
+`templates/social-carousel/editor.html`, the social studio, for posts, carousels and stories
+(4:5, 1:1, 9:16) in all three feed styles (type, photo, framed), with drag-to-move text, photo
+reframing, per-line sizes, the wordmark rule, live checks and export to PNG, ZIP or a LinkedIn PDF;
+or `templates/video-thumb/editor.html` for 1920×1080 thumbnails. Draft the text with the user in
+the website's voice; they add the photos and export.
 
 For a **whole carousel or story in the feed styles** (type: solid ground and big serif; photo:
 full-bleed photograph, optional duotone; framed: light, photographs in pills and lenses), read
@@ -173,7 +173,7 @@ a deck JSON like the ones next to them, and render it with `scripts/build-social
 Chrome with Playwright, which the chat sandbox may not have: if it can't run, give the user the
 slide-by-slide copy and the deck JSON, and tell them to render it in Claude Code
 (`python3 scripts/build-social.py deck.json out`, plus `--pdf` for a LinkedIn document post) or
-build the slides one by one in the editor. The
+open the deck JSON in the social studio (Open…), add the photos and export. The
 photo library isn't available in chat: ask for photographs, or let them add them later.
 
 ### Brand review ("review this", "is this on-brand", "brand audit")

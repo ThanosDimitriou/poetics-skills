@@ -125,9 +125,9 @@ The earlier two-voice system (a serif italic "inner voice" for sensory moments) 
 
 ## Social canvas specs
 
-Export geometry for social assets. The social post editor (`templates/social-carousel/editor.html`)
-makes 4:5, 1:1 and 9:16; the video thumbnail editor makes 1920 × 1080. The feed styles (type, photo,
-framed: `design-system.md`, "Social feed styles") are rendered by `scripts/build-social.py` at 4:5 and 9:16.
+Export geometry for social assets. The feed styles (type, photo, framed: `design-system.md`, "Social
+feed styles") come from the social studio (`templates/social-carousel/editor.html`, by hand) or
+`scripts/build-social.py` (rendered), both at 4:5, 1:1 and 9:16; the video thumbnail editor makes 1920 × 1080.
 
 **Primary format:** carousels at **1080 × 1350px (4:5)**: it works across Instagram, LinkedIn and
 TikTok without adaptation.

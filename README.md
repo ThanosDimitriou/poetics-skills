@@ -106,6 +106,6 @@ Instrument Serif and Inter Tight, aperture-shaped photographs, one voice
 proposal); every proposal is a practical A4 quote sheet; documents are A4 reports and
 one-pagers. `build-deck.py --check` renders every page and reports overflow and spacing problems.
 
-The social post editor (4:5, 1:1, 9:16) and the video thumbnail editor work offline in a browser,
-with a live copy check. Feed posts and stories in three more styles (type, photo, framed) come from
-`scripts/build-social.py`. Not written yet: team bios.
+The social studio (feed posts, carousels and stories in all three feed styles, by hand) and the video
+thumbnail editor work offline in a browser. `scripts/build-social.py` renders the same styles from a
+deck JSON, the format the studio saves. Not written yet: team bios.

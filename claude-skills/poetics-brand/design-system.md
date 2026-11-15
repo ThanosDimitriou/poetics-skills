@@ -154,22 +154,21 @@ Tight to see it as designed. The PDF is the version to send.
 ## Social posts and thumbnails
 
 The two editors in `templates/` (built from `templates/_src/` by `scripts/build-social-editors.py`)
-draw the same system on a canvas (the Aperture look; the other feed styles are below):
+work offline in a browser:
 
-- **Social post:** 1080 wide at 4:5, 1:1 or 9:16. 90px margins, the wordmark top-left (28px tall),
-  no footer and no slide count. A story keeps its top 270px and bottom 380px clear (the app's
-  own interface). Layouts mirror the deck templates: cover, photo with caption,
-  statement (on paper-deep), heading and rows, figure, quote, closing (the band with the Ring, the
-  email in lens). No text under 44px, overline included (about 16px on a phone); on the
-  cover the photograph shrinks to leave the text room.
+- **Social studio** (`social-carousel/editor.html`): the feed styles below, by hand, in 4:5, 1:1
+  and 9:16, for single posts, carousels and stories. It draws exactly what `build-social.py` draws
+  and reads and writes the same deck JSON, so a post can start in either and finish in the other.
+  It adds what a person needs: drag to move text, reframe and zoom photos, per-line sizes, the
+  wordmark rule, live checks (margins, safe zone, 44px, contrast, copy) and export to PNG, ZIP or
+  a LinkedIn PDF.
 - **Video thumbnail:** 1920 × 1080, 120px margins; title and photo (the photograph bleeds off the
   right edge, square on that side) or title only. Large display type: thumbnails are seen small.
-- Display sizes step down to fit rather than overflow; the copy check runs as you type.
 
 ## Social feed styles
 
-The editors above draw one look, Aperture on a flat ground. Feed posts and stories compete for a
-thumb, so there are three layouts, built from a JSON deck by `scripts/build-social.py` (examples
+Feed posts and stories compete for a thumb, so there are three layouts, built from a JSON deck by
+`scripts/build-social.py` or by hand in the social studio (examples
 in `templates/social-styles/examples/`, each with a picture of how it renders; the Claude Code app,
 not claude.ai chat):
 

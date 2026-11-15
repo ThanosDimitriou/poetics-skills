@@ -176,7 +176,7 @@ python3 brand-kit/scripts/build-doc-pdf.py content.json output.pdf
 **With ChatGPT or Gemini:** paste `brand-kit/brand.md` and `brand-kit/guides/deck-copy.md` into
 the tool's instructions, ask it to write the JSON, save it, and run the command yourself.
 
-**Social carousel or video thumbnail:** open the editor in a browser, no install:
+**Social posts, carousels, stories or a video thumbnail:** open the social studio or the thumbnail editor in a browser, no install:
 `brand-kit/templates/social-carousel/editor.html` or `brand-kit/templates/video-thumb/editor.html`.
 For a whole carousel or story in the feed styles, copy a deck from
 `brand-kit/templates/social-styles/examples/`, edit it, and run

@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Poetics social studio</title>
+<style>
+/*UI_FONTS*/
+:root { --paper:#EFF0EC; --deep:#E5E8E3; --shade:#C5CBC4; --ink:#121614; --soft:#5B625C; --lens:#16249C; --lens-deep:#0E1769; }
+* { box-sizing: border-box; margin: 0; }
+html, body { height: 100%; }
+body { font: 14px/1.45 'Inter Tight', system-ui, sans-serif; background: var(--paper); color: var(--ink);
+  display: grid; grid-template-columns: 390px minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; height: 100vh; overflow: hidden; }
+.panel { grid-row: 1 / 3; background: var(--deep); overflow-y: auto; padding: 22px 22px 80px; border-right: 1px solid var(--shade); }
+h1 { font: 400 34px/1.05 'Instrument Serif', Georgia, serif; letter-spacing: -0.02em; }
+.intro { color: var(--soft); margin: 6px 0 4px; font-size: 13px; }
+section { border-top: 1px solid var(--shade); margin-top: 18px; padding-top: 14px; }
+h2 { font: 500 12px/1.2 'Inter Tight', sans-serif; letter-spacing: .06em; text-transform: uppercase; color: var(--soft); margin-bottom: 4px; display: flex; justify-content: space-between; }
+label { display: block; font-size: 12px; color: var(--soft); margin: 12px 0 5px; }
+select, input[type=text], textarea { width: 100%; font: inherit; color: var(--ink); background: var(--paper);
+  border: 1px solid var(--shade); border-radius: 10px; padding: 8px 11px; }
+select:focus, input[type=text]:focus { border-color: var(--lens); outline: none; }
+input[type=range] { width: 100%; accent-color: var(--lens); }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+.check { display: flex; gap: 8px; align-items: center; color: var(--ink); font-size: 13px; margin-top: 10px; }
+.hint { color: var(--soft); font-size: 12px; margin-top: 6px; }
+.btn, .ghost { display: inline-flex; align-items: center; justify-content: center; min-height: 38px; padding: 0 14px; border-radius: 9999px;
+  font: 500 13px 'Inter Tight', sans-serif; cursor: pointer; border: 1px solid var(--lens); }
+.btn { background: var(--lens); color: var(--paper); }
+.btn:hover { background: var(--lens-deep); border-color: var(--lens-deep); }
+.ghost { background: transparent; color: var(--ink); border-color: var(--shade); }
+.ghost:hover { border-color: var(--ink); }
+.btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.btns > * { flex: 1 1 auto; }
+.line { display: grid; grid-template-columns: 1fr 92px 26px; gap: 6px; align-items: center; margin-top: 6px; }
+.line .size { display: flex; flex-direction: column; font-size: 11px; color: var(--soft); }
+.x { border: 0; background: none; color: var(--soft); font-size: 18px; cursor: pointer; line-height: 1; }
+.x:hover { color: var(--ink); }
+.slot { display: flex; gap: 10px; align-items: center; padding: 8px; border: 1px solid var(--shade); border-radius: 12px; margin-top: 8px; cursor: pointer; background: var(--paper); }
+.slot.on { border-color: var(--lens); box-shadow: 0 0 0 1px var(--lens); }
+.slot .pic { width: 46px; height: 46px; border-radius: 10px; background: var(--shade) center/cover no-repeat; flex: none; }
+.slot .meta { font-size: 12px; color: var(--soft); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.slot .meta b { display: block; color: var(--ink); font-weight: 500; }
+.tray { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 10px; }
+.tray div { aspect-ratio: 1; border-radius: 10px; background: var(--shade) center/cover no-repeat; cursor: pointer; position: relative; }
+.tray div:hover { outline: 2px solid var(--lens); }
+.tray div span { position: absolute; left: 0; right: 0; bottom: 0; font-size: 9px; padding: 2px 4px; background: rgb(18 22 20 / .55); color: #fff;
+  border-radius: 0 0 10px 10px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.issues p { padding: 7px 0; border-top: 1px solid var(--shade); font-size: 12.5px; }
+.issues p:first-child { border-top: 0; }
+.issues .ok { color: var(--soft); }
+.issues .bad::before { content: '●'; color: #B4232F; margin-right: 6px; font-size: 10px; }
+.stage { position: relative; display: flex; align-items: center; justify-content: center; padding: 28px 28px 44px; min-height: 0; min-width: 0; }
+canvas#c { max-width: 100%; max-height: 100%; width: auto; height: auto; border-radius: 4px; box-shadow: 0 2px 30px rgb(18 22 20 / 0.10); touch-action: none; }
+.stage .tip { position: absolute; bottom: 12px; left: 0; right: 0; text-align: center; font-size: 12px; color: var(--soft); }
+.stage.drop canvas { outline: 3px dashed var(--lens); outline-offset: 6px; }
+.strip { display: flex; gap: 12px; align-items: center; padding: 10px 18px; border-top: 1px solid var(--shade); overflow-x: auto; background: var(--paper); min-height: 132px; }
+.thumb { flex: none; position: relative; cursor: pointer; border-radius: 6px; padding: 3px; border: 2px solid transparent; }
+.thumb.on { border-color: var(--lens); }
+.thumb canvas { display: block; border-radius: 3px; height: 96px; width: auto; }
+.thumb .n { position: absolute; left: 7px; top: 6px; font-size: 10px; background: rgb(18 22 20 / .6); color: #fff; padding: 0 5px; border-radius: 6px; }
+.thumb .dot { position: absolute; right: 7px; top: 7px; width: 9px; height: 9px; border-radius: 50%; background: #B4232F; display: none; }
+.thumb.warn .dot { display: block; }
+.thumb.dragover { border-color: var(--soft); border-style: dashed; }
+.stripbtns { display: flex; flex-direction: column; gap: 6px; flex: none; margin-left: 6px; }
+.stripbtns .ghost { min-height: 30px; font-size: 12px; }
+[hidden] { display: none !important; }
+:focus-visible { outline: 2px solid var(--lens); outline-offset: 2px; }
+canvas#c:focus, canvas#c:focus-visible { outline: none; }
+kbd { font: 11px 'Inter Tight', sans-serif; border: 1px solid var(--shade); border-radius: 4px; padding: 0 4px; }
+</style>
+</head>
+<body>
+<aside class="panel">
+  <h1>Social studio.</h1>
+  <p class="intro">Posts, carousels and stories in the Poetics feed styles. Nothing leaves your computer.</p>
+
+  <section>
+    <h2>Post</h2>
+    <div class="row">
+      <div><label for="format">Format</label>
+        <select id="format">
+          <option value="post">Feed 4:5 (1080×1350)</option>
+          <option value="square">Square (1080×1080)</option>
+          <option value="story">Story 9:16 (1080×1920)</option>
+        </select></div>
+      <div><label for="markRule">Wordmark</label>
+        <select id="markRule">
+          <option value="ends">First and last slide</option>
+          <option value="all">Every slide</option>
+          <option value="cover">First slide only</option>
+          <option value="none">None</option>
+        </select></div>
+    </div>
+    <label class="check"><input type="checkbox" id="grain" checked> Grain texture (type grounds and duotone)</label>
+    <label class="check"><input type="checkbox" id="guides"> Show margins and safe area (not exported)</label>
+    <label for="example">Start from</label>
+    <select id="example">
+      <option value="">Choose a starting carousel…</option>
+      <option value="photo">Photo carousel (showcase look)</option>
+      <option value="framed">Framed carousel (agencies look)</option>
+      <option value="type">Type carousel (paper, blue, duotone)</option>
+      <option value="styles">One slide of each style</option>
+      <option value="blank">One empty slide</option>
+    </select>
+  </section>
+
+  <section>
+    <h2><span>Slide <span id="slideNo"></span></span><span id="slideKind" style="text-transform:none;letter-spacing:0"></span></h2>
+    <label for="style">Style</label>
+    <select id="style">
+      <optgroup label="Type">
+        <option value="type:paper">Type on paper</option>
+        <option value="type:paper-deep">Type on deeper paper</option>
+        <option value="type:dark">Type on ink</option>
+        <option value="type:dark-deep">Type on deeper ink</option>
+        <option value="type:lens">Type on lens blue</option>
+      </optgroup>
+      <optgroup label="Photo">
+        <option value="photo:natural">Photo, full bleed</option>
+        <option value="photo:duotone">Photo, duotone</option>
+      </optgroup>
+      <optgroup label="Framed">
+        <option value="framed:cover">Framed: cover (lines, big pill)</option>
+        <option value="framed:rows">Framed: three rows</option>
+        <option value="framed:lens">Framed: lens photo, lines below</option>
+        <option value="framed:pair">Framed: two pills</option>
+        <option value="framed:close">Framed: closing (lines, email, photo)</option>
+      </optgroup>
+    </select>
+    <div id="fields"></div>
+  </section>
+
+  <section>
+    <h2>Photos</h2>
+    <p class="hint">Add photos, select a frame (click it on the slide or below), then click a photo. Drag on the slide to reframe; scroll to zoom. You can also drop photos straight onto a frame.</p>
+    <div class="btns"><button class="ghost" id="addPhotosBtn">Add photos</button></div>
+    <input type="file" id="addPhotos" accept="image/*" multiple hidden>
+    <div class="tray" id="tray"></div>
+  </section>
+
+  <section>
+    <h2>Checks</h2>
+    <div class="issues" id="issues"></div>
+  </section>
+
+  <section>
+    <h2>Export</h2>
+    <div class="btns">
+      <button class="btn" id="exportSlide">This slide (PNG)</button>
+      <button class="btn" id="exportAll">All slides (ZIP)</button>
+    </div>
+    <div class="btns">
+      <button class="ghost" id="exportPdf">LinkedIn PDF</button>
+      <button class="ghost" id="saveProject">Save project</button>
+      <button class="ghost" id="openProjectBtn">Open…</button>
+    </div>
+    <input type="file" id="openProject" accept=".json,application/json" hidden>
+    <p class="hint">Save project keeps the photos inside the file. Open takes a saved project or a <code>deck.json</code> made by Claude (add its photos after). <kbd>⌘Z</kbd> undoes, <kbd>⇧⌘Z</kbd> redoes, arrow keys nudge the selected text.</p>
+  </section>
+</aside>
+
+<main class="stage" id="stage">
+  <canvas id="c" width="1080" height="1350" aria-label="Slide preview" tabindex="0"></canvas>
+  <div class="tip">Drag text to move it · drag a photo to reframe it · scroll on a photo to zoom</div>
+</main>
+
+<footer class="strip" id="strip"></footer>
+
+<script>
+const WORDMARK_SVG = __WORDMARK_SVG__;
+const FONT_FACES = /*FONT_FACES*/;
+const EXAMPLES = /*EXAMPLE_DECKS*/;
+/*COMMON_JS*/
+
+// ===== The look: the same numbers as scripts/build-social.py ==================================
+const GROUNDS = {
+  'paper':      { bg: '#EFF0EC', ink: '#121614', soft: '#5B625C', accent: '#16249C', mark: '#121614', dark: false },
+  'paper-deep': { bg: '#E5E8E3', ink: '#121614', soft: '#121614', accent: '#16249C', mark: '#121614', dark: false },
+  'dark':       { bg: '#121614', ink: '#F4F5F3', soft: '#8A918B', accent: '#8F9CFF', mark: '#F4F5F3', dark: true },
+  'dark-deep':  { bg: '#1C211E', ink: '#F4F5F3', soft: '#8A918B', accent: '#8F9CFF', mark: '#F4F5F3', dark: true },
+  'lens':       { bg: '#16249C', ink: '#EFF0EC', soft: 'rgba(239,240,236,.72)', accent: '#EFF0EC', mark: '#EFF0EC', dark: true },
+};
+const INK = [18, 22, 20], PAPER = [239, 240, 236], LENS = [22, 36, 156];
+const M = 90, COL = 900, MARK_H = 28, MIN_TEXT = 44, FRAME_BG = '#E5E8E3';
+const SUB_LIGHT = 'rgba(244,245,243,.78)';
+
+function geo(format) {
+  const story = format === 'story', square = format === 'square';
+  const H = story ? 1920 : square ? 1080 : 1350;
+  return { W: 1080, H, story, square,
+    markTop: story ? 280 : 84, txtTop: story ? 450 : 190, txtBottom: story ? 420 : 120,
+    safeTop: story ? 270 : 156, safeBottom: story ? H - 380 : H - 88,
+    oy: story ? 200 : 0, shift: (H - 1350) / 2,            // a dragged "top" is stored on the 4:5 canvas
+    k: square ? 0.747 : 1 };                               // framed geometry shrinks to fit a square
+}
+
+// ===== State ===================================================================================
+let deck = null;              // { format, grain, wordmark, slides: [...] }, the same shape as deck.json
+let cur = 0;                  // current slide
+let selSlot = 0;              // selected photo frame on the current slide
+let selText = false;          // text block selected (for nudging)
+const photos = new Map();     // id -> { id, img, src }
+let regions = [];             // hit areas from the last render of the current slide
+let lastIssues = [];
+let snapY = null;             // guide shown while dragging
+
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const $ = id => document.getElementById(id);
+const clone = o => JSON.parse(JSON.stringify(o));
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+function slide() { return deck.slides[cur]; }
+
+// ===== Fonts and text metrics ==================================================================
+const LS = 'letterSpacing' in CanvasRenderingContext2D.prototype;
+let MET = { serif: { a: 0.9, d: 0.25 }, sans: { a: 0.97, d: 0.24 } };
+function readMetrics() {
+  const m = (fam) => { ctx.font = `400 100px ${fam}`; if (LS) ctx.letterSpacing = '0px';
+    const t = ctx.measureText('Hg');
+    return t.fontBoundingBoxAscent ? { a: t.fontBoundingBoxAscent / 100, d: t.fontBoundingBoxDescent / 100 } : null; };
+  MET = { serif: m(DISPLAY) || MET.serif, sans: m(SANS) || MET.sans };
+}
+function measureSpaced(c, text, size, family, em) {
+  c.font = `400 ${size}px ${family}`; if (LS) c.letterSpacing = '0px';
+  return c.measureText(text).width + em * size * [...text].length;
+}
+function drawSpaced(c, text, x, y, size, family, em) {
+  c.font = `400 ${size}px ${family}`;
+  if (LS) { c.letterSpacing = `${em * size}px`; c.fillText(text, x, y); c.letterSpacing = '0px'; return; }
+  for (const ch of text) { c.fillText(ch, x, y); x += c.measureText(ch).width + em * size; }
+}
+// A line fills the 900px column, up to its own maximum: never wider than the column.
+function lineSize(c, t, max) {
+  const w = measureSpaced(c, t || ' ', 100, DISPLAY, -0.035);
+  return Math.max(10, Math.min(max || 150, w > 0 ? 100 * COL / w : max || 150));
+}
+
+// Lay out a text block (lines, sub, link) from y = 0, the way the HTML renderer's CSS does.
+function layoutBlock(c, lines, sub, link, colors, framed, scale = 1) {
+  const items = []; let y = 0;
+  const A = MET.serif.a, D = MET.serif.d;
+  lines.forEach((l, i) => {
+    if (!l.t) return;
+    const size = lineSize(c, l.t, (l.max || l.size || 150) * scale);
+    const top = y + (items.length ? -0.04 * size : 0), h = 0.92 * size;
+    items.push({ kind: 'line', text: l.t, size, x: M, top, h, base: top + (h - (A + D) * size) / 2 + A * size,
+      w: measureSpaced(c, l.t, size, DISPLAY, -0.035), color: colors.ink, family: DISPLAY, em: -0.035 });
+    y = top + h;
+  });
+  if (sub) {
+    y += framed ? 26 : 34;
+    c.font = `400 ${MIN_TEXT}px ${SANS}`; if (LS) c.letterSpacing = '0px';
+    const lh = MIN_TEXT * 1.3, a = MET.sans.a, d = MET.sans.d;
+    for (const ln of wrapLines(c, sub, COL)) {
+      items.push({ kind: 'sub', text: ln, size: MIN_TEXT, x: M, top: y, h: lh, base: y + (lh - (a + d) * MIN_TEXT) / 2 + a * MIN_TEXT,
+        w: c.measureText(ln).width, color: colors.sub, family: SANS, em: 0 });
+      y += lh;
+    }
+  }
+  if (link) {
+    y += framed ? 30 : 40;
+    const size = 68, lh = (A + D) * size;
+    items.push({ kind: 'link', text: link, size, x: M, top: y, h: lh, base: y + A * size,
+      w: measureSpaced(c, link, size, DISPLAY, -0.02), color: colors.accent, family: DISPLAY, em: -0.02 });
+    y += lh;
+  }
+  return { items, height: y };
+}
+
+// ===== Pixels: photos, duotone, grain ==========================================================
+function parseFocal(f) {
+  const m = String(f || '50% 50%').match(/(-?[\d.]+)%\s+(-?[\d.]+)%/);
+  return m ? [clamp(+m[1] / 100, 0, 1), clamp(+m[2] / 100, 0, 1)] : [0.5, 0.5];
+}
+const duoCache = new WeakMap();
+function duotone(img) {
+  if (duoCache.has(img)) return duoCache.get(img);
+  const s = Math.min(1, 1800 / Math.max(img.naturalWidth, img.naturalHeight));
+  const c = document.createElement('canvas'); c.width = Math.round(img.naturalWidth * s); c.height = Math.round(img.naturalHeight * s);
+  const x = c.getContext('2d'); x.drawImage(img, 0, 0, c.width, c.height);
+  const d = x.getImageData(0, 0, c.width, c.height), p = d.data;
+  const mix = (a, b, t, k) => a[k] + (b[k] - a[k]) * t;
+  for (let i = 0; i < p.length; i += 4) {
+    const r = clamp((p[i] / 255 - .5) * 1.15 + .5, 0, 1), g = clamp((p[i + 1] / 255 - .5) * 1.15 + .5, 0, 1), b = clamp((p[i + 2] / 255 - .5) * 1.15 + .5, 0, 1);
+    const L = .2126 * r + .7152 * g + .0722 * b;
+    const [A, B, t] = L < .5 ? [INK, LENS, L * 2] : [LENS, PAPER, (L - .5) * 2];
+    p[i] = mix(A, B, t, 0); p[i + 1] = mix(A, B, t, 1); p[i + 2] = mix(A, B, t, 2);
+  }
+  x.putImageData(d, 0, 0); duoCache.set(img, c); return c;
+}
+// Cover-fit inside a box, positioned by the focal point, then scaled (zoom) around it.
+function drawCover(c, src, x, y, w, h, focal, zoom = 1) {
+  const iw = src.naturalWidth || src.width, ih = src.naturalHeight || src.height;
+  const [fx, fy] = parseFocal(focal), s = Math.max(w / iw, h / ih), dw = iw * s, dh = ih * s;
+  const ox = x + w * fx, oy = y + h * fy;
+  const dx = ox + (x + (w - dw) * fx - ox) * zoom, dy = oy + (y + (h - dh) * fy - oy) * zoom;
+  c.drawImage(src, dx, dy, dw * zoom, dh * zoom);
+  return { dw, dh };
+}
+const grainTiles = {};
+function grainTile(dark) {
+  const key = dark ? 'd' : 'l';
+  if (grainTiles[key]) return grainTiles[key];
+  const t = document.createElement('canvas'); t.width = t.height = 256;
+  const x = t.getContext('2d'), d = x.createImageData(256, 256), v = dark ? 255 : 0;
+  for (let i = 0; i < d.data.length; i += 4) { d.data[i] = d.data[i + 1] = d.data[i + 2] = v; d.data[i + 3] = Math.random() * 255; }
+  x.putImageData(d, 0, 0); return (grainTiles[key] = t);
+}
+function drawGrain(c, G, dark, strong) {
+  c.save();
+  c.globalCompositeOperation = dark ? 'screen' : 'multiply';
+  c.globalAlpha = dark ? (strong ? .12 : .06) : .08;
+  c.fillStyle = c.createPattern(grainTile(dark), 'repeat'); c.fillRect(0, 0, G.W, G.H);
+  c.restore();
+}
+function scrim(c, G, kind) {
+  const stops = {
+    bottom: [[0, .80], [.30, .55], [.58, .12], [.70, 0]], top: [[0, .80], [.30, .55], [.58, .12], [.70, 0]],
+    mark: [[0, .86], [.10, .66], [.20, .28], [.32, 0]] }[kind];
+  if (kind === 'center') { c.fillStyle = 'rgba(8,10,9,.42)'; c.fillRect(0, 0, G.W, G.H); return; }
+  const g = kind === 'bottom' ? c.createLinearGradient(0, G.H, 0, 0) : c.createLinearGradient(0, 0, 0, G.H);
+  stops.forEach(([o, a]) => g.addColorStop(o, `rgba(8,10,9,${a})`));
+  c.fillStyle = g; c.fillRect(0, 0, G.W, G.H);
+}
+function placeholder(c, x, y, w, h, r, label, dark) {
+  c.save(); roundRect(c, x, y, w, h, r); c.clip();
+  c.fillStyle = dark ? '#2A302C' : FRAME_BG; c.fillRect(x, y, w, h);
+  c.fillStyle = dark ? 'rgba(244,245,243,.55)' : '#5B625C'; c.font = `400 ${MIN_TEXT}px ${SANS}`; if (LS) c.letterSpacing = '0px';
+  c.textAlign = 'center'; c.fillText(label, x + w / 2, y + h / 2 + 15); c.textAlign = 'left';
+  c.restore();
+}
+
+// ===== Rendering one slide =====================================================================
+function showMark(s, i, n) {
+  if (s.wordmark === true || s.wordmark === false) return s.wordmark;
+  const mode = deck.wordmark || 'ends';
+  return mode === 'all' || (mode !== 'none' && i === 0) || (mode === 'ends' && i === n - 1);
+}
+function photoOf(ref) { const p = ref && photos.get(ref); return p && p.img.complete && p.img.naturalWidth ? p.img : null; }
+
+// Returns { texts, regions, frames } for checks and for dragging.
+function renderSlide(c, i, opts = {}) {
+  const G = geo(deck.format), s = deck.slides[i], n = deck.slides.length, L = s.layout;
+  const g = GROUNDS[s.ground || (L === 'photo' ? 'dark' : 'paper')] || GROUNDS.paper;
+  const out = { texts: [], regions: [], frames: [] };
+  c.save(); c.textBaseline = 'alphabetic';
+  c.fillStyle = g.bg; c.fillRect(0, 0, G.W, G.H);
+  const mark = showMark(s, i, n);
+  const wantGrain = s.grain !== undefined ? s.grain : (L === 'type' || (L === 'photo' && s.treatment === 'duotone'));
+
+  const frame = (obj, x, y, w, h, r, slot, dark) => {
+    const img = photoOf(obj.photo);
+    if (img) {
+      c.save(); roundRect(c, x, y, w, h, r); c.clip(); c.fillStyle = FRAME_BG; c.fillRect(x, y, w, h);
+      const src = (L === 'photo' && s.treatment === 'duotone') ? duotone(img) : img;
+      const d = drawCover(c, src, x, y, w, h, obj.focal, obj.zoom || 1); c.restore();
+      out.regions.push({ type: 'photo', slot, rect: { x, y, w, h }, dw: d.dw, dh: d.dh });
+    } else {
+      placeholder(c, x, y, w, h, r, obj.photo ? `Add photo: ${obj.photo}` : 'Add a photo', dark);
+      out.regions.push({ type: 'photo', slot, rect: { x, y, w, h }, dw: w, dh: h });
+    }
+    if (L === 'framed') out.frames.push({ x, y, w, h });
+  };
+  const place = (block, top) => block.items.map(it => ({ ...it, top: it.top + top, base: it.base + top }));
+  const drawItems = items => { if (opts.noText) return; items.forEach(it => { c.fillStyle = it.color; drawSpaced(c, it.text, it.x, it.base, it.size, it.family, it.em); }); };
+
+  if (L === 'photo' || L === 'type') {
+    let scrimKind = null;
+    if (L === 'photo') frame(s, 0, 0, G.W, G.H, 0, 0, true);
+    const colors = L === 'photo' ? { ink: g.ink, sub: SUB_LIGHT, accent: g.accent }
+      : { ink: g.ink, sub: g.dark && s.ground !== 'lens' ? SUB_LIGHT : g.soft, accent: g.accent };
+    const block = layoutBlock(c, s.lines || [], s.sub, s.link, colors, false);
+    const valign = s.valign || (L === 'photo' ? 'bottom' : 'top');
+    let top = s.top != null ? s.top + G.shift
+      : valign === 'bottom' ? G.H - G.txtBottom - block.height : valign === 'center' ? (G.H - block.height) / 2 : G.txtTop;
+    const items = place(block, top);
+    if (L === 'photo') {
+      if (items.length && s.scrim !== false) scrimKind = s.top != null ? (top < G.H / 3 ? 'top' : 'bottom') : valign;
+      else if (mark) scrimKind = 'mark';
+      if (scrimKind) scrim(c, G, scrimKind);
+    }
+    if (L === 'type' && s.outline) {
+      const oh = s.outline.h || 380, ob = s.outline.bottom != null ? s.outline.bottom : G.txtBottom + 30, oyy = G.H - ob - oh;
+      c.save(); c.strokeStyle = g.ink; c.lineWidth = 3; roundRect(c, M + 1.5, oyy + 1.5, COL - 3, oh - 3, (oh - 3) / 2); c.stroke(); c.restore();
+      if (s.outline.text) {
+        c.font = `400 ${MIN_TEXT}px ${SANS}`; if (LS) c.letterSpacing = '0px';
+        const tw = c.measureText(s.outline.text).width, a = MET.sans.a, d = MET.sans.d;
+        const it = { kind: 'outline', text: s.outline.text, size: MIN_TEXT, x: M + (COL - tw) / 2, top: oyy + oh / 2 - (a + d) * MIN_TEXT / 2,
+          h: (a + d) * MIN_TEXT, w: tw, color: g.soft, family: SANS, em: 0 };
+        it.base = it.top + a * MIN_TEXT; out.texts.push(it); drawItems([it]);
+      }
+      out.regions.push({ type: 'outline', rect: { x: M, y: oyy, w: COL, h: oh } });
+    }
+    drawItems(items); out.texts.push(...items);
+    if (items.length) {
+      const w = Math.max(...items.map(t => t.w));
+      out.regions.push({ type: 'text', rect: { x: M, y: top, w: Math.max(w, 200), h: block.height }, top, height: block.height });
+    }
+  } else if (L === 'framed') {
+    const k = G.k, Y = y => 192 + (y - 192) * k + G.oy, S = h => h * k;
+    const colors = { ink: g.ink, sub: g.soft, accent: g.accent };
+    const a = s.arrangement || 'cover';
+    const text = (lines, sub, link, top) => { const b = layoutBlock(c, lines, sub, link, colors, true, k); const it = place(b, top); drawItems(it); out.texts.push(...it); };
+    if (a === 'cover') { frame(s, M, Y(690), COL, S(570), S(570) / 2, 0); text(s.lines || [], null, null, Y(192)); }
+    else if (a === 'rows') {
+      let y = 192;
+      (s.rows || []).slice(0, 3).forEach((r, j) => { frame(r, M, Y(y + 168), COL, S(160), S(160) / 2, j); text([{ t: r.t, max: 170 }], null, null, Y(y)); y += 357; });
+    } else if (a === 'lens') { const h = s.h || 700; frame(s, M, Y(192), COL, S(h), 48, 0); text(s.lines || [], s.sub, null, Y(192 + h + 44)); }
+    else if (a === 'pair') {
+      (s.photos || []).slice(0, 2).forEach((p, j) => frame(p, M + j * 470, Y(192), 430, S(560), Math.min(215, S(560) / 2), j));
+      text(s.lines || [], null, null, Y(800));
+    } else if (a === 'close') { frame(s, M, Y(700), COL, S(560), 48, 0); text(s.lines || [], null, s.link, Y(192)); }
+  }
+
+  const strong = s.ground === 'lens' || L === 'photo';
+  if (deck.grain !== false && wantGrain) drawGrain(c, G, g.dark, strong);
+  if (mark) drawWordmark(c, g.mark, M, G.markTop, MARK_H);
+
+  if (opts.ui) drawUI(c, G, out);
+  c.restore();
+  return out;
+}
+
+function drawUI(c, G, out) {
+  c.save();
+  if ($('guides').checked) {
+    c.strokeStyle = 'rgba(22,36,156,.8)'; c.setLineDash([12, 10]); c.lineWidth = 2;
+    c.beginPath(); c.moveTo(M, 0); c.lineTo(M, G.H); c.moveTo(G.W - M, 0); c.lineTo(G.W - M, G.H); c.stroke();
+    c.beginPath(); c.moveTo(0, G.safeTop); c.lineTo(G.W, G.safeTop); c.moveTo(0, G.safeBottom); c.lineTo(G.W, G.safeBottom); c.stroke();
+    if (G.story) { c.fillStyle = 'rgba(22,36,156,.10)'; c.fillRect(0, 0, G.W, 270); c.fillRect(0, G.H - 380, G.W, 380); }
+  }
+  const sel = out.regions.find(r => (r.type === 'photo' && r.slot === selSlot && slide().layout !== 'type' && !selText) || (r.type === 'text' && selText));
+  if (sel) { c.strokeStyle = '#16249C'; c.setLineDash([10, 8]); c.lineWidth = 3; const r = sel.rect; c.strokeRect(r.x - 6, r.y - 6, r.w + 12, r.h + 12); }
+  if (snapY != null) { c.strokeStyle = '#B4232F'; c.setLineDash([]); c.lineWidth = 2; c.beginPath(); c.moveTo(0, snapY); c.lineTo(G.W, snapY); c.stroke(); }
+  c.restore();
+}
+
+// ===== Checks ==================================================================================
+const work = document.createElement('canvas'), wctx = work.getContext('2d', { willReadFrequently: true });
+function lum([r, g, b]) { const ch = v => { v /= 255; return v <= .03928 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4; }; return .2126 * ch(r) + .7152 * ch(g) + .0722 * ch(b); }
+function rgba(col) {
+  if (col.startsWith('#')) return [parseInt(col.slice(1, 3), 16), parseInt(col.slice(3, 5), 16), parseInt(col.slice(5, 7), 16), 1];
+  const n = col.match(/[\d.]+/g).map(Number); return [n[0], n[1], n[2], n[3] == null ? 1 : n[3]];
+}
+function checkSlide(i) {
+  const G = geo(deck.format), s = deck.slides[i], issues = [];
+  work.width = G.W; work.height = G.H;
+  const r = renderSlide(wctx, i, { noText: true });
+  const story = G.story;
+  for (const t of r.texts) {
+    const name = `"${t.text}"`;
+    if (t.top < G.safeTop - 0.5 && t.kind !== 'outline') issues.push(story ? `${name} is in the top 270px, under the app's interface.` : `${name} is too close to the wordmark.`);
+    if (t.top + t.h > G.safeBottom + 0.5) issues.push(story ? `${name} is in the bottom 380px, under the reply bar and ad button.` : `${name} is too close to the bottom edge.`);
+    if (t.size < MIN_TEXT - 0.5) issues.push(`${name} is ${Math.round(t.size)}px: at least ${MIN_TEXT}px reads on a phone. Shorten the line or raise its size.`);
+    if (r.frames.some(f => t.x < f.x + f.w && t.x + t.w > f.x && t.top < f.y + f.h - 4 && t.top + t.h > f.y + 4)) issues.push(`${name} runs over a photo.`);
+    // contrast against what is behind the text (the slide drawn without text)
+    const x0 = clamp(Math.floor(t.x), 0, G.W - 1), y0 = clamp(Math.floor(t.top), 0, G.H - 1);
+    const w = clamp(Math.ceil(t.w), 1, G.W - x0), h = clamp(Math.ceil(t.h), 1, G.H - y0);
+    const px = wctx.getImageData(x0, y0, w, h).data, ls = [];
+    for (let k = 0; k < px.length; k += 8) ls.push([px[k], px[k + 1], px[k + 2]]);
+    const [tr, tg, tb, ta] = rgba(t.color), light = lum([tr, tg, tb]) > .4;
+    ls.sort((p, q) => lum(p) - lum(q));
+    const part = light ? ls.slice(Math.floor(ls.length * .9)) : ls.slice(0, Math.max(1, Math.floor(ls.length / 10)));
+    const back = [0, 1, 2].map(j => part.reduce((a, p) => a + p[j], 0) / part.length);
+    const txt = [tr, tg, tb].map((v, j) => v * ta + back[j] * (1 - ta));
+    const [l1, l2] = [lum(txt), lum(back)].sort((a, b) => b - a), ratio = (l1 + .05) / (l2 + .05), need = t.size >= 67 ? 3 : 4.5;
+    if (ratio < need) issues.push(`${name} has low contrast (${ratio.toFixed(1)}:1, needs ${need}:1). Move it to a darker part, reframe, use the shade or the duotone.`);
+  }
+  const slots = slotsOf(s);
+  slots.forEach((o, j) => { if (!photoOf(o.photo)) issues.push(`${slots.length > 1 ? `Frame ${j + 1}` : 'The photo frame'} is empty${o.photo ? ` (${o.photo})` : ''}.`); });
+  const copy = copyCheck({ Text: [...(s.lines || []).map(l => l.t), ...(s.rows || []).map(r => r.t)].join(' '), 'Line under': s.sub, Link: s.link, Oval: s.outline && s.outline.text });
+  return [...issues, ...copy];
+}
+
+// ===== Photo frames on a slide =================================================================
+function slotsOf(s) {
+  if (s.layout === 'photo') return [s];
+  if (s.layout !== 'framed') return [];
+  const a = s.arrangement || 'cover';
+  if (a === 'rows') return (s.rows || []).slice(0, 3);
+  if (a === 'pair') return (s.photos || []).slice(0, 2);
+  return [s];
+}
+
+// ===== Main render loop ========================================================================
+let raf = 0, checkTimer = 0, thumbTimer = 0;
+function requestRender() { if (!raf) raf = requestAnimationFrame(() => { raf = 0; draw(); }); }
+window.render = requestRender;
+function draw() {
+  if (!deck) return;
+  const G = geo(deck.format);
+  if (canvas.width !== G.W || canvas.height !== G.H) { canvas.width = G.W; canvas.height = G.H; }
+  const r = renderSlide(ctx, cur, { ui: true }); regions = r.regions;
+  clearTimeout(checkTimer); checkTimer = setTimeout(runChecks, 220);
+  clearTimeout(thumbTimer); thumbTimer = setTimeout(() => updateThumb(cur), 160);
+}
+function runChecks() {
+  lastIssues = checkSlide(cur);
+  $('issues').innerHTML = lastIssues.length ? lastIssues.map(t => `<p class="bad">${t.replace(/</g, '&lt;')}</p>`).join('')
+    : '<p class="ok">Nothing to fix on this slide: margins, text size, contrast and copy all pass.</p>';
+  const th = document.querySelectorAll('.thumb')[cur]; if (th) th.classList.toggle('warn', lastIssues.length > 0);
+}
+
+// ===== Slide strip =============================================================================
+const tc = document.createElement('canvas'), tctx = tc.getContext('2d');
+function thumbImage(i, target) {
+  const G = geo(deck.format); tc.width = G.W; tc.height = G.H; renderSlide(tctx, i);
+  target.width = 108; target.height = Math.round(108 * G.H / G.W);
+  const x = target.getContext('2d'); x.imageSmoothingQuality = 'high'; x.drawImage(tc, 0, 0, target.width, target.height);
+}
+function updateThumb(i) { const t = document.querySelectorAll('.thumb canvas')[i]; if (t) thumbImage(i, t); }
+let dragFrom = null;
+function buildStrip() {
+  const strip = $('strip'); strip.innerHTML = '';
+  deck.slides.forEach((s, i) => {
+    const d = document.createElement('div'); d.className = 'thumb' + (i === cur ? ' on' : ''); d.draggable = true;
+    const cv = document.createElement('canvas'); d.append(cv);
+    d.insertAdjacentHTML('beforeend', `<span class="n">${i + 1}</span><span class="dot" title="Something to fix"></span>`);
+    d.onclick = () => selectSlide(i);
+    d.ondragstart = e => { dragFrom = i; e.dataTransfer.effectAllowed = 'move'; };
+    d.ondragover = e => { if (dragFrom != null) { e.preventDefault(); d.classList.add('dragover'); } };
+    d.ondragleave = () => d.classList.remove('dragover');
+    d.ondrop = e => { e.preventDefault(); d.classList.remove('dragover'); if (dragFrom == null || dragFrom === i) return;
+      const [m] = deck.slides.splice(dragFrom, 1); deck.slides.splice(i, 0, m); cur = i; dragFrom = null; changed(true); };
+    strip.append(d); thumbImage(i, cv);
+    setTimeout(() => d.classList.toggle('warn', checkSlide(i).length > 0), 0);
+  });
+  const b = document.createElement('div'); b.className = 'stripbtns';
+  b.innerHTML = `<button class="ghost" id="addSlide">+ Slide</button><button class="ghost" id="dupSlide">Duplicate</button>
+    <button class="ghost" id="delSlide">Delete</button><div class="row" style="gap:6px"><button class="ghost" id="moveL" title="Move left">◀</button><button class="ghost" id="moveR" title="Move right">▶</button></div>`;
+  strip.append(b);
+  $('addSlide').onclick = () => { const s = slide(); const n = newSlide(styleKey(s)); deck.slides.splice(cur + 1, 0, n); cur++; changed(true); };
+  $('dupSlide').onclick = () => { deck.slides.splice(cur + 1, 0, clone(slide())); cur++; changed(true); };
+  $('delSlide').onclick = () => { if (deck.slides.length < 2) return; deck.slides.splice(cur, 1); cur = Math.min(cur, deck.slides.length - 1); changed(true); };
+  $('moveL').onclick = () => { if (cur < 1) return; [deck.slides[cur - 1], deck.slides[cur]] = [deck.slides[cur], deck.slides[cur - 1]]; cur--; changed(true); };
+  $('moveR').onclick = () => { if (cur >= deck.slides.length - 1) return; [deck.slides[cur + 1], deck.slides[cur]] = [deck.slides[cur], deck.slides[cur + 1]]; cur++; changed(true); };
+}
+function selectSlide(i) { cur = i; selSlot = 0; selText = false; document.querySelectorAll('.thumb').forEach((t, j) => t.classList.toggle('on', j === i)); buildFields(); requestRender(); }
+
+// ===== New slides and style changes ============================================================
+function styleKey(s) {
+  if (s.layout === 'type') return 'type:' + (s.ground || 'paper');
+  if (s.layout === 'photo') return 'photo:' + (s.treatment || 'natural');
+  return 'framed:' + (s.arrangement || 'cover');
+}
+function newSlide(key, from) {
+  const [L, v] = key.split(':'), o = from || {};
+  const lines = o.lines && o.lines.length ? clone(o.lines) : [{ t: 'One idea a slide.', max: 200 }];
+  const ph = o.photo || (o.rows && o.rows[0] && o.rows[0].photo) || (o.photos && o.photos[0] && o.photos[0].photo) || null;
+  const focal = o.focal || '50% 50%';
+  if (L === 'type') return { layout: 'type', ground: v, valign: o.valign && o.valign !== 'bottom' ? o.valign : 'center', lines, sub: o.sub, link: o.link };
+  if (L === 'photo') return { layout: 'photo', treatment: v, photo: ph, focal, valign: 'bottom', lines, sub: o.sub, link: o.link };
+  const s = { layout: 'framed', arrangement: v };
+  if (v === 'rows') s.rows = (o.rows && o.rows.length === 3) ? clone(o.rows)
+    : [{ t: 'We curate.', photo: ph, focal }, { t: 'We install.', photo: null, focal }, { t: 'We operate.', photo: null, focal }];
+  else if (v === 'pair') { s.photos = (o.photos && o.photos.length === 2) ? clone(o.photos) : [{ photo: ph, focal }, { photo: null, focal }]; s.lines = lines; }
+  else { s.photo = ph; s.focal = focal; s.lines = lines; }
+  if (v === 'lens') { s.h = 640; s.sub = o.sub; }
+  if (v === 'close') s.link = o.link || 'hello@poeticsvr.com';
+  return s;
+}
+
+// ===== The slide inspector =====================================================================
+function el(tag, props = {}, kids = []) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(props)) { if (k === 'style') e.style.cssText = v; else if (k.startsWith('on')) e[k] = v; else if (k === 'html') e.innerHTML = v; else e.setAttribute(k, v); }
+  (Array.isArray(kids) ? kids : [kids]).forEach(k => k != null && e.append(k));
+  return e;
+}
+function field(label, input) { return el('div', {}, [el('label', {}, label), input]); }
+function textInput(value, on, ph = '') { const i = el('input', { type: 'text', placeholder: ph }); i.value = value || ''; i.oninput = () => on(i.value); return i; }
+function range(min, max, step, value, on) { const r = el('input', { type: 'range', min, max, step }); r.value = value; r.oninput = () => on(+r.value); return r; }
+function edit(fn, rebuild = false) { fn(slide()); changed(rebuild); }
+
+function buildFields() {
+  const s = slide(), f = $('fields'); f.innerHTML = '';
+  $('slideNo').textContent = `${cur + 1} of ${deck.slides.length}`;
+  $('style').value = styleKey(s);
+  $('slideKind').textContent = showMark(s, cur, deck.slides.length) ? 'wordmark on' : '';
+  const L = s.layout, a = s.arrangement;
+
+  // Text
+  if (!(L === 'framed' && a === 'rows')) {
+    f.append(el('label', {}, 'Lines (each one fills the width, up to its size)'));
+    (s.lines || []).forEach((l, j) => {
+      const val = el('span', {}, String(l.max || 150));
+      const r = range(40, 440, 2, l.max || 150, v => { edit(x => x.lines[j].max = v); val.textContent = v; });
+      f.append(el('div', { class: 'line' }, [textInput(l.t, v => edit(x => x.lines[j].t = v)), el('div', { class: 'size' }, [r, val]),
+        el('button', { class: 'x', title: 'Remove line', onclick: () => edit(x => x.lines.splice(j, 1), true) }, '×')]));
+    });
+    const sizeAll = range(40, 440, 2, Math.round(((s.lines || [])[0] || {}).max || 200), v => edit(x => (x.lines || []).forEach(l => l.max = v), false));
+    sizeAll.onchange = () => buildFields();
+    f.append(el('div', { class: 'btns' }, [el('button', { class: 'ghost', onclick: () => edit(x => (x.lines = x.lines || []).push({ t: 'New line.', max: ((x.lines || []).slice(-1)[0] || {}).max || 200 }), true) }, '+ Add line')]));
+    f.append(field('Size all lines', sizeAll));
+  } else {
+    (s.rows || []).forEach((r, j) => f.append(field(`Row ${j + 1}`, textInput(r.t, v => edit(x => x.rows[j].t = v)))));
+  }
+  if (L !== 'framed' || a === 'lens') f.append(field('Line under (optional, 44px)', textInput(s.sub, v => edit(x => x.sub = v || undefined), 'A short fact')));
+  if (L !== 'framed' || a === 'close') f.append(field('Email or link (optional)', textInput(s.link, v => edit(x => x.link = v || undefined), 'hello@poeticsvr.com')));
+
+  // Position
+  if (L === 'type' || L === 'photo') {
+    const sel = el('select', {}, [['top', 'Top'], ['center', 'Middle'], ['bottom', 'Bottom']].map(([v, t]) => el('option', { value: v }, t)));
+    sel.value = s.valign || (L === 'photo' ? 'bottom' : 'top');
+    sel.onchange = () => edit(x => { x.valign = sel.value; delete x.top; }, true);
+    f.append(el('div', { class: 'row' }, [field(s.top != null ? 'Position (moved by hand)' : 'Position', sel),
+      el('div', {}, [el('label', {}, ' '), el('button', { class: 'ghost', style: 'width:100%', onclick: () => edit(x => delete x.top, true) }, 'Snap back')])]));
+  }
+  if (L === 'photo') {
+    const sh = el('input', { type: 'checkbox' }); sh.checked = s.scrim !== false; sh.onchange = () => edit(x => { if (sh.checked) delete x.scrim; else x.scrim = false; });
+    f.append(el('label', { class: 'check' }, [sh, ' Soft shade behind the text']));
+  }
+  if (L === 'type') {
+    const on = el('input', { type: 'checkbox' }); on.checked = !!s.outline;
+    on.onchange = () => edit(x => { if (on.checked) x.outline = { text: '', h: 380, bottom: 150 }; else delete x.outline; }, true);
+    f.append(el('label', { class: 'check' }, [on, ' Empty oval, drawn as a line']));
+    if (s.outline) {
+      f.append(field('Text in the oval (optional)', textInput(s.outline.text, v => edit(x => x.outline.text = v))));
+      f.append(field('Oval height', range(100, 600, 10, s.outline.h || 380, v => edit(x => x.outline.h = v))));
+      f.append(el('p', { class: 'hint' }, 'Drag the oval on the slide to move it.'));
+    }
+  }
+
+  // Photo frames
+  const slots = slotsOf(s);
+  if (slots.length) {
+    f.append(el('label', {}, slots.length > 1 ? 'Photo frames (select one, then click a photo)' : 'Photo'));
+    slots.forEach((o, j) => {
+      const p = photos.get(o.photo);
+      const card = el('div', { class: 'slot' + (j === selSlot ? ' on' : ''), onclick: () => { selSlot = j; selText = false; buildFields(); requestRender(); } }, [
+        el('div', { class: 'pic', style: p ? `background-image:url("${p.src}")` : '' }),
+        el('div', { class: 'meta' }, [el('b', {}, slots.length > 1 ? `Frame ${j + 1}` : 'Frame'), o.photo ? (p ? o.photo : `${o.photo} (add this photo)`) : 'Empty: click a photo below'])]);
+      f.append(card);
+    });
+    const o = slots[selSlot] || slots[0];
+    f.append(el('div', { class: 'row' }, [
+      field('Zoom', range(1, 3, 0.01, o.zoom || 1, v => edit(() => { o.zoom = v; if (v === 1) delete o.zoom; }))),
+      el('div', {}, [el('label', {}, ' '), el('button', { class: 'ghost', style: 'width:100%', onclick: () => edit(() => { o.focal = '50% 50%'; delete o.zoom; }, true) }, 'Reset crop')])]));
+    if (L === 'framed' && a === 'lens') f.append(field('Photo height', range(400, 820, 10, s.h || 700, v => edit(x => x.h = v))));
+  }
+
+  // Slide options
+  const wm = el('select', {}, [['', 'Follow the post setting'], ['on', 'Show on this slide'], ['off', 'Hide on this slide']].map(([v, t]) => el('option', { value: v }, t)));
+  wm.value = s.wordmark === true ? 'on' : s.wordmark === false ? 'off' : '';
+  wm.onchange = () => edit(x => { if (wm.value === 'on') x.wordmark = true; else if (wm.value === 'off') x.wordmark = false; else delete x.wordmark; }, true);
+  const gr = el('select', {}, [['', 'Automatic'], ['on', 'On'], ['off', 'Off']].map(([v, t]) => el('option', { value: v }, t)));
+  gr.value = s.grain === true ? 'on' : s.grain === false ? 'off' : '';
+  gr.onchange = () => edit(x => { if (gr.value === 'on') x.grain = true; else if (gr.value === 'off') x.grain = false; else delete x.grain; });
+  f.append(el('div', { class: 'row' }, [field('Wordmark', wm), field('Grain', gr)]));
+}
+
+$('style').onchange = () => { const s = slide(); const n = newSlide($('style').value, s);
+  ['wordmark', 'grain'].forEach(k => { if (s[k] !== undefined) n[k] = s[k]; }); deck.slides[cur] = n; selSlot = 0; changed(true); };
+
+// ===== Photos ==================================================================================
+function addPhotoFile(file) {
+  return new Promise(res => {
+    const id = file.name.replace(/\.[^.]+$/, '');
+    const fr = new FileReader();
+    fr.onload = () => { const img = new Image(); img.onload = () => { photos.set(id, { id, img, src: fr.result }); res(id); }; img.src = fr.result; };
+    fr.readAsDataURL(file);
+  });
+}
+async function addPhotoFiles(files, assignTo) {
+  const ids = []; for (const f of files) if (f.type.startsWith('image/')) ids.push(await addPhotoFile(f));
+  if (assignTo && ids[0]) { assignTo.photo = ids[0]; assignTo.focal = assignTo.focal || '50% 50%'; delete assignTo.zoom; }
+  buildTray(); changed(true); buildStrip();
+}
+function buildTray() {
+  const t = $('tray'); t.innerHTML = '';
+  for (const p of photos.values()) {
+    const d = el('div', { style: `background-image:url("${p.src}")`, title: p.id, draggable: 'true' }, el('span', {}, p.id));
+    d.onclick = () => { const o = slotsOf(slide())[selSlot]; if (!o) return; o.photo = p.id; delete o.zoom; o.focal = '50% 50%'; changed(true); };
+    d.ondragstart = e => e.dataTransfer.setData('text/x-photo', p.id);
+    t.append(d);
+  }
+  if (!photos.size) t.innerHTML = '<p class="hint" style="grid-column:1/-1">No photos yet.</p>';
+}
+$('addPhotosBtn').onclick = () => $('addPhotos').click();
+$('addPhotos').onchange = e => { addPhotoFiles([...e.target.files]); e.target.value = ''; };
+
+// ===== Pointer: move text, reframe photos, zoom ================================================
+function toCanvas(e) { const r = canvas.getBoundingClientRect(); return [(e.clientX - r.left) * canvas.width / r.width, (e.clientY - r.top) * canvas.height / r.height]; }
+function hit(x, y) { for (let i = regions.length - 1; i >= 0; i--) { const r = regions[i].rect; if (x >= r.x && x <= r.x + r.w && y >= r.y && y <= r.y + r.h) return regions[i]; } return null; }
+let drag = null;
+canvas.addEventListener('pointerdown', e => {
+  const [x, y] = toCanvas(e), h = hit(x, y); if (!h) { selText = false; requestRender(); return; }
+  canvas.setPointerCapture(e.pointerId); canvas.focus();
+  const s = slide(), G = geo(deck.format);
+  if (h.type === 'text') { selText = true; drag = { kind: 'text', y0: y, top0: h.top, height: h.height }; }
+  else if (h.type === 'outline') { drag = { kind: 'outline', y0: y, b0: s.outline.bottom != null ? s.outline.bottom : G.txtBottom + 30 }; }
+  else if (h.type === 'photo') {
+    selText = false; if (selSlot !== h.slot) { selSlot = h.slot; buildFields(); }
+    const o = slotsOf(s)[h.slot]; drag = { kind: 'photo', o, x0: x, y0: y, f0: parseFocal(o.focal), r: h };
+  }
+  requestRender();
+});
+canvas.addEventListener('pointermove', e => {
+  const [x, y] = toCanvas(e);
+  if (!drag) { const h = hit(x, y); canvas.style.cursor = !h ? 'default' : h.type === 'photo' ? 'grab' : 'move'; return; }
+  const s = slide(), G = geo(deck.format);
+  if (drag.kind === 'text') {
+    let top = drag.top0 + (y - drag.y0);
+    const snaps = [G.txtTop, (G.H - drag.height) / 2, G.H - G.txtBottom - drag.height]; snapY = null;
+    for (const v of snaps) if (Math.abs(top - v) < 14) { top = v; snapY = v === snaps[1] ? G.H / 2 : v === snaps[0] ? v : v + drag.height; }
+    s.top = Math.round(top - G.shift);
+  } else if (drag.kind === 'outline') {
+    s.outline.bottom = Math.round(clamp(drag.b0 - (y - drag.y0), 0, G.H - (s.outline.h || 380)));
+  } else if (drag.kind === 'photo') {
+    const z = drag.o.zoom || 1, r = drag.r;
+    const sx = Math.max(1, r.dw * z - r.rect.w), sy = Math.max(1, r.dh * z - r.rect.h);
+    const fx = r.dw * z > r.rect.w + 1 ? clamp(drag.f0[0] - (x - drag.x0) / sx, 0, 1) : drag.f0[0];
+    const fy = r.dh * z > r.rect.h + 1 ? clamp(drag.f0[1] - (y - drag.y0) / sy, 0, 1) : drag.f0[1];
+    drag.o.focal = `${Math.round(fx * 100)}% ${Math.round(fy * 100)}%`;
+  }
+  requestRender();
+});
+canvas.addEventListener('pointerup', () => { if (drag) { const wasText = drag.kind === 'text'; drag = null; snapY = null; changed(wasText); } });
+canvas.addEventListener('wheel', e => {
+  const [x, y] = toCanvas(e), h = hit(x, y); if (!h || h.type !== 'photo') return;
+  e.preventDefault(); const o = slotsOf(slide())[h.slot]; if (!o) return;
+  o.zoom = Math.round(clamp((o.zoom || 1) * (1 - e.deltaY * 0.0015), 1, 3) * 100) / 100; if (o.zoom === 1) delete o.zoom;
+  selSlot = h.slot; changed(false); clearTimeout(window._zt); window._zt = setTimeout(buildFields, 300);
+}, { passive: false });
+// Drop photos on a frame
+const stage = $('stage');
+stage.addEventListener('dragover', e => { if ([...e.dataTransfer.types].some(t => t === 'Files' || t === 'text/x-photo')) { e.preventDefault(); stage.classList.add('drop'); } });
+stage.addEventListener('dragleave', () => stage.classList.remove('drop'));
+stage.addEventListener('drop', e => {
+  e.preventDefault(); stage.classList.remove('drop');
+  const [x, y] = toCanvas(e), h = hit(x, y), slots = slotsOf(slide());
+  const target = h && h.type === 'photo' ? slots[h.slot] : slots[selSlot];
+  const id = e.dataTransfer.getData('text/x-photo');
+  if (id && target) { target.photo = id; target.focal = '50% 50%'; delete target.zoom; changed(true); return; }
+  if (e.dataTransfer.files.length) addPhotoFiles([...e.dataTransfer.files], target);
+});
+// Keyboard: undo, redo, nudge
+document.addEventListener('keydown', e => {
+  const typing = /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName);
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'z' && !typing) { e.preventDefault(); e.shiftKey ? redo() : undo(); return; }
+  if (!typing && selText && ['ArrowUp', 'ArrowDown'].includes(e.key)) {
+    e.preventDefault(); const s = slide(), G = geo(deck.format), r = regions.find(q => q.type === 'text'); if (!r) return;
+    s.top = Math.round(r.top + (e.key === 'ArrowUp' ? -1 : 1) * (e.shiftKey ? 20 : 4) - G.shift); changed(false);
+  }
+});
+
+// ===== History and autosave ====================================================================
+let hist = [], future = [], saveTimer = 0;
+function snapshot() { return JSON.stringify(deck); }
+function changed(rebuild) {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    const snap = snapshot();
+    if (hist[hist.length - 1] !== snap) { hist.push(snap); if (hist.length > 200) hist.shift(); future = []; }
+    try { localStorage.setItem('poetics-studio-deck', snap); } catch (err) { /* storage can be off: fine */ }
+  }, 350);
+  if (rebuild) { buildStrip(); buildFields(); }
+  requestRender();
+}
+function restore(snap) { deck = JSON.parse(snap); cur = Math.min(cur, deck.slides.length - 1); selSlot = 0; syncPostFields(); buildStrip(); buildFields(); requestRender(); }
+function undo() { if (hist.length < 2) return; future.push(hist.pop()); restore(hist[hist.length - 1]); }
+function redo() { if (!future.length) return; const s = future.pop(); hist.push(s); restore(s); }
+
+// ===== Post settings ===========================================================================
+function syncPostFields() { $('format').value = deck.format || 'post'; $('markRule').value = deck.wordmark || 'ends'; $('grain').checked = deck.grain !== false; }
+$('format').onchange = () => { deck.format = $('format').value; changed(true); };
+$('markRule').onchange = () => { deck.wordmark = $('markRule').value; changed(true); };
+$('grain').onchange = () => { deck.grain = $('grain').checked; changed(true); };
+$('guides').onchange = requestRender;
+$('example').onchange = () => {
+  const v = $('example').value; $('example').value = ''; if (!v) return;
+  if (deck && deck.slides.length > 1 && !confirm('Replace the current slides? (Undo brings them back.)')) return;
+  loadDeck(v === 'blank' ? { format: deck.format, slides: [newSlide('type:paper')] } : clone(EXAMPLES[v]));
+};
+function loadDeck(d) {
+  deck = { format: d.format || 'post', wordmark: d.wordmark || 'ends', grain: d.grain !== false, slides: d.slides && d.slides.length ? d.slides : [newSlide('type:paper')] };
+  cur = 0; selSlot = 0; selText = false; syncPostFields(); buildStrip(); buildFields(); changed(false); requestRender();
+}
+
+// ===== Export: PNG, ZIP, PDF, project ==========================================================
+function slideName(i) { const s = deck.slides[i]; return `${String(i + 1).padStart(2, '0')}-${s.arrangement || s.layout}`; }
+function renderFull(i) { const G = geo(deck.format), c = document.createElement('canvas'); c.width = G.W; c.height = G.H; renderSlide(c.getContext('2d'), i); return c; }
+function download(name, blob) { const a = document.createElement('a'); a.download = name; a.href = URL.createObjectURL(blob); a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 4000); }
+const toBlob = (c, type, q) => new Promise(r => c.toBlob(r, type, q));
+function warnFirst() {
+  const bad = deck.slides.map((s, i) => checkSlide(i).length ? i + 1 : 0).filter(Boolean);
+  return !bad.length || confirm(`Slide${bad.length > 1 ? 's' : ''} ${bad.join(', ')} still ${bad.length > 1 ? 'have' : 'has'} something to fix (see Checks). Export anyway?`);
+}
+$('exportSlide').onclick = async () => { if (checkSlide(cur).length && !confirm('This slide still has something to fix (see Checks). Export anyway?')) return; download(slideName(cur) + '.png', await toBlob(renderFull(cur), 'image/png')); };
+
+const CRC = (() => { const t = new Uint32Array(256); for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+function crc32(b) { let c = 0xFFFFFFFF; for (let i = 0; i < b.length; i++) c = CRC[(c ^ b[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+function zip(files) {   // [{ name, data: Uint8Array }], stored (PNG and JPEG are already compressed)
+  const enc = new TextEncoder(), parts = [], central = []; let off = 0;
+  const u16 = v => [v & 255, (v >> 8) & 255], u32 = v => [v & 255, (v >> 8) & 255, (v >> 16) & 255, (v >>> 24) & 255];
+  for (const f of files) {
+    const name = enc.encode(f.name), crc = crc32(f.data), size = f.data.length;
+    const head = new Uint8Array([...u32(0x04034b50), ...u16(20), ...u16(0), ...u16(0), ...u16(0), ...u16(0x5A21), ...u32(crc), ...u32(size), ...u32(size), ...u16(name.length), ...u16(0)]);
+    parts.push(head, name, f.data);
+    central.push(new Uint8Array([...u32(0x02014b50), ...u16(20), ...u16(20), ...u16(0), ...u16(0), ...u16(0), ...u16(0x5A21), ...u32(crc), ...u32(size), ...u32(size),
+      ...u16(name.length), ...u16(0), ...u16(0), ...u16(0), ...u16(0), ...u32(0), ...u32(off)]), name);
+    off += head.length + name.length + size;
+  }
+  const cdSize = central.reduce((a, p) => a + p.length, 0);
+  const end = new Uint8Array([...u32(0x06054b50), ...u16(0), ...u16(0), ...u16(files.length), ...u16(files.length), ...u32(cdSize), ...u32(off), ...u16(0)]);
+  return new Blob([...parts, ...central, end], { type: 'application/zip' });
+}
+$('exportAll').onclick = async () => {
+  if (!warnFirst()) return;
+  const files = [];
+  for (let i = 0; i < deck.slides.length; i++) files.push({ name: slideName(i) + '.png', data: new Uint8Array(await (await toBlob(renderFull(i), 'image/png')).arrayBuffer()) });
+  files.push({ name: 'deck.json', data: new TextEncoder().encode(JSON.stringify(deck, null, 1)) });
+  download('poetics-carousel.zip', zip(files));
+};
+async function pdf() {   // one page per slide, each a JPEG: what LinkedIn takes as a document post
+  const enc = new TextEncoder(), chunks = [], offs = []; let len = 0;
+  const push = d => { const b = typeof d === 'string' ? enc.encode(d) : d; chunks.push(b); len += b.length; };
+  const G = geo(deck.format), pw = G.W / 2, ph = G.H / 2, n = deck.slides.length;
+  push('%PDF-1.4\n%\xE2\xE3\xCF\xD3\n');
+  const obj = (id, body) => { offs[id] = len; push(`${id} 0 obj\n`); body(); push('\nendobj\n'); };
+  const kids = [...Array(n)].map((_, i) => `${3 + i * 3} 0 R`).join(' ');
+  obj(1, () => push('<< /Type /Catalog /Pages 2 0 R >>'));
+  obj(2, () => push(`<< /Type /Pages /Kids [${kids}] /Count ${n} >>`));
+  for (let i = 0; i < n; i++) {
+    const p = 3 + i * 3, jpg = new Uint8Array(await (await toBlob(renderFull(i), 'image/jpeg', 0.92)).arrayBuffer());
+    const content = `q ${pw} 0 0 ${ph} 0 0 cm /Im0 Do Q`;
+    obj(p, () => push(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pw} ${ph}] /Resources << /XObject << /Im0 ${p + 1} 0 R >> >> /Contents ${p + 2} 0 R >>`));
+    obj(p + 1, () => { push(`<< /Type /XObject /Subtype /Image /Width ${G.W} /Height ${G.H} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpg.length} >>\nstream\n`); push(jpg); push('\nendstream'); });
+    obj(p + 2, () => push(`<< /Length ${content.length} >>\nstream\n${content}\nendstream`));
+  }
+  const total = 3 + n * 3, xref = len;
+  push(`xref\n0 ${total}\n0000000000 65535 f \n` + [...Array(total - 1)].map((_, i) => String(offs[i + 1]).padStart(10, '0') + ' 00000 n \n').join(''));
+  push(`trailer\n<< /Size ${total} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`);
+  return new Blob(chunks, { type: 'application/pdf' });
+}
+$('exportPdf').onclick = async () => { if (!warnFirst()) return; download('poetics-carousel.pdf', await pdf()); };
+function shrink(p) {   // photos go into the project file at up to 2400px, as JPEG
+  const s = Math.min(1, 2400 / Math.max(p.img.naturalWidth, p.img.naturalHeight));
+  if (s === 1 && p.src.startsWith('data:image/jpeg')) return p.src;
+  const c = document.createElement('canvas'); c.width = Math.round(p.img.naturalWidth * s); c.height = Math.round(p.img.naturalHeight * s);
+  c.getContext('2d').drawImage(p.img, 0, 0, c.width, c.height); return c.toDataURL('image/jpeg', 0.9);
+}
+$('saveProject').onclick = () => {
+  const used = new Set(deck.slides.flatMap(s => slotsOf(s).map(o => o.photo)).filter(Boolean)), ph = {};
+  for (const p of photos.values()) if (used.has(p.id)) ph[p.id] = shrink(p);
+  download('poetics-carousel.json', new Blob([JSON.stringify({ ...deck, photos: ph })], { type: 'application/json' }));
+};
+$('openProjectBtn').onclick = () => $('openProject').click();
+$('openProject').onchange = async e => {
+  const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  let d; try { d = JSON.parse(await f.text()); } catch (err) { alert('That file is not a project or deck.json.'); return; }
+  if (!d.slides) { alert('That file has no slides.'); return; }
+  const ph = d.photos || {}; delete d.photos;
+  await Promise.all(Object.entries(ph).map(([id, src]) => new Promise(res => { const img = new Image(); img.onload = () => { photos.set(id, { id, img, src }); res(); }; img.onerror = res; img.src = src; })));
+  buildTray(); loadDeck(d);
+};
+
+// ===== Start ===================================================================================
+window.studio = { loadDeck, addPhotoFiles, get deck() { return deck; }, checkSlide, renderFull, selectSlide, photos };
+let saved = null; try { saved = JSON.parse(localStorage.getItem('poetics-studio-deck')); } catch (err) { saved = null; }
+loadDeck(saved && saved.slides ? saved : clone(EXAMPLES.type));
+buildTray();
+loadFonts(FONT_FACES).then(() => { readMetrics(); buildStrip(); requestRender(); });
+</script>
+</body>
+</html>

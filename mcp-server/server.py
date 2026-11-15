@@ -211,11 +211,12 @@ def get_logo_path(variant: str = "wordmark", background: str = "dark") -> str:
 @mcp.tool()
 def get_social_template_path(template: str) -> str:
     """Return the absolute path to a self-contained HTML social asset editor.
-    template: "social-carousel" (the social post editor: 4:5, 1:1 and 9:16
-    posts, carousel slides and stories) or "video-thumb" (1920x1080). Both draw
-    in brand://design-system, check the copy live, and export a PNG. Open the
-    returned path in a browser (a local file, no server). The user fills the
-    form and exports; this tool can't click Export for them.
+    template: "social-carousel" (the social studio: posts, carousels and stories
+    at 4:5, 1:1 and 9:16 in every feed style, with drag-to-adjust, live checks and
+    export to PNG, ZIP or a LinkedIn PDF; it also opens a deck JSON like the one
+    generate_social_post takes) or "video-thumb" (1920x1080). Open the returned
+    path in a browser (a local file, no server). The user adds photos and
+    exports; this tool can't click Export for them.
     """
     if template not in ("social-carousel", "video-thumb"):
         raise ValueError('template must be "social-carousel" or "video-thumb"')

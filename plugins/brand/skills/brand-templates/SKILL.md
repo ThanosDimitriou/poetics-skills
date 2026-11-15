@@ -23,49 +23,54 @@ cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/design-system.md"                  # the lo
 cat "${CLAUDE_PLUGIN_ROOT}/brand-kit/brand.md"                          # social canvas specs
 ```
 
-## The two editors (Aperture look)
+## The social studio and the thumbnail editor
 
 Self-contained HTML files: open them in a browser (double-click works, no server, nothing is
-uploaded). They draw in the website's design system (paper and ink, light or dark, Instrument
-Serif and Inter Tight, photographs in rounded frames, the wordmark), preview live, check the copy
-as you type, and export a PNG.
+uploaded, the fonts and wordmark are inside).
 
 | Request | Editor | Path |
 |---|---|---|
-| Instagram, LinkedIn or TikTok post or carousel, story | Social post | `${CLAUDE_PLUGIN_ROOT}/brand-kit/templates/social-carousel/editor.html` |
+| Instagram, LinkedIn or TikTok post, carousel or story, made by hand | Social studio | `${CLAUDE_PLUGIN_ROOT}/brand-kit/templates/social-carousel/editor.html` |
 | YouTube thumbnail, video cover | Video thumbnail | `${CLAUDE_PLUGIN_ROOT}/brand-kit/templates/video-thumb/editor.html` |
 
-**Social post**: formats 4:5 (feed and carousels, the default), 1:1, 9:16 (stories, keeping clear
-of the app's interface). Layouts mirror the deck's page templates:
+**Social studio**: the whole feed system, by hand. It draws the same three layouts as
+`build-social.py`, to the pixel: type (paper, deeper paper, ink, deeper ink, lens blue; an optional
+empty oval), photo (full bleed or duotone, with the soft shade) and framed (cover, three rows, lens,
+pair, closing). It does:
 
-| Layout | Use it for |
-|---|---|
-| Cover | The first slide: heading, one line, an optional photograph |
-| Photo with caption | One photograph that tells it |
-| Statement | One sentence that matters |
-| Heading and rows | Up to five short lines |
-| Figure | One real number, with its as-of date in the overline |
-| Quote | A person's words, name, role, optional portrait |
-| Closing | Where to write: "Tell us about your space." and hello@poeticsvr.com |
+- **Carousels:** a strip of slides to add, duplicate, delete and reorder by dragging.
+- **Formats:** 4:5, 1:1 and 9:16 (the story keeps its top 270px and bottom 380px clear).
+- **The wordmark:** first and last slide (default), every slide, the first only or none, with an
+  override on any slide.
+- **Text:** one row per line, each with its own size (a line fills the width up to it), a line
+  under, an email or link.
+- **Repositioning:** drag the text block (it snaps to top, middle and bottom), drag an oval, drag
+  a photo to reframe it, scroll or use the slider to zoom. Arrow keys nudge; Cmd+Z undoes.
+- **Photos:** added from the computer or dropped on a frame; a frame remembers the photo's name.
+- **Checks, live:** margins, the story's safe zone, text under 44px, contrast against what is
+  behind each line, text over a photo, empty frames, and the copy check. Export warns first.
+- **Export:** this slide (PNG), all slides (ZIP, with the deck.json), a LinkedIn PDF, or a project
+  file that keeps the photos inside. It opens a saved project or any `deck.json` you write.
 
-A carousel is several exports, one slide at a time. There is no footer or slide count: Instagram
-and LinkedIn show the account name and the carousel dots.
+So you can hand off either way: write a deck JSON (the format below), give it to the user to
+open in the studio and finish by hand, or render a deck they saved from the studio with
+`build-social.py` (add the photos by library id or path).
 
 **Video thumbnail**: 1920 × 1080, "Title and photo" (the photograph bleeds off the right edge) or
 "Title only". People see thumbnails small: a few large words.
 
 ## Your part
 
-Open the editor for the user, or give them the path. Draft the text with them first, in the
-website's voice: short plain sentences with a full stop, no em dashes, no hype, sentence case,
-overlines only when they add a fact, no asterisks (there are no italics). The editor's copy check
-flags what slips through. The user picks the photo (their own file, or one from the Poetics photo
-library folder) and exports; you can't click Export for them.
+Open the studio for the user, or give them the path. Draft the text with them first, in the
+website's voice: short plain sentences with a full stop, no em dashes, no hype, sentence case, no
+asterisks (there are no italics). The studio's checks flag what slips through. The user adds the
+photos (their own files, or ones from the Poetics photo library folder) and exports; you can't
+click Export for them.
 
 ## Feed styles: build a whole post or story yourself
 
-The editor makes one slide at a time and only in the Aperture look. For a finished carousel or
-story (Claude Code only: it needs Playwright and Chrome), write a JSON deck and render it:
+When you can run code (Claude Code: Playwright and Chrome), render a finished carousel or story
+yourself from a JSON deck, the same format the studio saves:
 
 ```bash
 python3 "${CLAUDE_PLUGIN_ROOT}/brand-kit/scripts/build-social.py" deck.json OUT_DIR
@@ -109,4 +114,6 @@ Edit the sources in `${CLAUDE_PLUGIN_ROOT}/brand-kit/templates/_src/`, then rebu
 python3 "${CLAUDE_PLUGIN_ROOT}/brand-kit/scripts/build-social-editors.py"
 ```
 
-Never edit `editor.html` by hand: the build embeds the fonts and the wordmark.
+Never edit `editor.html` by hand: the build embeds the fonts, the wordmark and the example decks
+(from `templates/social-styles/examples/`). The studio's drawing follows `build-social.py`: change
+both together, then check a deck renders the same in each.

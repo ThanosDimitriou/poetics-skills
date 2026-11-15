@@ -20,10 +20,14 @@ The social styles (see design-system.md, "Social feed styles"): three layouts, a
             close  lines, an email link, a lens photograph below
 
 deck.json:
-  {"format": "post" | "story",          4:5 (1080 x 1350, default) or 9:16 (1080 x 1920, top 270px and bottom 380px clear)
+  {"format": "post" | "square" | "story", 4:5 (1080 x 1350, default), 1:1 (1080 x 1080) or 9:16 (1080 x 1920,
+                                        top 270px and bottom 380px clear)
    "grain": true | false,               false turns the texture off everywhere
-   "wordmark": "ends" | "all" | "cover", the wordmark on the first and last slide (default), every slide, or the first
-                                        only; a slide's own "wordmark": true | false overrides it
+   "wordmark": "ends" | "all" | "cover" | "none", the wordmark on the first and last slide (default), every slide,
+                                        the first only, or none; a slide's own "wordmark": true | false overrides it
+   A slide's "top" (on the 4:5 canvas) places its text block by hand, as the social studio does when you drag it.
+   Photos take "zoom" (1 to 3) in every layout. The social studio (templates/social-carousel/editor.html) opens
+   and saves this same deck format.
    "slides": [{"layout": "photo", "photo": "<library id or file path>", "focal": "50% 40%", "zoom": 1.1,
                "valign": "bottom" | "center" | "top", "scrim": true,
                "lines": [{"t": "Immersive cinema,", "max": 128}, {"t": "anywhere.", "max": 268}],
@@ -144,11 +148,12 @@ def duo_filter():
 
 # ---- slides ------------------------------------------------------------------------------------------
 def build(deck):
-    story = deck.get("format") == "story"
-    H = 1920 if story else 1350
+    story, square = deck.get("format") == "story", deck.get("format") == "square"
+    H = 1920 if story else 1080 if square else 1350
     mark_top, txt_bottom, txt_top = (280, 420, 450) if story else (84, 120, 190)
     oy = 200 if story else 0                      # framed content starts 72px below the wordmark
-    shift = (H - 1350) // 2 if story else 0       # an explicit "top" is written for the 4:5 canvas
+    shift = (H - 1350) // 2                       # an explicit "top" is written for the 4:5 canvas
+    k = 0.747 if square else 1                    # framed geometry shrinks to fit a square
     grain_on = deck.get("grain", True)
 
     css = FONTS + f"""
@@ -183,18 +188,21 @@ body{{background:#777}}
             f'<span class="ln" data-max="{l.get("max", l.get("size", 150))}" style="font-size:100px;{color}">{esc(l["t"])}</span>'
             for l in ls)
 
-    def framed_photo(pid, focal, x, y, w, h, radius, bg):
+    def framed_photo(pid, focal, x, y, w, h, radius, bg, zoom=1):
+        focal = focal or "50% 50%"
         return (f'<div class="ph" style=\'left:{x}px;top:{y}px;width:{w}px;height:{h}px;border-radius:{radius}px;'
-                f'background-color:{bg};background-image:url("{photo_uri(pid)}");background-position:{focal or "50% 50%"}\'></div>')
+                f'background-color:{bg};overflow:hidden\'><div style=\'position:absolute;inset:0;background-size:cover;'
+                f'background-image:url("{photo_uri(pid)}");background-position:{focal};transform:scale({zoom});'
+                f'transform-origin:{focal}\'></div></div>')
 
     n_slides = len(deck["slides"])
-    mode = deck.get("wordmark", "ends")           # "ends": first and last slide, "all", or "cover": first only
+    mode = deck.get("wordmark", "ends")           # "ends": first and last, "all", "cover": first only, "none"
 
     def slide(s, i):
         L = s["layout"]
         show_mark = s.get("wordmark")
         if show_mark is None:
-            show_mark = mode == "all" or i == 1 or (mode == "ends" and i == n_slides)
+            show_mark = mode == "all" or (mode != "none" and i == 1) or (mode == "ends" and i == n_slides)
         g = GROUNDS[s.get("ground", "dark" if L == "photo" else "paper")]
         ink = f'color:{g["ink"]};'
         mark = WORDMARK.replace('fill="#121614"', f'fill="{g["mark"]}"')
@@ -207,13 +215,16 @@ body{{background:#777}}
             body += (f'<div class="bg" style=\'background-image:url("{photo_uri(s["photo"])}");background-position:{focal};'
                      f'transform:scale({s.get("zoom", 1)});transform-origin:{focal};{filt}\'></div>')
             valign = s.get("valign", "bottom")
-            if s.get("lines") and s.get("scrim", True):
-                body += f'<div class="scrim {valign}"></div>'
+            if s.get("lines") and s.get("scrim", True):   # text moved by hand: shade from the nearer edge
+                shade = ("top" if s["top"] + shift < H / 3 else "bottom") if "top" in s else valign
+                body += f'<div class="scrim {shade}"></div>'
             elif show_mark:
                 body += '<div class="scrim top-only"></div>'
             sub = f'<div class="sub" style="color:rgba(244,245,243,.78)">{esc(s["sub"])}</div>' if s.get("sub") else ""
             link = f'<div class="link" style="color:{g["accent"]}">{esc(s["link"])}</div>' if s.get("link") else ""
-            if s.get("lines"):
+            if s.get("lines") and "top" in s:
+                body += f'<div class="blk" style="top:{s["top"] + shift}px">{lines(s["lines"], ink)}{sub}{link}</div>'
+            elif s.get("lines"):
                 body += f'<div class="txt {valign}">{lines(s["lines"], ink)}{sub}{link}</div>'
         elif L == "type":
             valign = s.get("valign", "top")
@@ -234,26 +245,29 @@ body{{background:#777}}
             a, bgc = s["arrangement"], "#E5E8E3"
             sub = f'<div class="sub" style="color:{g["soft"]}">{esc(s["sub"])}</div>' if s.get("sub") else ""
             link = f'<div class="link" style="color:{g["accent"]}">{esc(s["link"])}</div>' if s.get("link") else ""
+            Y = lambda y: round(192 + (y - 192) * k)
+            S = lambda h: round(h * k)
+            sc = lambda ls: [{**l, "max": l.get("max", l.get("size", 150)) * k} for l in ls]
             if a == "cover":
-                body += f'<div class="blk" style="top:192px">{lines(s["lines"], ink)}</div>'
-                body += framed_photo(s["photo"], s.get("focal"), 90, 690, 900, 570, 285, bgc)
+                body += f'<div class="blk" style="top:{Y(192)}px">{lines(sc(s["lines"]), ink)}</div>'
+                body += framed_photo(s["photo"], s.get("focal"), 90, Y(690), 900, S(570), S(570) / 2, bgc, s.get("zoom", 1))
             elif a == "rows":
                 y = 192
                 for r in s["rows"]:
-                    body += f'<div class="blk" style="top:{y}px">{lines([{"t": r["t"], "max": 170}], ink)}</div>'
-                    body += framed_photo(r["photo"], r.get("focal"), 90, y + 168, 900, 160, 80, bgc)
+                    body += f'<div class="blk" style="top:{Y(y)}px">{lines(sc([{"t": r["t"], "max": 170}]), ink)}</div>'
+                    body += framed_photo(r["photo"], r.get("focal"), 90, Y(y + 168), 900, S(160), S(160) / 2, bgc, r.get("zoom", 1))
                     y += 357
             elif a == "lens":
                 h = s.get("h", 700)
-                body += framed_photo(s["photo"], s.get("focal"), 90, 192, 900, h, 48, bgc)
-                body += f'<div class="blk" style="top:{192 + h + 44}px">{lines(s["lines"], ink)}{sub}</div>'
+                body += framed_photo(s["photo"], s.get("focal"), 90, Y(192), 900, S(h), 48, bgc, s.get("zoom", 1))
+                body += f'<div class="blk" style="top:{Y(192 + h + 44)}px">{lines(sc(s["lines"]), ink)}{sub}</div>'
             elif a == "pair":
-                for k, p in enumerate(s["photos"]):
-                    body += framed_photo(p["photo"], p.get("focal"), 90 + k * 470, 192, 430, 560, 215, bgc)
-                body += f'<div class="blk" style="top:800px">{lines(s["lines"], ink)}</div>'
+                for j, p in enumerate(s["photos"]):
+                    body += framed_photo(p["photo"], p.get("focal"), 90 + j * 470, Y(192), 430, S(560), min(215, S(560) / 2), bgc, p.get("zoom", 1))
+                body += f'<div class="blk" style="top:{Y(800)}px">{lines(sc(s["lines"]), ink)}</div>'
             elif a == "close":
-                body += f'<div class="blk" style="top:192px">{lines(s["lines"], ink)}{link}</div>'
-                body += framed_photo(s["photo"], s.get("focal"), 90, 700, 900, 560, 48, bgc)
+                body += f'<div class="blk" style="top:{Y(192)}px">{lines(sc(s["lines"]), ink)}{link}</div>'
+                body += framed_photo(s["photo"], s.get("focal"), 90, Y(700), 900, S(560), 48, bgc, s.get("zoom", 1))
             else:
                 sys.exit(f"slide {i}: unknown framed arrangement {a!r}")
             body = f'<div class="fr">{body}</div>'
@@ -344,6 +358,8 @@ def main():
     deck = json.loads(src.read_text())
     page, slides, story, H = build(deck)
     out.mkdir(parents=True, exist_ok=True)
+    for old in out.glob("[0-9][0-9]-*.png"):        # slides from an earlier render (a reorder changes the names)
+        old.unlink()
     html_path = out / "_social.html"
     html_path.write_text(page, encoding="utf-8")
     problems = 0
@@ -367,7 +383,7 @@ def main():
             e.style.fontSize = Math.min(+e.dataset.max, 100 * 900 / w) + 'px'; })""")
         names = []
         for i, s in enumerate(slides, 1):
-            bad = pg.evaluate(CHECK_JS, [f"s{i}", story, STORY_TOP if story else 156, 1920 - STORY_BOTTOM if story else 1262, MIN_TEXT])
+            bad = pg.evaluate(CHECK_JS, [f"s{i}", story, STORY_TOP if story else 156, 1920 - STORY_BOTTOM if story else H - 88, MIN_TEXT])
             name = f"{i:02d}-{s.get('arrangement') or s['layout']}.png"
             pg.locator(f"#s{i}").screenshot(path=str(out / name))
             bad += contrast_issues(pg, f"s{i}")
@@ -375,7 +391,7 @@ def main():
             problems += len(bad)
             print(name, "ok" if not bad else "PROBLEM " + "; ".join(bad))
         # contact sheet: all slides side by side, for a quick look
-        w = tile or (252 if story else 270); h = round(w * (16 / 9 if story else 5 / 4))
+        w = tile or (252 if story else 270); h = round(w * H / 1080)
         cols = min(3 if tile and tile >= 340 else 4, len(names)); rows = -(-len(names) // cols)
         tiles = "".join(f'<img src="{(out / n).as_uri()}" style="width:{w}px;height:{h}px;margin:0 10px 10px 0">' for n in names)
         sheet = out / "_sheet.html"
