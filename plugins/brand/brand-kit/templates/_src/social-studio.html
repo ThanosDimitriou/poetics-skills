@@ -43,6 +43,8 @@ button { font: inherit; color: inherit; }
 .menu button { display: block; width: 100%; text-align: left; border: 0; background: none; padding: 9px 12px; border-radius: 9px; cursor: pointer; }
 .menu button:hover { background: var(--deep); }
 .menu button small { display: block; color: var(--soft); font-size: 11.5px; }
+.mrow { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 8px 12px; margin: 0; font-size: 12.5px; color: var(--ink); cursor: default; }
+.mrow select { width: auto; padding: 5px 26px 5px 9px; }
 .menu hr { border: 0; border-top: 1px solid var(--line); margin: 4px 6px; }
 /* side panels */
 .left, .right { background: var(--deep); overflow-y: auto; min-height: 0; }
@@ -107,17 +109,17 @@ input[type=range] { width: 100%; accent-color: var(--lens); }
 .count { font-size: 11.5px; color: var(--soft); margin-top: 4px; display: flex; justify-content: space-between; }
 h4 { font: 500 11px/1 'Inter Tight', sans-serif; letter-spacing: .08em; text-transform: uppercase; color: var(--soft); margin: 16px 0 6px; }
 /* stage */
-.stage { grid-area: stage; position: relative; display: flex; align-items: center; justify-content: center; padding: 26px 26px 40px; min-height: 0; min-width: 0; }
-canvas#c { max-width: 100%; max-height: 100%; width: auto; height: auto; border-radius: 4px; box-shadow: 0 2px 30px rgb(18 22 20 / 0.10); touch-action: none; }
+.stage { grid-area: stage; background: #D5DAD3; position: relative; display: flex; align-items: center; justify-content: center; padding: 26px 26px 40px; min-height: 0; min-width: 0; }
+canvas#c { max-width: 100%; max-height: 100%; width: auto; height: auto; border-radius: 4px; box-shadow: 0 0 0 1px rgb(18 22 20 / .16), 0 6px 28px rgb(18 22 20 / .16); touch-action: none; }
 canvas#c:focus, canvas#c:focus-visible { outline: none; }
-.stage .tip { position: absolute; bottom: 12px; left: 0; right: 0; text-align: center; font-size: 11.5px; color: var(--soft); pointer-events: none; }
+.stage .tip { position: absolute; bottom: 12px; left: 0; right: 0; text-align: center; font-size: 11.5px; color: #4A514C; pointer-events: none; }
 .stage.drop canvas { outline: 3px dashed var(--lens); outline-offset: 6px; }
 .inline { position: absolute; z-index: 5; border: 2px solid var(--lens); border-radius: 4px; background: rgb(255 255 255 / .92); color: #121614; padding: 0 4px; outline: none; }
 .navbtn { position: absolute; top: 50%; transform: translateY(-50%); width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--line); background: var(--paper); cursor: pointer; font-size: 15px; z-index: 3; }
 .navbtn.l { left: 10px; } .navbtn.r { right: 10px; }
 .navbtn:disabled { opacity: .3; cursor: default; }
 /* previews */
-.preview { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 40px; padding: 20px; background: var(--paper); z-index: 4; overflow: auto; }
+.preview { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 40px; padding: 20px; background: #D5DAD3; z-index: 4; overflow: auto; }
 .phone { width: 340px; flex: none; border-radius: 44px; background: #0b0d0c; padding: 12px; box-shadow: 0 20px 60px rgb(18 22 20 / .25); }
 .screen { border-radius: 34px; overflow: hidden; background: #fff; color: #111; font: 13px/1.35 -apple-system, system-ui, sans-serif; position: relative; }
 .ig-top { display: flex; align-items: center; gap: 8px; padding: 34px 12px 8px; font-weight: 600; font-size: 13px; }
@@ -153,7 +155,7 @@ canvas#c:focus, canvas#c:focus-visible { outline: none; }
 .yt .c { color: #606060; font-size: 12px; margin-top: 2px; }
 .yt.small { width: 400px; display: flex; gap: 8px; }
 .yt.small .th { width: 168px; flex: none; }
-.pvside { max-width: 300px; color: var(--soft); font-size: 12.5px; }
+.pvside { max-width: 300px; color: #3B423D; font-size: 12.5px; }
 .pvside h3 { font: 400 26px/1.05 'Instrument Serif', Georgia, serif; color: var(--ink); margin-bottom: 8px; font-weight: 400; }
 .pvside .check { color: var(--ink); }
 .gridpv { display: grid; grid-template-columns: repeat(3, 110px); gap: 3px; }
@@ -186,6 +188,16 @@ canvas#c:focus, canvas#c:focus-visible { outline: none; }
 .help table { width: 100%; border-collapse: collapse; font-size: 13px; }
 .help td { padding: 6px 0; border-top: 1px solid var(--line); }
 .help td:first-child { width: 150px; }
+details.more { margin-top: 10px; background: var(--paper); border: 1px solid var(--line); border-radius: 16px; }
+details.more > summary { list-style: none; cursor: pointer; padding: 12px; font: 500 11px/1 'Inter Tight', sans-serif; letter-spacing: .08em; text-transform: uppercase; color: var(--soft); display: flex; justify-content: space-between; }
+details.more > summary::-webkit-details-marker { display: none; }
+details.more > summary::after { content: '+'; font-size: 14px; letter-spacing: 0; }
+details.more[open] > summary::after { content: '–'; }
+.moreBody { padding: 0 12px 14px; }
+.line1 { grid-template-columns: 1fr 22px; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+.sizerow { display: grid; grid-template-columns: 88px 1fr 46px; gap: 8px; align-items: center; margin-top: 6px; font-size: 11.5px; color: var(--soft); }
+.sizerow .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 kbd { font: 11px 'Inter Tight', sans-serif; border: 1px solid var(--shade); border-bottom-width: 2px; border-radius: 5px; padding: 1px 5px; background: #fff; }
 [hidden] { display: none !important; }
 :focus-visible { outline: 2px solid var(--lens); outline-offset: 2px; }
@@ -204,15 +216,6 @@ kbd { font: 11px 'Inter Tight', sans-serif; border: 1px solid var(--shade); bord
       <option value="story">Story 9:16</option>
       <option value="thumb">Video thumbnail 16:9</option>
     </select></label>
-  <label class="mini" id="markRuleWrap">Wordmark
-    <select id="markRule">
-      <option value="ends">First and last</option>
-      <option value="all">Every slide</option>
-      <option value="cover">First only</option>
-      <option value="none">None</option>
-    </select></label>
-  <button class="chip" id="grainBtn" aria-pressed="true" title="Grain texture on type grounds and duotone">Grain</button>
-  <button class="chip" id="guidesBtn" aria-pressed="false" title="Margins and safe area (G)">Guides</button>
   <div class="spacer"></div>
   <button class="icon" id="undoBtn" title="Undo (⌘Z)" aria-label="Undo"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 3.5 2.5 6.5l3 3"/><path d="M2.5 6.5h7a4 4 0 0 1 0 8h-2"/></svg></button>
   <button class="icon" id="redoBtn" title="Redo (⇧⌘Z)" aria-label="Redo"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 3.5 3 3-3 3"/><path d="M13.5 6.5h-7a4 4 0 0 0 0 8h2"/></svg></button>
@@ -220,9 +223,19 @@ kbd { font: 11px 'Inter Tight', sans-serif; border: 1px solid var(--shade); bord
     <button data-v="edit" class="on">Edit</button><button data-v="phone">Phone</button><button data-v="grid">Grid</button>
   </div>
   <button class="icon narrow" id="sideBtn" title="Photos, checks, caption">☰</button>
-  <button class="icon" id="helpBtn" title="Shortcuts (?)">?</button>
-  <button class="ghost" id="openBtn" title="Open a project or a deck.json">Open</button>
-  <button class="ghost" id="saveBtn" title="Save project with photos (⌘S)">Save</button>
+  <div class="menu-wrap">
+    <button class="ghost" id="setBtn">Settings ▾</button>
+    <div class="menu" id="settingsMenu" hidden>
+      <div class="mrow" id="markRow"><span>Wordmark</span>
+        <select id="markRule"><option value="ends">First and last slide</option><option value="all">Every slide</option><option value="cover">First slide only</option><option value="none">None</option></select></div>
+      <label class="mrow" id="grainRow"><span>Grain texture</span><input type="checkbox" id="grainChk"></label>
+      <label class="mrow"><span>Show margins and safe area</span><input type="checkbox" id="guidesChk"></label>
+      <hr>
+      <button id="openBtn">Open a project or deck.json</button>
+      <button id="saveBtn">Save project<small>Keeps the photos inside · ⌘S</small></button>
+      <button id="helpBtn">Keyboard shortcuts<small>Or press ?</small></button>
+    </div>
+  </div>
   <div class="menu-wrap">
     <button class="btn" id="exportBtn">Export ▾</button>
     <div class="menu" id="exportMenu" hidden>
@@ -712,9 +725,10 @@ function range(min, max, step, value, on) { const r = el('input', { type: 'range
 function segf(options, value, on) { const d = el('div', { class: 'segf' }); options.forEach(([v, t]) => d.append(el('button', { class: v === value ? 'on' : null, onclick: () => on(v) }, t))); return d; }
 function edit(fn, rebuild = false) { fn(slide()); changed(rebuild); }
 
+const reveal = {};
 function buildInspector() {
   const s = slide(), f = $('inspector'); f.innerHTML = '';
-  const L = s.layout, a = s.arrangement, thumb = L === 'thumb';
+  const L = s.layout, a = s.arrangement, thumb = L === 'thumb', rk = k => `${cur}:${k}`;
   f.append(el('div', { class: 'head' }, [el('h2', {}, thumb ? 'Thumbnail.' : `Slide ${cur + 1}.`), el('span', {}, thumb ? '1920 × 1080' : `of ${deck.slides.length}${showMark(s, cur, deck.slides.length) ? ' · wordmark on' : ''}`)]));
 
   // Style
@@ -724,79 +738,83 @@ function buildInspector() {
   sel.value = styleKey(s); sel.onchange = () => { setStyle(cur, sel.value); selSlot = 0; changed(true); };
   const styleKids = [sel];
   if (thumb) styleKids.push(field('Theme', segf([['light', 'Light'], ['dark', 'Dark']], s.theme || 'light', v => edit(x => x.theme = v, true))));
-  f.append(card('Style', styleKids, thumb ? null : el('button', { title: 'Give every slide this style', onclick: () => {
+  f.append(card('Style', styleKids, thumb || deck.slides.length < 2 ? null : el('button', { title: 'Give every slide this style', onclick: () => {
     if (!confirm('Use this style on every slide? (Undo brings the others back.)')) return; const k = styleKey(s); deck.slides.forEach((_, i) => setStyle(i, k)); changed(true); toast('Style applied to all slides'); } }, 'Use on all')));
 
-  // Text
-  const tk = [];
+  // Text: what you type, how big, where it sits
+  const tk = [], hasLines = !thumb && !(L === 'framed' && a === 'rows');
   if (thumb) {
     tk.push(field('Overline (optional)', textInput(s.overline, v => edit(x => x.overline = v || undefined), 'Talk, 2026', 'overline')));
-    tk.push(field('Title (a few large words)', textArea(s.title, v => edit(x => x.title = v), 'Inside a pop-up VR cinema.', 'title')));
+    tk.push(field('Title: a few large words', textArea(s.title, v => edit(x => x.title = v), 'Inside a pop-up VR cinema.', 'title')));
     tk.push(field('Line under (optional)', textInput(s.sub, v => edit(x => x.sub = v || undefined), '', 'sub')));
-  } else if (L === 'framed' && a === 'rows') {
+  } else if (!hasLines) {
     (s.rows || []).forEach((r, j) => tk.push(field(`Row ${j + 1}`, textInput(r.t, v => edit(x => x.rows[j].t = v), '', `rows,${j}`))));
   } else {
-    tk.push(el('label', {}, 'Lines · each fills the width up to its size'));
-    (s.lines || []).forEach((l, j) => {
-      const val = el('span', {}, `${l.max || 150}px`);
-      const r = range(40, 440, 2, l.max || 150, v => { edit(x => x.lines[j].max = v); val.textContent = `${v}px`; });
-      tk.push(el('div', { class: 'line', 'data-line': j }, [textInput(l.t, v => edit(x => x.lines[j].t = v), '', `lines,${j}`), el('div', { class: 'size', title: 'Largest size for this line' }, [r, val]),
-        el('button', { class: 'x', title: 'Remove line', onclick: () => edit(x => x.lines.splice(j, 1), true) }, '×')]));
-    });
+    (s.lines || []).forEach((l, j) => tk.push(el('div', { class: 'line line1', 'data-line': j }, [textInput(l.t, v => edit(x => x.lines[j].t = v), 'A line of text', `lines,${j}`),
+      el('button', { class: 'x', title: 'Remove this line', onclick: () => edit(x => x.lines.splice(j, 1), true) }, '×')])));
     tk.push(el('button', { class: 'add', onclick: () => edit(x => (x.lines = x.lines || []).push({ t: 'New line.', max: ((x.lines || []).slice(-1)[0] || {}).max || 200 }), true) }, '+ Add a line'));
-    if ((s.lines || []).length > 1) { const all = range(40, 440, 2, Math.round(((s.lines || [])[0] || {}).max || 200), v => edit(x => (x.lines || []).forEach(l => l.max = v))); all.onchange = () => buildInspector(); tk.push(field('All lines at once', all)); }
   }
-  if (!thumb && (L !== 'framed' || a === 'lens')) tk.push(field('Line under (optional, 44px)', textInput(s.sub, v => edit(x => x.sub = v || undefined), 'A short fact', 'sub')));
-  if (!thumb && (L !== 'framed' || a === 'close')) tk.push(field('Email or link (optional)', textInput(s.link, v => edit(x => x.link = v || undefined), 'hello@poeticsvr.com', 'link')));
-  f.append(card('Text', tk));
-
-  // Position
+  const opts = [];
+  if (!thumb && (L !== 'framed' || a === 'lens')) { if (s.sub || reveal[rk('sub')]) tk.push(field('Line under (44px)', textInput(s.sub, v => edit(x => x.sub = v || undefined), 'A short fact', 'sub'))); else opts.push(['+ Line under', 'sub']); }
+  if (!thumb && (L !== 'framed' || a === 'close')) { if (s.link || reveal[rk('link')]) tk.push(field('Email or link', textInput(s.link, v => edit(x => x.link = v || undefined), 'hello@poeticsvr.com', 'link'))); else opts.push(['+ Email or link', 'link']); }
+  if (opts.length) tk.push(el('div', { class: 'chips' }, opts.map(([t, k]) => el('button', { class: 'chip', onclick: () => { reveal[rk(k)] = true; buildInspector(); } }, t))));
+  if (hasLines && (s.lines || []).length) {
+    let last = 100; const bs = range(60, 160, 1, 100, v => { const k = v / last; last = v; edit(x => (x.lines || []).forEach(l => l.max = Math.round(clamp((l.max || 150) * k, 40, 440)))); });
+    bs.onchange = () => buildInspector(); tk.push(field('Text size: smaller · bigger', bs));
+  }
   if (L === 'type' || L === 'photo') {
     const v = s.top != null ? 'hand' : (s.valign || (L === 'photo' ? 'bottom' : 'top'));
-    const pk = [segf([['top', 'Top'], ['center', 'Middle'], ['bottom', 'Bottom']], v, val => edit(x => { x.valign = val; delete x.top; }, true))];
-    if (s.top != null) pk.push(el('p', { class: 'hint' }, 'Moved by hand. Pick a position above to snap back.'));
-    else pk.push(el('p', { class: 'hint' }, 'Or drag the text on the slide; it snaps to these three.'));
-    if (L === 'photo') { const sh = el('input', { type: 'checkbox' }); sh.checked = s.scrim !== false; sh.onchange = () => edit(x => { if (sh.checked) delete x.scrim; else x.scrim = false; }); pk.push(el('label', { class: 'check' }, [sh, 'Soft shade behind the text'])); }
-    f.append(card('Position', pk));
+    tk.push(field('Where the text sits', segf([['top', 'Top'], ['center', 'Middle'], ['bottom', 'Bottom']], v, val => edit(x => { x.valign = val; delete x.top; }, true))));
+    tk.push(el('p', { class: 'hint' }, s.top != null ? 'Moved by hand. Pick a position to snap back.' : 'Or drag the text on the slide.'));
   }
-  // Oval
   if (L === 'type') {
     const on = el('input', { type: 'checkbox' }); on.checked = !!s.outline;
     on.onchange = () => edit(x => { if (on.checked) x.outline = { text: '', h: 380, bottom: 150 }; else delete x.outline; }, true);
-    const ok = [el('label', { class: 'check', style: 'margin-top:0' }, [on, 'An empty oval, drawn as a line'])];
-    if (s.outline) { ok.push(field('Text inside (optional)', textInput(s.outline.text, v => edit(x => x.outline.text = v), '', 'outline'))); ok.push(field('Height', range(100, 600, 10, s.outline.h || 380, v => edit(x => x.outline.h = v)))); ok.push(el('p', { class: 'hint' }, 'Drag the oval on the slide to move it.')); }
-    f.append(card('Oval', ok));
+    tk.push(el('label', { class: 'check' }, [on, 'Add an empty oval']));
+    if (s.outline) { tk.push(field('Text inside the oval', textInput(s.outline.text, v => edit(x => x.outline.text = v), '', 'outline'))); tk.push(field('Oval height', range(100, 600, 10, s.outline.h || 380, v => edit(x => x.outline.h = v)))); }
   }
-  // Photo
+  f.append(card('Text', tk));
+
+  // Photo: only when the slide has one
   const slots = slotsOf(s);
   if (slots.length) {
     const pk = [];
     slots.forEach((o, j) => { const p = photos.get(o.photo);
-      pk.push(el('div', { class: 'slot' + (j === selSlot ? ' on' : ''), onclick: () => { selSlot = j; selText = false; buildInspector(); requestRender(); } }, [
+      pk.push(el('div', { class: 'slot' + (slots.length > 1 && j === selSlot ? ' on' : ''), onclick: () => { selSlot = j; selText = false; buildInspector(); requestRender(); } }, [
         el('div', { class: 'pic', style: p ? `background-image:url("${p.src}")` : null }),
-        el('div', { class: 'meta' }, [el('b', {}, slots.length > 1 ? `Frame ${j + 1}` : 'Frame'), o.photo ? (p ? o.photo : `${o.photo} · add this photo`) : 'Empty · pick a photo on the right'])])); });
+        el('div', { class: 'meta' }, [el('b', {}, slots.length > 1 ? `Frame ${j + 1}` : (o.photo ? 'Photo' : 'No photo yet')), o.photo ? (p ? o.photo : `${o.photo} · add this photo`) : 'Pick one in the Photos tab'])])); });
     const o = slots[selSlot] || slots[0];
-    pk.push(field(`Zoom · ${Math.round((o.zoom || 1) * 100)}%`, range(1, 3, 0.01, o.zoom || 1, v => { edit(() => { o.zoom = v; if (v === 1) delete o.zoom; }); })));
-    pk.push(el('div', { class: 'row', style: 'margin-top:8px' }, [el('button', { class: 'ghost', onclick: () => edit(() => { o.focal = '50% 50%'; delete o.zoom; }, true) }, 'Reset crop'),
-      el('button', { class: 'ghost', disabled: o.photo ? null : '', onclick: () => edit(() => { o.photo = null; delete o.zoom; }, true) }, 'Empty frame')]));
-    if (L === 'framed' && a === 'lens') pk.push(field('Photo height', range(400, 820, 10, s.h || 700, v => edit(x => x.h = v))));
-    pk.push(el('p', { class: 'hint' }, 'Drag on the slide to reframe; scroll to zoom.'));
+    if (o.photo) {
+      pk.push(field(`Zoom · ${Math.round((o.zoom || 1) * 100)}%`, range(1, 3, 0.01, o.zoom || 1, v => { edit(() => { o.zoom = v; if (v === 1) delete o.zoom; }); })));
+      pk.push(el('div', { class: 'row', style: 'margin-top:8px' }, [el('button', { class: 'ghost', onclick: () => edit(() => { o.focal = '50% 50%'; delete o.zoom; }, true) }, 'Reset crop'),
+        el('button', { class: 'ghost', onclick: () => edit(() => { o.photo = null; delete o.zoom; }, true) }, 'Remove photo')]));
+      pk.push(el('p', { class: 'hint' }, 'Drag on the slide to reframe; scroll to zoom.'));
+    }
     f.append(card(slots.length > 1 ? 'Photos' : 'Photo', pk));
   }
-  // This slide
-  const sk = [];
+
+  // More options: everything you set once
+  const mk = [];
+  if (hasLines && (s.lines || []).length > 1) {
+    mk.push(el('label', { style: 'margin-top:0' }, 'Size of each line'));
+    s.lines.forEach((l, j) => { const val = el('span', {}, `${l.max || 150}px`);
+      mk.push(el('div', { class: 'sizerow' }, [el('span', { class: 'nm' }, l.t || '…'), range(40, 440, 2, l.max || 150, v => { edit(x => x.lines[j].max = v); val.textContent = `${v}px`; }), val])); });
+  }
+  if (L === 'photo') { const sh = el('input', { type: 'checkbox' }); sh.checked = s.scrim !== false; sh.onchange = () => edit(x => { if (sh.checked) delete x.scrim; else x.scrim = false; }); mk.push(el('label', { class: 'check' }, [sh, 'Soft shade behind the text'])); }
+  if (L === 'framed' && a === 'lens') mk.push(field('Photo height', range(400, 820, 10, s.h || 700, v => edit(x => x.h = v))));
   if (!thumb) {
-    const wm = el('select', {}, [['', 'As the post says'], ['on', 'Show here'], ['off', 'Hide here']].map(([v, t]) => el('option', { value: v }, t)));
+    const wm = el('select', {}, [['', 'As the post says'], ['on', 'Show on this slide'], ['off', 'Hide on this slide']].map(([v, t]) => el('option', { value: v }, t)));
     wm.value = s.wordmark === true ? 'on' : s.wordmark === false ? 'off' : '';
     wm.onchange = () => edit(x => { if (wm.value === 'on') x.wordmark = true; else if (wm.value === 'off') x.wordmark = false; else delete x.wordmark; }, true);
     const gr = el('select', {}, [['', 'Automatic'], ['on', 'On'], ['off', 'Off']].map(([v, t]) => el('option', { value: v }, t)));
     gr.value = s.grain === true ? 'on' : s.grain === false ? 'off' : '';
     gr.onchange = () => edit(x => { if (gr.value === 'on') x.grain = true; else if (gr.value === 'off') x.grain = false; else delete x.grain; });
-    sk.push(el('div', { class: 'row' }, [field('Wordmark', wm), field('Grain', gr)]));
+    mk.push(el('div', { class: 'row' }, [field('Wordmark', wm), field('Grain', gr)]));
   }
-  sk.push(field('Alt text (what a screen reader says)', textArea(s.alt, v => edit(x => x.alt = v || undefined), 'What the photo shows, then the words on the slide.')));
-  sk.push(el('button', { class: 'add', onclick: () => edit(x => x.alt = suggestAlt(x), true) }, 'Fill in the slide’s words'));
-  f.append(card(thumb ? 'Accessibility' : 'This slide', sk));
+  if (thumb) { mk.push(field('Alt text', textArea(s.alt, v => edit(x => x.alt = v || undefined), 'What the thumbnail shows, then its words.')));
+    mk.push(el('button', { class: 'add', onclick: () => edit(x => x.alt = suggestAlt(x), true) }, 'Fill in the title')); }
+  else mk.push(el('p', { class: 'hint' }, 'Alt text for each slide is in the Caption tab.'));
+  f.append(el('details', { class: 'more' }, [el('summary', {}, 'More options'), el('div', { class: 'moreBody' }, mk)]));
 }
 function suggestAlt(s) { const t = s.layout === 'thumb' ? [s.overline, s.title, s.sub] : [...(s.lines || []).map(l => l.t), ...(s.rows || []).map(r => r.t), s.sub, s.link, s.outline && s.outline.text];
   const words = t.filter(Boolean).join(' ').replace(/\s+/g, ' ').trim(); const keep = (s.alt || '').split(' Text:')[0].trim();
@@ -979,7 +997,7 @@ $('nextBtn').onclick = () => selectSlide(cur + 1);
 // ===== Keyboard ================================================================================
 document.addEventListener('keydown', e => {
   const typing = /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName), mod = e.metaKey || e.ctrlKey, k = e.key.toLowerCase();
-  if (e.key === 'Escape') { $('help').hidden = true; closePops(); $('exportMenu').hidden = true; if (view !== 'edit') setView('edit'); return; }
+  if (e.key === 'Escape') { $('help').hidden = true; closePops(); $('exportMenu').hidden = true; $('settingsMenu').hidden = true; if (view !== 'edit') setView('edit'); return; }
   if (mod && k === 's') { e.preventDefault(); saveProject(); return; }
   if (mod && k === 'e') { e.preventDefault(); exportZip(); return; }
   if (typing) return;
@@ -1023,8 +1041,8 @@ $('undoBtn').onclick = undo; $('redoBtn').onclick = redo;
 // ===== Top bar =================================================================================
 function syncTop() {
   $('format').value = deck.format || 'post'; $('markRule').value = deck.wordmark || 'ends';
-  $('grainBtn').setAttribute('aria-pressed', deck.grain !== false); $('guidesBtn').setAttribute('aria-pressed', !!deck.guides);
-  const thumb = deck.format === 'thumb'; $('markRuleWrap').hidden = thumb; $('grainBtn').hidden = thumb;
+  $('grainChk').checked = deck.grain !== false; $('guidesChk').checked = !!deck.guides;
+  const thumb = deck.format === 'thumb'; $('markRow').hidden = thumb; $('grainRow').hidden = thumb;
   $('prevBtn').hidden = $('nextBtn').hidden = thumb; document.querySelector('.tabs button[data-t=caption]').hidden = thumb;
   if (thumb && rightTab === 'caption') setTab('photos');
   $('tip').textContent = thumb ? 'Double-click text to edit it · drag the photo to reframe · scroll to zoom' : 'Click to select · double-click text to edit it · drag text to move it · drag a photo to reframe · scroll to zoom';
@@ -1036,11 +1054,13 @@ $('format').onchange = () => {
   cur = Math.min(cur, deck.slides.length - 1); syncTop(); changed(true);
 };
 $('markRule').onchange = () => { deck.wordmark = $('markRule').value; changed(true); };
-$('grainBtn').onclick = () => { deck.grain = deck.grain === false; syncTop(); changed(true); };
-$('guidesBtn').onclick = () => { deck.guides = !deck.guides; syncTop(); requestRender(); };
+$('grainChk').onchange = () => { deck.grain = $('grainChk').checked; changed(true); };
+$('guidesChk').onchange = () => { deck.guides = $('guidesChk').checked; requestRender(); };
+$('setBtn').onclick = e => { e.stopPropagation(); $('exportMenu').hidden = true; $('settingsMenu').hidden = !$('settingsMenu').hidden; };
+$('settingsMenu').onclick = e => { if (e.target.closest('button')) $('settingsMenu').hidden = true; };
 $('sideBtn').onclick = () => document.body.classList.toggle('show-right');
-$('exportBtn').onclick = e => { e.stopPropagation(); $('exportMenu').hidden = !$('exportMenu').hidden; };
-document.addEventListener('click', e => { if (!e.target.closest('.menu-wrap')) $('exportMenu').hidden = true; });
+$('exportBtn').onclick = e => { e.stopPropagation(); $('settingsMenu').hidden = true; $('exportMenu').hidden = !$('exportMenu').hidden; };
+document.addEventListener('click', e => { if (!e.target.closest('.menu-wrap')) { $('exportMenu').hidden = true; $('settingsMenu').hidden = true; } });
 $('exportMenu').onclick = e => { const b = e.target.closest('button'); if (!b) return; $('exportMenu').hidden = true;
   ({ png: exportSlide, zip: exportZip, pdf: exportPdf, caption: copyCaption, deck: exportDeck })[b.dataset.x](); };
 

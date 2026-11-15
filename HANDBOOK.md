@@ -158,8 +158,8 @@ from the studio and have Claude render it. The studio is
 
 **Using the studio:**
 
-1. Pick a format and the wordmark rule in the top bar, or choose a starting carousel (bottom of the
-   left panel), or Open a deck from Claude.
+1. Pick a format in the top bar (the wordmark rule, grain, guides, Open and Save live under
+   Settings), or choose a starting carousel (bottom of the left panel), or Open a deck from Claude.
 2. Add photos on the right (they stay in your browser), then click one into the selected frame.
 3. For each slide pick a style, type the lines (each has its own size), or double-click text on
    the slide to edit it there. Drag text to move it, drag a photo to reframe, scroll to zoom.
