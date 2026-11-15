@@ -100,12 +100,19 @@ The same voice, read in a second. Each slide is a few big words, so every word h
   headline only when it adds a fact ("Six pods at one conference.").
 - **The first slide is a plain fact, a plain promise or a real question.** No bait, no "you won't
   believe", no wordplay.
+- **Slide 2 stands on its own.** Instagram shows the carousel again from slide 2 to people who
+  scrolled past the cover, so slide 2 is a second way in: the best photograph or the figure.
 - **A number keeps its date,** on the slide or in the caption ("As of September 2026").
 - **The last slide offers one path:** "Tell us about your space." and hello@poeticsvr.com, or
   poeticsvr.com. Nothing else.
-- **The caption** starts with the slide's own line, then two or three plain sentences, then the
-  path. Three to five lowercase hashtags at the end, no emoji.
-- **Alt text** says what the photograph shows and repeats the words on the slide.
+- **The caption** starts with the slide's own line: the first line carries the point, because the
+  rest is cut off behind "more". Then two or three plain sentences, then the path.
+- **Everything essential on a slide is also in the caption,** the email above all: text in an
+  image can't be read aloud, searched or tapped.
+- **Three to five hashtags at the end, in CamelCase** (#ImmersiveCinema, #VRCinema), so screen
+  readers say the words. No emoji.
+- **Alt text** says what the photograph shows and repeats the words on the slide. Write it yourself;
+  Instagram's automatic alt text is unreliable.
 
 ## Before you ship
 

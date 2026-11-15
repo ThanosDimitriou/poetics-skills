@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """build-social.py - render Poetics feed posts and stories (Instagram, LinkedIn, TikTok) to PNG.
 
-    python3 build-social.py deck.json [OUT_DIR] [--tile 360]
+    python3 build-social.py deck.json [OUT_DIR] [--tile 360] [--pdf]
 
 --tile sets the width of each slide in contact-sheet.png (default 270).
+--pdf also writes slides.pdf, one page per slide: LinkedIn posts a carousel as a document (PDF) post.
 
 The social styles (see design-system.md, "Social feed styles"): three layouts, a few treatments.
 
@@ -19,7 +20,7 @@ The social styles (see design-system.md, "Social feed styles"): three layouts, a
             close  lines, an email link, a lens photograph below
 
 deck.json:
-  {"format": "post" | "story",          4:5 (1080 x 1350, default) or 9:16 (1080 x 1920, top and bottom 250px clear)
+  {"format": "post" | "story",          4:5 (1080 x 1350, default) or 9:16 (1080 x 1920, top 270px and bottom 380px clear)
    "grain": true | false,               false turns the texture off everywhere
    "wordmark": "ends" | "all" | "cover", the wordmark on the first and last slide (default), every slide, or the first
                                         only; a slide's own "wordmark": true | false overrides it
@@ -53,6 +54,9 @@ GROUNDS = {  # bg, ink, soft, accent (the one pressable thing: the email link), 
 }
 INK, PAPER, LENS = (18, 22, 20), (239, 240, 236), (22, 36, 156)
 MARGIN, COLUMN = 90, 900
+# A story's top and bottom sit under the app's interface (profile, reply bar, ad button). Meta's
+# unified Stories and Reels safe zone (2026): about 14% at the top and 20% at the bottom of 1920.
+STORY_TOP, STORY_BOTTOM = 270, 380
 MARK_H = 28          # wordmark height on a 1080-wide canvas, same as the social editors
 MIN_TEXT = 44        # smallest text: about 16px on a phone, where a 1080 slide shows about 390px wide
 
@@ -142,8 +146,8 @@ def duo_filter():
 def build(deck):
     story = deck.get("format") == "story"
     H = 1920 if story else 1350
-    mark_top, txt_bottom, txt_top = (270, 300, 440) if story else (84, 120, 190)
-    oy = 230 if story else 0                      # framed content starts 72px below the wordmark
+    mark_top, txt_bottom, txt_top = (280, 420, 450) if story else (84, 120, 190)
+    oy = 200 if story else 0                      # framed content starts 72px below the wordmark
     shift = (H - 1350) // 2 if story else 0       # an explicit "top" is written for the 4:5 canvas
     grain_on = deck.get("grain", True)
 
@@ -269,8 +273,8 @@ CHECK_JS = """([id, story, safeTop, safeBottom, minText]) => { const out = [], s
   const phs = [...document.querySelectorAll('#'+id+' .ph')].map(p => p.getBoundingClientRect());
   texts.forEach(e => { const r = e.getBoundingClientRect(), name = e.textContent;
     if (r.left - sl.left < 89 || r.right - sl.left > 991) out.push('outside the margins: ' + name);
-    if (r.top - sl.top < safeTop) out.push((story ? 'in the top 250px: ' : 'too close to the wordmark: ') + name);
-    if (r.bottom - sl.top > safeBottom) out.push((story ? 'in the bottom 250px: ' : 'too close to the foot: ') + name);
+    if (r.top - sl.top < safeTop) out.push((story ? 'in the top 270px: ' : 'too close to the wordmark: ') + name);
+    if (r.bottom - sl.top > safeBottom) out.push((story ? 'in the bottom 380px: ' : 'too close to the foot: ') + name);
     phs.forEach(q => { if (r.left < q.right && r.right > q.left && r.top < q.bottom - 4 && r.bottom > q.top + 4)
       out.push('over a photograph: ' + name); }); });
     texts.forEach(e => { const px = parseFloat(getComputedStyle(e).fontSize);
@@ -330,6 +334,9 @@ def main():
     if not args or args[0] in ("-h", "--help"):
         print(__doc__); return 0
     tile = None                                   # --tile N: width of each slide in contact-sheet.png
+    want_pdf = "--pdf" in args
+    if want_pdf:
+        args.remove("--pdf")
     if "--tile" in args:
         k = args.index("--tile"); tile = int(args[k + 1]); del args[k:k + 2]
     src = pathlib.Path(args[0]).resolve()
@@ -360,7 +367,7 @@ def main():
             e.style.fontSize = Math.min(+e.dataset.max, 100 * 900 / w) + 'px'; })""")
         names = []
         for i, s in enumerate(slides, 1):
-            bad = pg.evaluate(CHECK_JS, [f"s{i}", story, 250 if story else 156, 1670 if story else 1262, MIN_TEXT])
+            bad = pg.evaluate(CHECK_JS, [f"s{i}", story, STORY_TOP if story else 156, 1920 - STORY_BOTTOM if story else 1262, MIN_TEXT])
             name = f"{i:02d}-{s.get('arrangement') or s['layout']}.png"
             pg.locator(f"#s{i}").screenshot(path=str(out / name))
             bad += contrast_issues(pg, f"s{i}")
@@ -378,6 +385,11 @@ def main():
         pg2.screenshot(path=str(out / "contact-sheet.png")); sheet.unlink()
         b.close()
     html_path.unlink()
+    if want_pdf:                                  # LinkedIn document post: one page per slide, in order
+        from PIL import Image
+        pages = [Image.open(out / n).convert("RGB") for n in names]
+        pages[0].save(out / "slides.pdf", save_all=True, append_images=pages[1:], resolution=144)
+        print("slides.pdf ok")
     return 1 if problems else 0
 
 

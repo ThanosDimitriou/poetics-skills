@@ -172,7 +172,8 @@ full-bleed photograph, optional duotone; framed: light, photographs in pills and
 a deck JSON like the ones next to them, and render it with `scripts/build-social.py`. That needs
 Chrome with Playwright, which the chat sandbox may not have: if it can't run, give the user the
 slide-by-slide copy and the deck JSON, and tell them to render it in Claude Code
-(`python3 scripts/build-social.py deck.json out`) or build the slides one by one in the editor. The
+(`python3 scripts/build-social.py deck.json out`, plus `--pdf` for a LinkedIn document post) or
+build the slides one by one in the editor. The
 photo library isn't available in chat: ask for photographs, or let them add them later.
 
 ### Brand review ("review this", "is this on-brand", "brand audit")

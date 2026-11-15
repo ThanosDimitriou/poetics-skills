@@ -71,8 +71,9 @@ story (Claude Code only: it needs Playwright and Chrome), write a JSON deck and 
 python3 "${CLAUDE_PLUGIN_ROOT}/brand-kit/scripts/build-social.py" deck.json OUT_DIR
 ```
 
+Add `--pdf` for LinkedIn: it also writes `slides.pdf`, one page per slide, to post as a document.
 It writes `01-….png` onward (1080 × 1350, or 1080 × 1920 with `"format": "story"`) and a
-`contact-sheet.png`, checks every slide (margins, wordmark clearance, the story's 250px, text over
+`contact-sheet.png`, checks every slide (margins, wordmark clearance, the story's top 270px and bottom 380px, text over
 photographs, text under 44px, contrast against what is behind each line) and the copy, and exits non-zero if something is wrong.
 The wordmark goes on the first and last slide only, since Instagram shows the account name above every
 slide; `"wordmark": "all"` in the deck puts it back everywhere. Read the "Social feed styles"

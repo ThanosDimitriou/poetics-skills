@@ -147,7 +147,8 @@ TikTok without adaptation.
 ```
 4:5 and 1:1: 90px margins; the wordmark top-left; no footer and no slide count (the account
              name and the carousel dots already show both).
-9:16 story:  the top and bottom 250px sit under the app's own interface: nothing goes there.
+9:16 story:  the top 270px and bottom 380px sit under the app's interface (profile, reply bar,
+             an ad's button): nothing goes there.
 ```
 
 Design at 1× (1080px wide). Don't design at 2× or 3× and scale down — causes blurring on export.

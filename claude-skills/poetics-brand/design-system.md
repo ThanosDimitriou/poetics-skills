@@ -157,8 +157,8 @@ The two editors in `templates/` (built from `templates/_src/` by `scripts/build-
 draw the same system on a canvas (the Aperture look; the other feed styles are below):
 
 - **Social post:** 1080 wide at 4:5, 1:1 or 9:16. 90px margins, the wordmark top-left (28px tall),
-  no footer and no slide count. A story keeps its top and bottom 250px
-  clear (the app's own interface). Layouts mirror the deck templates: cover, photo with caption,
+  no footer and no slide count. A story keeps its top 270px and bottom 380px clear (the app's
+  own interface). Layouts mirror the deck templates: cover, photo with caption,
   statement (on paper-deep), heading and rows, figure, quote, closing (the band with the Ring, the
   email in lens). No text under 44px, overline included (about 16px on a phone); on the
   cover the photograph shrinks to leave the text room.
@@ -185,8 +185,9 @@ first and last slide of a carousel only (Instagram shows the account name above 
 `"wordmark": "all"` for a post that will be shared slide by slide), 90px
 side margins, one idea per slide, the voice and the copy check, and the content rules (never
 invent a figure, never name or show a film, hello@poeticsvr.com only). Display lines are sized to
-fill the 900px column, up to a maximum, so nothing overflows. A story keeps its top and bottom
-250px clear.
+fill the 900px column, up to a maximum, so nothing overflows. A story keeps its top 270px and
+bottom 380px clear: Meta's unified Stories and Reels safe zone (2026), where the profile, the reply
+bar and an ad's button sit. Check a paid story in the Ads Manager placement preview too.
 
 **Legibility (checked on every render):** no text smaller than 44px on the 1080 canvas, about 16px on
 a phone. Text meets WCAG contrast against what is actually behind it: 3:1 for headlines (67px and
@@ -207,6 +208,10 @@ because ink-soft falls under 4.5:1 there once the grain is on.
 **Choosing:** one layout per post. A `photo` carousel may carry a `type` slide between its photos
 (`examples/photo-post.json` does); `framed` stays framed. Two posts that will sit side by side on the
 grid or be pinned together get different layouts, so the covers don't read as one post.
+**Slide 2 is a second cover:** Instagram shows a carousel again to people who scrolled past, opening
+on slide 2, so it has to work on its own: the strongest photograph or the figure, not "continued".
+Five to eight slides, never padded. For LinkedIn, render with `--pdf` and post `slides.pdf` as a
+document post (LinkedIn's carousel format); put the link in the post text, not only on a slide.
 Say less than you think: one to three lines a slide, one short sub line at most, no footers, no
 slide counts. A photograph with identifiable people needs consent for advertising use before a post
 runs as an ad; prefer blurred or object photographs for paid posts.

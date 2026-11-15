@@ -169,8 +169,13 @@ Things to know:
 - **Pinned or neighbouring posts get different layouts**, so their covers don't read as one post.
 - **Say less.** One to three lines a slide, one short line under at most, no footers, no slide
   counts. Big words beat small ones.
-- **Stories** use the same decks with `"format": "story"` (1080 × 1920). The top and bottom 250px
-  are kept clear of Instagram's own interface.
+- **Stories** use the same decks with `"format": "story"` (1080 × 1920). The top 270px and bottom
+  380px are kept clear of Instagram's own interface and an ad's button.
+- **Slide 2 is a second cover.** Instagram shows a carousel again from slide 2, so make it work
+  alone.
+- **LinkedIn:** add `--pdf` and post `slides.pdf` as a document post.
+- **Captions** repeat the essential slide text and the email, and end with three to five CamelCase
+  hashtags (#ImmersiveCinema).
 
 ### How to ask
 
@@ -208,7 +213,7 @@ python3 brand-kit/scripts/build-social.py my-deck.json out
 | `rows`, `photos`, `h` | framed | the rows of `rows`, the two photos of `pair`, the photo height of `lens` |
 
 The renderer prints `ok` or `PROBLEM` for every slide (outside the margins, too close to the
-wordmark, in a story's top or bottom 250px, text over a framed photograph) and `COPY` for wording
+wordmark, in a story's top 270px or bottom 380px, text over a framed photograph) and `COPY` for wording
 (an em dash, an exclamation mark, a stock phrase, capitals). It exits with an error if anything is
 flagged. The copy check reads English; for Greek posts, read the wording yourself.
 

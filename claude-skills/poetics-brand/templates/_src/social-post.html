@@ -108,11 +108,11 @@ const SMALL = 44;
 function frame(format) {
   const [W, H] = SIZES[format];
   const M = 90;
-  // A story's top and bottom 250px sit under the app's own interface: keep everything clear.
+  // A story's top 270px and bottom 380px sit under the app's interface (Meta's Stories and Reels safe zone).
   const story = format === '9:16';
-  const markY = story ? 280 : 90;
+  const markY = story ? 290 : 90;
   // No footer and no slide count: the account name and the carousel dots already say both.
-  return { W, H, M, markY, top: markY + 28 + 82, bottom: H - (story ? 340 : 120) };
+  return { W, H, M, markY, top: markY + 28 + 82, bottom: H - (story ? 420 : 120) };
 }
 
 function render() {
@@ -243,7 +243,7 @@ function render() {
   if ($('guides').checked) {
     ctx.save(); ctx.strokeStyle = t.lens; ctx.setLineDash([10, 8]); ctx.lineWidth = 2;
     ctx.strokeRect(f.M, f.top, w, f.bottom - f.top);
-    if (f.H === 1920) { ctx.strokeRect(0, 250, f.W, f.H - 500); }
+    if (f.H === 1920) { ctx.strokeRect(0, 270, f.W, f.H - 650); }
     ctx.restore();
   }
 
