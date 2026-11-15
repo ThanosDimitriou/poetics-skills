@@ -179,11 +179,17 @@ not claude.ai chat):
 | **framed** | arrangements `cover`, `rows`, `lens`, `pair`, `close`: light ground, every photograph in a pill or lens | B2B proof and offers: agencies, venues, brands. The nearest to the website |
 
 **What stays the same everywhere:** the colour tokens (no other hex), Instrument Serif for display
-and Inter Tight for text, no italics, the wordmark top-left (36px) with 72px clear below it, 90px
+and Inter Tight for text, no italics, the wordmark top-left (28px tall, as in the social editors) with 72px clear below it, 90px
 side margins, one idea per slide, the voice and the copy check, and the content rules (never
 invent a figure, never name or show a film, hello@poeticsvr.com only). Display lines are sized to
 fill the 900px column, up to a maximum, so nothing overflows. A story keeps its top and bottom
 250px clear.
+
+**Legibility (checked on every render):** no text smaller than 44px on the 1080 canvas, about 16px on
+a phone. Text meets WCAG contrast against what is actually behind it: 3:1 for headlines (67px and
+up), 4.5:1 for smaller lines. On a photograph that fails, move the type to the darker part of the
+frame, change the crop, or use the duotone. On `paper-deep` the sub line is ink, not ink-soft,
+because ink-soft falls under 4.5:1 there once the grain is on.
 
 **Exceptions to the rules above, for the social feed only (decided 2026-11-14):**
 

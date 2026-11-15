@@ -28,7 +28,8 @@ deck.json:
 
 Each line is sized to fill the 900px column, up to "max" (default 150), so a line never overflows.
 Every render is checked: lines inside the 90px margins, clear of the wordmark (and, in a story, of the
-app's interface), text not over a framed photograph. The copy is checked against guides/anti-slop.md's
+app's interface), text not over a framed photograph, no text under 44px, and WCAG contrast against
+what is behind each line (3:1 headlines, 4.5:1 smaller text). The copy is checked against guides/anti-slop.md's
 rules (em dashes, exclamation marks, stock words). Problems print as PROBLEM / COPY lines; fix them.
 
 Needs Playwright with Chrome (Claude Code; not claude.ai chat). Photographs: ids from photos/index.json
@@ -43,13 +44,15 @@ photolib = importlib.util.module_from_spec(spec); spec.loader.exec_module(photol
 
 GROUNDS = {  # bg, ink, soft, accent (the one pressable thing: the email link), wordmark, dark?
     "paper":      dict(bg="#EFF0EC", ink="#121614", soft="#5B625C", accent="#16249C", mark="#121614", dark=False),
-    "paper-deep": dict(bg="#E5E8E3", ink="#121614", soft="#5B625C", accent="#16249C", mark="#121614", dark=False),
+    "paper-deep": dict(bg="#E5E8E3", ink="#121614", soft="#121614", accent="#16249C", mark="#121614", dark=False),
     "dark":       dict(bg="#121614", ink="#F4F5F3", soft="#8A918B", accent="#8F9CFF", mark="#F4F5F3", dark=True),
     "dark-deep":  dict(bg="#1C211E", ink="#F4F5F3", soft="#8A918B", accent="#8F9CFF", mark="#F4F5F3", dark=True),
     "lens":       dict(bg="#16249C", ink="#EFF0EC", soft="rgba(239,240,236,.72)", accent="#EFF0EC", mark="#EFF0EC", dark=True),
 }
 INK, PAPER, LENS = (18, 22, 20), (239, 240, 236), (22, 36, 156)
 MARGIN, COLUMN = 90, 900
+MARK_H = 28          # wordmark height on a 1080-wide canvas, same as the social editors
+MIN_TEXT = 44        # smallest text: about 16px on a phone, where a 1080 slide shows about 390px wide
 
 
 GREEK = "U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF"
@@ -153,14 +156,14 @@ body{{background:#777}}
 .scrim.center{{background:rgba(8,10,9,.42)}}
 .scrim.top-only{{background:linear-gradient(to bottom,rgba(8,10,9,.86) 0%,rgba(8,10,9,.66) 10%,rgba(8,10,9,.28) 20%,rgba(8,10,9,0) 32%)}}
 .grain{{position:absolute;inset:0;pointer-events:none}}
-.mark{{position:absolute;left:{MARGIN}px;top:{mark_top}px;width:{36 * 148 / 20:.0f}px;height:36px}}
+.mark{{position:absolute;left:{MARGIN}px;top:{mark_top}px;width:{MARK_H * 148 / 20:.0f}px;height:{MARK_H}px}}
 .txt{{position:absolute;left:{MARGIN}px;right:{MARGIN}px;display:flex;flex-direction:column}}
 .txt.bottom{{bottom:{txt_bottom}px}} .txt.top{{top:{txt_top}px}} .txt.center{{top:0;bottom:0;justify-content:center}}
 .blk{{position:absolute;left:{MARGIN}px;width:{COLUMN}px;display:flex;flex-direction:column}}
 .ln{{display:block;font-family:'Instrument Serif',Georgia,serif;letter-spacing:-0.035em;white-space:nowrap;
   width:max-content;line-height:.92}}
 .ln + .ln{{margin-top:-.04em}}
-.sub{{font-size:34px;line-height:1.3;margin-top:34px}}
+.sub{{font-size:{MIN_TEXT}px;line-height:1.3;margin-top:34px}}
 .link{{font-family:'Instrument Serif',Georgia,serif;font-size:68px;letter-spacing:-0.02em;margin-top:40px}}
 .fr{{position:absolute;left:0;top:{oy}px;width:1080px;height:1350px}}
 .fr .sub{{margin-top:26px}} .fr .link{{margin-top:30px}}
@@ -212,7 +215,7 @@ body{{background:#777}}
             o = s.get("outline")
             if o:
                 oh = o.get("h", 380)
-                inner = f'<span style="font-size:36px;color:{g["soft"]}">{esc(o["text"])}</span>' if o.get("text") else ""
+                inner = f'<span class="otxt" style="font-size:{MIN_TEXT}px;color:{g["soft"]}">{esc(o["text"])}</span>' if o.get("text") else ""
                 body += (f'<div class="outline" style="bottom:{o.get("bottom", txt_bottom + 30)}px;height:{oh}px;'
                          f'border-radius:{oh / 2}px;border-color:{g["ink"]}">{inner}</div>')
         elif L == "framed":
@@ -252,8 +255,8 @@ body{{background:#777}}
     return page, slides, story, H
 
 
-CHECK_JS = """([id, story, safeTop, safeBottom]) => { const out = [], sl = document.getElementById(id).getBoundingClientRect();
-  const texts = [...document.querySelectorAll('#'+id+' .ln, #'+id+' .link, #'+id+' .sub')];
+CHECK_JS = """([id, story, safeTop, safeBottom, minText]) => { const out = [], sl = document.getElementById(id).getBoundingClientRect();
+  const texts = [...document.querySelectorAll('#'+id+' .ln, #'+id+' .link, #'+id+' .sub, #'+id+' .otxt')];
   const phs = [...document.querySelectorAll('#'+id+' .ph')].map(p => p.getBoundingClientRect());
   texts.forEach(e => { const r = e.getBoundingClientRect(), name = e.textContent;
     if (r.left - sl.left < 89 || r.right - sl.left > 991) out.push('outside the margins: ' + name);
@@ -261,7 +264,56 @@ CHECK_JS = """([id, story, safeTop, safeBottom]) => { const out = [], sl = docum
     if (r.bottom - sl.top > safeBottom) out.push((story ? 'in the bottom 250px: ' : 'too close to the foot: ') + name);
     phs.forEach(q => { if (r.left < q.right && r.right > q.left && r.top < q.bottom - 4 && r.bottom > q.top + 4)
       out.push('over a photograph: ' + name); }); });
+    texts.forEach(e => { const px = parseFloat(getComputedStyle(e).fontSize);
+    if (px < minText - 0.5) out.push('text too small (' + Math.round(px) + 'px, at least ' + minText + 'px): ' + e.textContent); });
   return out; }"""
+
+
+TEXT_BOXES_JS = """(id) => { const sl = document.getElementById(id).getBoundingClientRect();
+  return [...document.querySelectorAll('#'+id+' .ln, #'+id+' .link, #'+id+' .sub, #'+id+' .otxt')].map(e => {
+    const r = e.getBoundingClientRect(), cs = getComputedStyle(e);
+    return {t: e.textContent, x: r.left - sl.left, y: r.top - sl.top, w: r.width, h: r.height,
+            px: parseFloat(cs.fontSize), color: cs.color}; }); }"""
+
+
+def _lum(rgb):
+    def ch(c):
+        c = c / 255
+        return c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4
+    r, g, b = rgb
+    return 0.2126 * ch(r) + 0.7152 * ch(g) + 0.0722 * ch(b)
+
+
+def contrast_issues(pg, sid):
+    """WCAG contrast of each text against what is behind it (the slide rendered with the text hidden).
+    Headlines count as large text (3:1); smaller lines need 4.5:1. Behind light text the check uses the
+    brightest tenth of the background, behind dark text the darkest tenth, so a busy photo cannot hide a problem."""
+    import io
+    from PIL import Image
+    boxes = pg.evaluate(TEXT_BOXES_JS, sid)
+    if not boxes:
+        return []
+    pg.add_style_tag(content=f"#{sid} .ln, #{sid} .link, #{sid} .sub, #{sid} .otxt {{visibility:hidden}}")
+    bg = Image.open(io.BytesIO(pg.locator(f"#{sid}").screenshot())).convert("RGB")
+    pg.evaluate("() => document.querySelectorAll('style')[document.querySelectorAll('style').length - 1].remove()")
+    out = []
+    for b in boxes:
+        nums = [float(v) for v in re.findall(r"[\d.]+", b["color"])]
+        rgb, a = nums[:3], (nums[3] if len(nums) > 3 else 1)
+        crop = bg.crop((int(b["x"]), int(b["y"]), int(b["x"] + b["w"]), int(b["y"] + b["h"])))
+        px = sorted(crop.getdata(), key=_lum)
+        if not px:
+            continue
+        light = _lum(rgb) > 0.4
+        tenth = px[int(len(px) * 0.9):] if light else px[:max(1, len(px) // 10)]
+        back = [sum(p[k] for p in tenth) / len(tenth) for k in range(3)]
+        text = [rgb[k] * a + back[k] * (1 - a) for k in range(3)]
+        l1, l2 = sorted((_lum(text), _lum(back)), reverse=True)
+        ratio = (l1 + 0.05) / (l2 + 0.05)
+        need = 3.0 if b["px"] >= 67 else 4.5      # 67px on the canvas is about 24px on a phone: WCAG large text
+        if ratio < need:
+            out.append(f"low contrast ({ratio:.1f}:1, needs {need:g}:1): {b['t']}")
+    return out
 
 
 def main():
@@ -299,9 +351,10 @@ def main():
             e.style.fontSize = Math.min(+e.dataset.max, 100 * 900 / w) + 'px'; })""")
         names = []
         for i, s in enumerate(slides, 1):
-            bad = pg.evaluate(CHECK_JS, [f"s{i}", story, 250 if story else 156, 1670 if story else 1262])
+            bad = pg.evaluate(CHECK_JS, [f"s{i}", story, 250 if story else 156, 1670 if story else 1262, MIN_TEXT])
             name = f"{i:02d}-{s.get('arrangement') or s['layout']}.png"
             pg.locator(f"#s{i}").screenshot(path=str(out / name))
+            bad += contrast_issues(pg, f"s{i}")
             names.append(name)
             problems += len(bad)
             print(name, "ok" if not bad else "PROBLEM " + "; ".join(bad))
