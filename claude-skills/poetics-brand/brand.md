@@ -145,8 +145,8 @@ TikTok without adaptation.
 **Safe zone — 4:5 carousel (1080 × 1350px):**
 
 ```
-4:5 and 1:1: 90px margins; the wordmark top-left; the footer (poeticsvr.com) bottom-left,
-             an optional "2 of 6" bottom-right.
+4:5 and 1:1: 90px margins; the wordmark top-left; no footer and no slide count (the account
+             name and the carousel dots already show both).
 9:16 story:  the top and bottom 250px sit under the app's own interface: nothing goes there.
 ```
 

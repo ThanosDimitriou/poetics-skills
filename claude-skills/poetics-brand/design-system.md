@@ -157,10 +157,10 @@ The two editors in `templates/` (built from `templates/_src/` by `scripts/build-
 draw the same system on a canvas (the Aperture look; the other feed styles are below):
 
 - **Social post:** 1080 wide at 4:5, 1:1 or 9:16. 90px margins, the wordmark top-left (28px tall),
-  the footer bottom-left, an optional "2 of 6" bottom-right. A story keeps its top and bottom 250px
+  no footer and no slide count. A story keeps its top and bottom 250px
   clear (the app's own interface). Layouts mirror the deck templates: cover, photo with caption,
   statement (on paper-deep), heading and rows, figure, quote, closing (the band with the Ring, the
-  email in lens). No text under 44px, overline and footer included (about 16px on a phone); on the
+  email in lens). No text under 44px, overline included (about 16px on a phone); on the
   cover the photograph shrinks to leave the text room.
 - **Video thumbnail:** 1920 × 1080, 120px margins; title and photo (the photograph bleeds off the
   right edge, square on that side) or title only. Large display type: thumbnails are seen small.

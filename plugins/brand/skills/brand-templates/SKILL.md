@@ -48,8 +48,8 @@ of the app's interface). Layouts mirror the deck's page templates:
 | Quote | A person's words, name, role, optional portrait |
 | Closing | Where to write: "Tell us about your space." and hello@poeticsvr.com |
 
-A carousel is several exports: one slide at a time, with "2 of 6" in the slide field. Use the
-true count of slides; don't pad to a round number.
+A carousel is several exports, one slide at a time. There is no footer or slide count: Instagram
+and LinkedIn show the account name and the carousel dots.
 
 **Video thumbnail**: 1920 × 1080, "Title and photo" (the photograph bleeds off the right edge) or
 "Title only". People see thumbnails small: a few large words.

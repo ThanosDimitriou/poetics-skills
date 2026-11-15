@@ -83,10 +83,6 @@ canvas { max-width: 100%; max-height: calc(100vh - 64px); height: auto; width: a
     <select id="focal"><option value="center">Center</option><option value="top">Top</option>
       <option value="bottom">Bottom</option><option value="left">Left</option><option value="right">Right</option></select></div>
 
-  <div class="row">
-    <div><label for="footer">Footer</label><input id="footer" type="text" value="poeticsvr.com"></div>
-    <div><label for="slide">Slide (optional)</label><input id="slide" type="text" placeholder="2 of 6"></div>
-  </div>
   <label class="check"><input type="checkbox" id="guides"> Show the safe area (not exported)</label>
 
   <button class="btn" id="export">Export PNG</button>
@@ -115,7 +111,8 @@ function frame(format) {
   // A story's top and bottom 250px sit under the app's own interface: keep everything clear.
   const story = format === '9:16';
   const markY = story ? 280 : 90;
-  return { W, H, M, markY, top: markY + 28 + 82, bottom: H - (story ? 340 : 150), footY: H - (story ? 280 : 80) };
+  // No footer and no slide count: the account name and the carousel dots already say both.
+  return { W, H, M, markY, top: markY + 28 + 82, bottom: H - (story ? 340 : 120) };
 }
 
 function render() {
@@ -141,7 +138,7 @@ function render() {
     const lead = body ? wrapLines(ctx, body, w).slice(0, photo && f.H < 1200 ? 2 : 3) : [];
     const blockH = (over ? 92 : 0) + tt.lines.length * tt.size * 1.05 + (lead.length ? 36 + lead.length * SMALL * 1.4 : 0);
     if (photo) {
-      // The photograph takes what the text leaves, so the text never runs into the footer.
+      // The photograph takes what the text leaves, so the text always fits above the bottom margin.
       const want = Math.round((f.bottom - f.top) * (f.H > 1500 ? 0.5 : f.H < 1200 ? 0.42 : 0.48));
       const ph = Math.max(160, Math.min(want, f.bottom - f.top - blockH - 72));
       drawAperture(ctx, t, photo, f.M, y, w, ph, 48, $('focal').value);
@@ -241,12 +238,7 @@ function render() {
     drawLines(ctx, lineFit.lines, f.M + 72, y, lineFit.size, 1.1, t.lens);
   }
 
-  // Chrome: the wordmark, the footer, the slide count.
   drawWordmark(ctx, t.ink, f.M, f.markY, 28);
-  ctx.font = `400 ${SMALL}px ${SANS}`; ctx.fillStyle = t.soft; ctx.textBaseline = 'alphabetic';
-  ctx.fillText($('footer').value, f.M, f.footY);
-  const slide = $('slide').value.trim();
-  if (slide) { ctx.textAlign = 'right'; ctx.fillText(slide, f.W - f.M, f.footY); ctx.textAlign = 'left'; }
 
   if ($('guides').checked) {
     ctx.save(); ctx.strokeStyle = t.lens; ctx.setLineDash([10, 8]); ctx.lineWidth = 2;
