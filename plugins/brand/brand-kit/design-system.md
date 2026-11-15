@@ -160,10 +160,11 @@ work offline in a browser:
   and 9:16, for single posts, carousels and stories. It draws exactly what `build-social.py` draws
   and reads and writes the same deck JSON, so a post can start in either and finish in the other.
   It adds what a person needs: drag to move text, reframe and zoom photos, per-line sizes, the
-  wordmark rule, live checks (margins, safe zone, 44px, contrast, copy) and export to PNG, ZIP or
-  a LinkedIn PDF.
-- **Video thumbnail:** 1920 × 1080, 120px margins; title and photo (the photograph bleeds off the
-  right edge, square on that side) or title only. Large display type: thumbnails are seen small.
+  wordmark rule, editing on the slide, phone and grid previews, caption and alt text, live checks
+  (margins, safe zone, 44px, contrast, copy) and export to PNG, ZIP or a LinkedIn PDF.
+- **Video thumbnail** (a format in the same studio; `video-thumb/editor.html` opens on it):
+  1920 × 1080, 120px margins; title and photo (the photograph bleeds off the right edge, square on
+  that side) or title only, light or dark. Large display type: thumbnails are seen small.
 
 ## Social feed styles
 

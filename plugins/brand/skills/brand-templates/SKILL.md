@@ -31,7 +31,7 @@ uploaded, the fonts and wordmark are inside).
 | Request | Editor | Path |
 |---|---|---|
 | Instagram, LinkedIn or TikTok post, carousel or story, made by hand | Social studio | `${CLAUDE_PLUGIN_ROOT}/brand-kit/templates/social-carousel/editor.html` |
-| YouTube thumbnail, video cover | Video thumbnail | `${CLAUDE_PLUGIN_ROOT}/brand-kit/templates/video-thumb/editor.html` |
+| YouTube thumbnail, video cover | The studio, on the thumbnail format | `${CLAUDE_PLUGIN_ROOT}/brand-kit/templates/video-thumb/editor.html` |
 
 **Social studio**: the whole feed system, by hand. It draws the same three layouts as
 `build-social.py`, to the pixel: type (paper, deeper paper, ink, deeper ink, lens blue; an optional
@@ -47,17 +47,29 @@ pair, closing). It does:
 - **Repositioning:** drag the text block (it snaps to top, middle and bottom), drag an oval, drag
   a photo to reframe it, scroll or use the slider to zoom. Arrow keys nudge; Cmd+Z undoes.
 - **Photos:** added from the computer or dropped on a frame; a frame remembers the photo's name.
+- **Editing on the slide:** double-click any text to edit it in place; clicking text highlights
+  its field in the inspector.
+- **Previews:** Phone shows the post in an Instagram feed (swipe, dots, the caption's first line,
+  optionally as an ad), a story with the app's bands and ad button, or a thumbnail on YouTube at
+  real size; Grid shows the cover as a 3:4 profile tile.
+- **Caption and alt text:** a caption field (first-line counter, copy button) and alt text per
+  slide, checked against the copy guide: first line under 125 characters, the email repeated,
+  three to five CamelCase hashtags, alt text on every photo slide.
 - **Checks, live:** margins, the story's safe zone, text under 44px, contrast against what is
   behind each line, text over a photo, empty frames, and the copy check. Export warns first.
-- **Export:** this slide (PNG), all slides (ZIP, with the deck.json), a LinkedIn PDF, or a project
-  file that keeps the photos inside. It opens a saved project or any `deck.json` you write.
+- **Export:** this slide (PNG), all slides (ZIP with caption.md and deck.json), a LinkedIn PDF,
+  deck.json alone, or a project file that keeps the photos inside. It opens a saved project or
+  any `deck.json` you write. Photos also stay in the browser between sessions.
+- **Video thumbnails** are a format in the same studio (1920 × 1080, title and photo or title
+  only, light or dark); `templates/video-thumb/editor.html` is the studio opening on that format.
+- Shortcuts: ← → slides, ⌘Z undo, ⌘D duplicate, ⌘S save, ⌘E export, G guides, P phone, ? for all.
 
 So you can hand off either way: write a deck JSON (the format below), give it to the user to
 open in the studio and finish by hand, or render a deck they saved from the studio with
 `build-social.py` (add the photos by library id or path).
 
 **Video thumbnail**: 1920 × 1080, "Title and photo" (the photograph bleeds off the right edge) or
-"Title only". People see thumbnails small: a few large words.
+"Title only". People see thumbnails small: a few large words (the studio warns past eight).
 
 ## Your part
 

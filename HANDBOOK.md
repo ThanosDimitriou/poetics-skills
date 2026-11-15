@@ -153,14 +153,20 @@ Two ways to make social assets. Pick by the job.
 
 Both use the same deck JSON: ask Claude for a deck, open it in the studio, adjust by hand; or save
 from the studio and have Claude render it. The studio is
-`brand-kit/templates/social-carousel/editor.html` (4:5, 1:1, 9:16); the thumbnail editor is
-`video-thumb/editor.html` (1920 × 1080). Both work offline by double-click.
+`brand-kit/templates/social-carousel/editor.html` (4:5, 1:1, 9:16); the thumbnail editor,
+`video-thumb/editor.html`, is the same studio opening on the 1920 × 1080 format. Both work offline by double-click.
 
-**Using the studio:** pick a format and the wordmark rule at the top, or start from an example
-carousel. For each slide choose a style, type the lines (each has its own size), add photos and
-click one into the selected frame. Drag text to move it, drag a photo to reframe it, scroll to zoom.
-The strip at the bottom adds, duplicates, deletes and reorders slides. Fix what Checks lists, then
-export. Save project keeps everything, photos included, to carry on later.
+**Using the studio:**
+
+1. Pick a format and the wordmark rule in the top bar, or choose a starting carousel (bottom of the
+   left panel), or Open a deck from Claude.
+2. Add photos on the right (they stay in your browser), then click one into the selected frame.
+3. For each slide pick a style, type the lines (each has its own size), or double-click text on
+   the slide to edit it there. Drag text to move it, drag a photo to reframe, scroll to zoom.
+4. The strip at the bottom adds (+), duplicates, deletes and reorders slides (drag them).
+5. Write the caption and alt text in the Caption tab. Look at it in Phone and Grid.
+6. Fix what Checks lists, then Export: all slides as a ZIP (with caption.md), or a LinkedIn PDF.
+   Save keeps the whole project, photos included. Press ? for the shortcuts.
 
 ### The three layouts
 

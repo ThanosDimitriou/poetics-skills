@@ -3,175 +3,289 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Poetics social studio</title>
+<title>/*PAGE_TITLE*/</title>
 <style>
 /*UI_FONTS*/
-:root { --paper:#EFF0EC; --deep:#E5E8E3; --shade:#C5CBC4; --ink:#121614; --soft:#5B625C; --lens:#16249C; --lens-deep:#0E1769; }
+:root { --paper:#EFF0EC; --deep:#E5E8E3; --shade:#C5CBC4; --line:#D6DAD4; --ink:#121614; --soft:#5B625C; --lens:#16249C; --lens-deep:#0E1769; --lens-tint:#E3E6F5; --warn:#B4232F; }
 * { box-sizing: border-box; margin: 0; }
 html, body { height: 100%; }
-body { font: 14px/1.45 'Inter Tight', system-ui, sans-serif; background: var(--paper); color: var(--ink);
-  display: grid; grid-template-columns: 390px minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; height: 100vh; overflow: hidden; }
-.panel { grid-row: 1 / 3; background: var(--deep); overflow-y: auto; padding: 22px 22px 80px; border-right: 1px solid var(--shade); }
-h1 { font: 400 34px/1.05 'Instrument Serif', Georgia, serif; letter-spacing: -0.02em; }
-.intro { color: var(--soft); margin: 6px 0 4px; font-size: 13px; }
-section { border-top: 1px solid var(--shade); margin-top: 18px; padding-top: 14px; }
-h2 { font: 500 12px/1.2 'Inter Tight', sans-serif; letter-spacing: .06em; text-transform: uppercase; color: var(--soft); margin-bottom: 4px; display: flex; justify-content: space-between; }
-label { display: block; font-size: 12px; color: var(--soft); margin: 12px 0 5px; }
-select, input[type=text], textarea { width: 100%; font: inherit; color: var(--ink); background: var(--paper);
-  border: 1px solid var(--shade); border-radius: 10px; padding: 8px 11px; }
-select:focus, input[type=text]:focus { border-color: var(--lens); outline: none; }
-input[type=range] { width: 100%; accent-color: var(--lens); }
-.row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
-.check { display: flex; gap: 8px; align-items: center; color: var(--ink); font-size: 13px; margin-top: 10px; }
-.hint { color: var(--soft); font-size: 12px; margin-top: 6px; }
-.btn, .ghost { display: inline-flex; align-items: center; justify-content: center; min-height: 38px; padding: 0 14px; border-radius: 9999px;
-  font: 500 13px 'Inter Tight', sans-serif; cursor: pointer; border: 1px solid var(--lens); }
+body { font: 13.5px/1.45 'Inter Tight', system-ui, sans-serif; background: var(--paper); color: var(--ink); height: 100vh; overflow: hidden;
+  display: grid; grid-template-columns: 340px minmax(0, 1fr) 300px; grid-template-rows: 58px minmax(0, 1fr) auto;
+  grid-template-areas: "top top top" "left stage right" "left strip right"; }
+button { font: inherit; color: inherit; }
+/* top bar */
+.top { grid-area: top; display: flex; align-items: center; gap: 14px; padding: 0 16px; border-bottom: 1px solid var(--line); background: var(--paper); min-width: 0; }
+.brand { display: flex; align-items: center; gap: 10px; white-space: nowrap; }
+.brand .wm { width: 92px; height: 13px; display: block; }
+.brand .wm svg { width: 100%; height: 100%; display: block; }
+.brand b { font: 400 22px/1 'Instrument Serif', Georgia, serif; letter-spacing: -0.01em; font-weight: 400; }
+.vr { width: 1px; align-self: stretch; margin: 12px 0; background: var(--line); }
+.mini { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--soft); white-space: nowrap; }
+.mini select { width: auto; padding: 6px 28px 6px 10px; }
+.spacer { flex: 1; }
+.chip { border: 1px solid var(--line); background: transparent; border-radius: 999px; padding: 6px 12px; cursor: pointer; font-size: 12.5px; white-space: nowrap; }
+.chip[aria-pressed="true"] { background: var(--lens-tint); border-color: var(--lens); color: var(--lens); }
+.icon { border: 1px solid var(--line); background: transparent; border-radius: 999px; width: 34px; height: 34px; cursor: pointer; font-size: 16px; display: inline-grid; place-items: center; }
+.icon:hover, .chip:hover { border-color: var(--ink); }
+.icon:disabled { opacity: .35; cursor: default; border-color: var(--line); }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 3px; gap: 2px; }
+.seg button { border: 0; background: none; border-radius: 999px; padding: 5px 12px; cursor: pointer; font-size: 12.5px; color: var(--soft); }
+.seg button.on { background: var(--ink); color: var(--paper); }
+.btn, .ghost { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 34px; padding: 0 14px; border-radius: 999px;
+  font: 500 12.5px 'Inter Tight', sans-serif; cursor: pointer; border: 1px solid var(--lens); white-space: nowrap; }
 .btn { background: var(--lens); color: var(--paper); }
 .btn:hover { background: var(--lens-deep); border-color: var(--lens-deep); }
-.ghost { background: transparent; color: var(--ink); border-color: var(--shade); }
+.ghost { background: transparent; border-color: var(--line); color: var(--ink); }
 .ghost:hover { border-color: var(--ink); }
-.btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-.btns > * { flex: 1 1 auto; }
-.line { display: grid; grid-template-columns: 1fr 92px 26px; gap: 6px; align-items: center; margin-top: 6px; }
-.line .size { display: flex; flex-direction: column; font-size: 11px; color: var(--soft); }
-.x { border: 0; background: none; color: var(--soft); font-size: 18px; cursor: pointer; line-height: 1; }
-.x:hover { color: var(--ink); }
-.slot { display: flex; gap: 10px; align-items: center; padding: 8px; border: 1px solid var(--shade); border-radius: 12px; margin-top: 8px; cursor: pointer; background: var(--paper); }
-.slot.on { border-color: var(--lens); box-shadow: 0 0 0 1px var(--lens); }
-.slot .pic { width: 46px; height: 46px; border-radius: 10px; background: var(--shade) center/cover no-repeat; flex: none; }
-.slot .meta { font-size: 12px; color: var(--soft); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.slot .meta b { display: block; color: var(--ink); font-weight: 500; }
-.tray { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 10px; }
-.tray div { aspect-ratio: 1; border-radius: 10px; background: var(--shade) center/cover no-repeat; cursor: pointer; position: relative; }
-.tray div:hover { outline: 2px solid var(--lens); }
-.tray div span { position: absolute; left: 0; right: 0; bottom: 0; font-size: 9px; padding: 2px 4px; background: rgb(18 22 20 / .55); color: #fff;
-  border-radius: 0 0 10px 10px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-.issues p { padding: 7px 0; border-top: 1px solid var(--shade); font-size: 12.5px; }
-.issues p:first-child { border-top: 0; }
-.issues .ok { color: var(--soft); }
-.issues .bad::before { content: '●'; color: #B4232F; margin-right: 6px; font-size: 10px; }
-.stage { position: relative; display: flex; align-items: center; justify-content: center; padding: 28px 28px 44px; min-height: 0; min-width: 0; }
+.menu-wrap { position: relative; }
+.menu { position: absolute; right: 0; top: calc(100% + 6px); background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 6px; min-width: 250px;
+  box-shadow: 0 12px 40px rgb(18 22 20 / .14); z-index: 30; }
+.menu button { display: block; width: 100%; text-align: left; border: 0; background: none; padding: 9px 12px; border-radius: 9px; cursor: pointer; }
+.menu button:hover { background: var(--deep); }
+.menu button small { display: block; color: var(--soft); font-size: 11.5px; }
+.menu hr { border: 0; border-top: 1px solid var(--line); margin: 4px 6px; }
+/* side panels */
+.left, .right { background: var(--deep); overflow-y: auto; min-height: 0; }
+.left { grid-area: left; border-right: 1px solid var(--line); padding: 14px 14px 60px; }
+.right { grid-area: right; border-left: 1px solid var(--line); display: flex; flex-direction: column; }
+.head { display: flex; align-items: baseline; justify-content: space-between; margin: 2px 2px 8px; }
+.head h2 { font: 400 26px/1 'Instrument Serif', Georgia, serif; font-weight: 400; letter-spacing: -0.01em; }
+.head span { color: var(--soft); font-size: 12px; }
+.card { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 12px 12px 14px; margin-top: 10px; }
+.card > h3 { font: 500 11px/1 'Inter Tight', sans-serif; letter-spacing: .08em; text-transform: uppercase; color: var(--soft); margin-bottom: 8px;
+  display: flex; justify-content: space-between; align-items: center; }
+.card > h3 button { text-transform: none; letter-spacing: 0; font-size: 12px; font-weight: 500; border: 0; background: none; color: var(--lens); cursor: pointer; padding: 0; }
+label { display: block; font-size: 12px; color: var(--soft); margin: 10px 0 4px; }
+.card > label:first-of-type { margin-top: 0; }
+select, input[type=text], textarea { width: 100%; font: inherit; color: var(--ink); background: #F7F8F5; border: 1px solid var(--line); border-radius: 10px; padding: 7px 10px; }
+textarea { resize: vertical; min-height: 64px; line-height: 1.45; }
+select:focus, input[type=text]:focus, textarea:focus { border-color: var(--lens); outline: none; background: #fff; }
+input[type=range] { width: 100%; accent-color: var(--lens); }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.check { display: flex; gap: 8px; align-items: center; color: var(--ink); font-size: 12.5px; margin-top: 10px; }
+.hint { color: var(--soft); font-size: 11.5px; margin-top: 6px; }
+.line { display: grid; grid-template-columns: 1fr 86px 22px; gap: 6px; align-items: center; margin-top: 6px; border-radius: 10px; }
+.line.flash input[type=text] { border-color: var(--lens); box-shadow: 0 0 0 3px var(--lens-tint); }
+.line .size { display: flex; flex-direction: column; font-size: 10.5px; color: var(--soft); line-height: 1.1; }
+.x { border: 0; background: none; color: var(--soft); font-size: 17px; cursor: pointer; line-height: 1; padding: 0; }
+.x:hover { color: var(--warn); }
+.add { margin-top: 8px; width: 100%; border: 1px dashed var(--shade); background: none; border-radius: 10px; padding: 7px; cursor: pointer; color: var(--soft); }
+.add:hover { border-color: var(--lens); color: var(--lens); }
+.segf { display: flex; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.segf button { flex: 1; border: 0; background: #F7F8F5; padding: 7px 4px; cursor: pointer; font-size: 12.5px; }
+.segf button + button { border-left: 1px solid var(--line); }
+.segf button.on { background: var(--ink); color: var(--paper); }
+.slot { display: flex; gap: 10px; align-items: center; padding: 6px; border: 1px solid var(--line); border-radius: 12px; margin-top: 6px; cursor: pointer; background: #F7F8F5; }
+.slot.on { border-color: var(--lens); box-shadow: 0 0 0 1px var(--lens); background: #fff; }
+.slot .pic { width: 42px; height: 42px; border-radius: 9px; background: var(--shade) center/cover no-repeat; flex: none; }
+.slot .meta { font-size: 11.5px; color: var(--soft); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.slot .meta b { display: block; color: var(--ink); font-weight: 500; font-size: 12.5px; }
+/* right tabs */
+.tabs { display: flex; gap: 2px; padding: 10px 12px 0; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--deep); z-index: 2; }
+.tabs button { border: 0; background: none; padding: 8px 10px 9px; cursor: pointer; color: var(--soft); border-bottom: 2px solid transparent; font-weight: 500; }
+.tabs button.on { color: var(--ink); border-bottom-color: var(--ink); }
+.badge { display: inline-grid; place-items: center; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--warn); color: #fff; font-size: 10.5px; margin-left: 4px; }
+.badge.zero { background: var(--shade); color: var(--ink); }
+.pane { padding: 12px 14px 60px; }
+.tray { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 10px; }
+.tray .ph { aspect-ratio: 1; border-radius: 10px; background: var(--shade) center/cover no-repeat; cursor: pointer; position: relative; }
+.tray .ph:hover { outline: 2px solid var(--lens); }
+.tray .ph .used { position: absolute; left: 5px; top: 5px; width: 9px; height: 9px; border-radius: 50%; background: var(--lens); box-shadow: 0 0 0 2px #fff; }
+.tray .ph .rm { position: absolute; right: 3px; top: 3px; width: 20px; height: 20px; border-radius: 50%; border: 0; background: rgb(18 22 20 / .65); color: #fff; cursor: pointer; display: none; font-size: 13px; line-height: 1; }
+.tray .ph:hover .rm { display: block; }
+.tray .ph span { position: absolute; left: 0; right: 0; bottom: 0; font-size: 9.5px; padding: 2px 5px; background: rgb(18 22 20 / .55); color: #fff; border-radius: 0 0 10px 10px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.dropzone { border: 1.5px dashed var(--shade); border-radius: 14px; padding: 14px; text-align: center; color: var(--soft); cursor: pointer; }
+.dropzone:hover, .dropzone.over { border-color: var(--lens); color: var(--lens); background: var(--lens-tint); }
+.issue { display: flex; gap: 8px; padding: 8px 0; border-top: 1px solid var(--line); font-size: 12.5px; }
+.issue:first-child { border-top: 0; }
+.issue::before { content: ''; flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--warn); margin-top: 6px; }
+.issue.soft::before { background: #C08A1E; }
+.ok { color: var(--soft); font-size: 12.5px; padding: 6px 0; }
+.ok::before { content: '✓  '; color: #2E7D4F; }
+.summary button { display: flex; justify-content: space-between; width: 100%; border: 0; background: none; padding: 6px 0; cursor: pointer; border-top: 1px solid var(--line); font-size: 12.5px; }
+.summary button:hover { color: var(--lens); }
+.count { font-size: 11.5px; color: var(--soft); margin-top: 4px; display: flex; justify-content: space-between; }
+h4 { font: 500 11px/1 'Inter Tight', sans-serif; letter-spacing: .08em; text-transform: uppercase; color: var(--soft); margin: 16px 0 6px; }
+/* stage */
+.stage { grid-area: stage; position: relative; display: flex; align-items: center; justify-content: center; padding: 26px 26px 40px; min-height: 0; min-width: 0; }
 canvas#c { max-width: 100%; max-height: 100%; width: auto; height: auto; border-radius: 4px; box-shadow: 0 2px 30px rgb(18 22 20 / 0.10); touch-action: none; }
-.stage .tip { position: absolute; bottom: 12px; left: 0; right: 0; text-align: center; font-size: 12px; color: var(--soft); }
+canvas#c:focus, canvas#c:focus-visible { outline: none; }
+.stage .tip { position: absolute; bottom: 12px; left: 0; right: 0; text-align: center; font-size: 11.5px; color: var(--soft); pointer-events: none; }
 .stage.drop canvas { outline: 3px dashed var(--lens); outline-offset: 6px; }
-.strip { display: flex; gap: 12px; align-items: center; padding: 10px 18px; border-top: 1px solid var(--shade); overflow-x: auto; background: var(--paper); min-height: 132px; }
-.thumb { flex: none; position: relative; cursor: pointer; border-radius: 6px; padding: 3px; border: 2px solid transparent; }
+.inline { position: absolute; z-index: 5; border: 2px solid var(--lens); border-radius: 4px; background: rgb(255 255 255 / .92); color: #121614; padding: 0 4px; outline: none; }
+.navbtn { position: absolute; top: 50%; transform: translateY(-50%); width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--line); background: var(--paper); cursor: pointer; font-size: 15px; z-index: 3; }
+.navbtn.l { left: 10px; } .navbtn.r { right: 10px; }
+.navbtn:disabled { opacity: .3; cursor: default; }
+/* previews */
+.preview { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 40px; padding: 20px; background: var(--paper); z-index: 4; overflow: auto; }
+.phone { width: 340px; flex: none; border-radius: 44px; background: #0b0d0c; padding: 12px; box-shadow: 0 20px 60px rgb(18 22 20 / .25); }
+.screen { border-radius: 34px; overflow: hidden; background: #fff; color: #111; font: 13px/1.35 -apple-system, system-ui, sans-serif; position: relative; }
+.ig-top { display: flex; align-items: center; gap: 8px; padding: 34px 12px 8px; font-weight: 600; font-size: 13px; }
+.av { width: 30px; height: 30px; border-radius: 50%; background: #121614; display: grid; place-items: center; overflow: hidden; }
+.av svg { width: 22px; height: 6px; }
+.ig-top small { display: block; font-weight: 400; font-size: 11px; color: #555; }
+.ig-media { position: relative; background: #000; }
+.ig-media img { display: block; width: 100%; }
+.ig-media .cnt { position: absolute; right: 10px; top: 10px; background: rgb(0 0 0 / .6); color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 10px; }
+.ig-media .pv { position: absolute; top: 50%; transform: translateY(-50%); width: 26px; height: 26px; border-radius: 50%; border: 0; background: rgb(255 255 255 / .85); cursor: pointer; font-size: 12px; }
+.ig-media .pv.l { left: 8px; } .ig-media .pv.r { right: 8px; }
+.cta { display: flex; justify-content: space-between; padding: 10px 12px; font-weight: 600; font-size: 13px; color: #fff; background: #3F5BF6; }
+.ig-bar { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px 4px; font-size: 18px; }
+.dots { display: flex; gap: 4px; justify-content: center; flex: 1; }
+.dots i { width: 6px; height: 6px; border-radius: 50%; background: #c4c4c4; }
+.dots i.on { background: #3F5BF6; }
+.ig-cap { padding: 2px 12px 18px; font-size: 13px; }
+.ig-cap .more { color: #888; }
+.st { aspect-ratio: 9 / 16; position: relative; background: #000; }
+.st img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.st .bars { position: absolute; top: 10px; left: 10px; right: 10px; display: flex; gap: 3px; }
+.st .bars i { flex: 1; height: 2.5px; border-radius: 2px; background: rgb(255 255 255 / .4); }
+.st .bars i.on { background: #fff; }
+.st .who { position: absolute; top: 22px; left: 12px; display: flex; align-items: center; gap: 8px; color: #fff; font-weight: 600; font-size: 12.5px; }
+.st .reply { position: absolute; left: 12px; right: 12px; bottom: 14px; border: 1px solid rgb(255 255 255 / .7); border-radius: 22px; padding: 9px 14px; color: #fff; font-size: 12.5px; }
+.st .adcta { position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%); background: #fff; color: #111; font-weight: 600; padding: 8px 18px; border-radius: 18px; font-size: 12.5px; }
+.st .zone { position: absolute; left: 0; right: 0; background: repeating-linear-gradient(135deg, rgb(255 80 80 / .18) 0 6px, transparent 6px 12px); }
+.yt { width: 380px; background: #fff; border-radius: 16px; padding: 14px; box-shadow: 0 10px 40px rgb(18 22 20 / .12); font: 13px/1.35 Roboto, system-ui, sans-serif; color: #0f0f0f; }
+.yt .th { position: relative; border-radius: 12px; overflow: hidden; }
+.yt .th img { width: 100%; display: block; }
+.yt .dur { position: absolute; right: 6px; bottom: 6px; background: rgb(0 0 0 / .8); color: #fff; font-size: 11px; padding: 1px 5px; border-radius: 4px; font-weight: 500; }
+.yt .t { font-weight: 600; font-size: 14px; margin-top: 10px; }
+.yt .c { color: #606060; font-size: 12px; margin-top: 2px; }
+.yt.small { width: 400px; display: flex; gap: 8px; }
+.yt.small .th { width: 168px; flex: none; }
+.pvside { max-width: 300px; color: var(--soft); font-size: 12.5px; }
+.pvside h3 { font: 400 26px/1.05 'Instrument Serif', Georgia, serif; color: var(--ink); margin-bottom: 8px; font-weight: 400; }
+.pvside .check { color: var(--ink); }
+.gridpv { display: grid; grid-template-columns: repeat(3, 110px); gap: 3px; }
+.gridpv div { aspect-ratio: 3 / 4; background: var(--shade) center/cover no-repeat; }
+.gridpv div.me { outline: 2px solid var(--lens); outline-offset: -2px; }
+/* strip */
+.strip { grid-area: strip; display: flex; gap: 10px; align-items: center; padding: 10px 16px; border-top: 1px solid var(--line); overflow-x: auto; background: var(--paper); min-height: 128px; }
+.thumb { flex: none; position: relative; cursor: pointer; border-radius: 7px; padding: 3px; border: 2px solid transparent; }
 .thumb.on { border-color: var(--lens); }
-.thumb canvas { display: block; border-radius: 3px; height: 96px; width: auto; }
+.thumb canvas { display: block; border-radius: 3px; height: 92px; width: auto; }
 .thumb .n { position: absolute; left: 7px; top: 6px; font-size: 10px; background: rgb(18 22 20 / .6); color: #fff; padding: 0 5px; border-radius: 6px; }
-.thumb .dot { position: absolute; right: 7px; top: 7px; width: 9px; height: 9px; border-radius: 50%; background: #B4232F; display: none; }
+.thumb .dot { position: absolute; right: 7px; top: 7px; width: 9px; height: 9px; border-radius: 50%; background: var(--warn); display: none; box-shadow: 0 0 0 2px #fff; }
 .thumb.warn .dot { display: block; }
+.thumb .tools { position: absolute; left: 0; right: 0; bottom: 6px; display: none; justify-content: center; gap: 4px; }
+.thumb:hover .tools { display: flex; }
+.thumb .tools button { width: 24px; height: 24px; border-radius: 50%; border: 0; background: rgb(18 22 20 / .75); color: #fff; cursor: pointer; font-size: 12px; }
 .thumb.dragover { border-color: var(--soft); border-style: dashed; }
-.stripbtns { display: flex; flex-direction: column; gap: 6px; flex: none; margin-left: 6px; }
-.stripbtns .ghost { min-height: 30px; font-size: 12px; }
+.addtile { flex: none; width: 74px; height: 92px; border: 1.5px dashed var(--shade); border-radius: 7px; background: none; cursor: pointer; color: var(--soft); font-size: 22px; }
+.addtile:hover { border-color: var(--lens); color: var(--lens); }
+.pop { position: fixed; z-index: 40; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 8px; box-shadow: 0 12px 40px rgb(18 22 20 / .16); width: 250px; }
+.pop h5 { font: 500 10.5px/1 'Inter Tight', sans-serif; letter-spacing: .08em; text-transform: uppercase; color: var(--soft); margin: 8px 8px 4px; }
+.pop button { display: block; width: 100%; text-align: left; border: 0; background: none; padding: 7px 8px; border-radius: 8px; cursor: pointer; }
+.pop button:hover { background: var(--deep); }
+.toast { position: fixed; left: 50%; bottom: 150px; transform: translateX(-50%) translateY(20px); background: var(--ink); color: var(--paper); padding: 10px 16px; border-radius: 999px;
+  font-size: 12.5px; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; z-index: 60; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.help { position: fixed; inset: 0; background: rgb(18 22 20 / .35); display: grid; place-items: center; z-index: 70; }
+.help > div { background: var(--paper); border-radius: 20px; padding: 24px 28px; width: 460px; box-shadow: 0 20px 60px rgb(18 22 20 / .3); }
+.help h3 { font: 400 28px/1 'Instrument Serif', Georgia, serif; font-weight: 400; margin-bottom: 12px; }
+.help table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.help td { padding: 6px 0; border-top: 1px solid var(--line); }
+.help td:first-child { width: 150px; }
+kbd { font: 11px 'Inter Tight', sans-serif; border: 1px solid var(--shade); border-bottom-width: 2px; border-radius: 5px; padding: 1px 5px; background: #fff; }
 [hidden] { display: none !important; }
 :focus-visible { outline: 2px solid var(--lens); outline-offset: 2px; }
-canvas#c:focus, canvas#c:focus-visible { outline: none; }
-kbd { font: 11px 'Inter Tight', sans-serif; border: 1px solid var(--shade); border-radius: 4px; padding: 0 4px; }
+@media (max-width: 1240px) { body { grid-template-columns: 320px minmax(0, 1fr) 0; } .right { display: none; } body.show-right { grid-template-columns: 320px minmax(0, 1fr) 280px; } body.show-right .right { display: flex; } .narrow { display: inline-grid !important; } }
+.narrow { display: none !important; }
 </style>
 </head>
 <body>
-<aside class="panel">
-  <h1>Social studio.</h1>
-  <p class="intro">Posts, carousels and stories in the Poetics feed styles. Nothing leaves your computer.</p>
-
-  <section>
-    <h2>Post</h2>
-    <div class="row">
-      <div><label for="format">Format</label>
-        <select id="format">
-          <option value="post">Feed 4:5 (1080×1350)</option>
-          <option value="square">Square (1080×1080)</option>
-          <option value="story">Story 9:16 (1080×1920)</option>
-        </select></div>
-      <div><label for="markRule">Wordmark</label>
-        <select id="markRule">
-          <option value="ends">First and last slide</option>
-          <option value="all">Every slide</option>
-          <option value="cover">First slide only</option>
-          <option value="none">None</option>
-        </select></div>
+<header class="top">
+  <div class="brand"><span class="wm" id="brandMark"></span><b>/*BRAND_NAME*/</b></div>
+  <div class="vr"></div>
+  <label class="mini">Format
+    <select id="format">
+      <option value="post">Feed 4:5</option>
+      <option value="square">Square 1:1</option>
+      <option value="story">Story 9:16</option>
+      <option value="thumb">Video thumbnail 16:9</option>
+    </select></label>
+  <label class="mini" id="markRuleWrap">Wordmark
+    <select id="markRule">
+      <option value="ends">First and last</option>
+      <option value="all">Every slide</option>
+      <option value="cover">First only</option>
+      <option value="none">None</option>
+    </select></label>
+  <button class="chip" id="grainBtn" aria-pressed="true" title="Grain texture on type grounds and duotone">Grain</button>
+  <button class="chip" id="guidesBtn" aria-pressed="false" title="Margins and safe area (G)">Guides</button>
+  <div class="spacer"></div>
+  <button class="icon" id="undoBtn" title="Undo (⌘Z)" aria-label="Undo"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 3.5 2.5 6.5l3 3"/><path d="M2.5 6.5h7a4 4 0 0 1 0 8h-2"/></svg></button>
+  <button class="icon" id="redoBtn" title="Redo (⇧⌘Z)" aria-label="Redo"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 3.5 3 3-3 3"/><path d="M13.5 6.5h-7a4 4 0 0 0 0 8h2"/></svg></button>
+  <div class="seg" id="viewSeg" role="tablist">
+    <button data-v="edit" class="on">Edit</button><button data-v="phone">Phone</button><button data-v="grid">Grid</button>
+  </div>
+  <button class="icon narrow" id="sideBtn" title="Photos, checks, caption">☰</button>
+  <button class="icon" id="helpBtn" title="Shortcuts (?)">?</button>
+  <button class="ghost" id="openBtn" title="Open a project or a deck.json">Open</button>
+  <button class="ghost" id="saveBtn" title="Save project with photos (⌘S)">Save</button>
+  <div class="menu-wrap">
+    <button class="btn" id="exportBtn">Export ▾</button>
+    <div class="menu" id="exportMenu" hidden>
+      <button data-x="png">This slide<small>PNG, full size</small></button>
+      <button data-x="zip">All slides<small>ZIP: PNGs, caption.md, deck.json (⌘E)</small></button>
+      <button data-x="pdf">LinkedIn document<small>One PDF, a page per slide</small></button>
+      <hr>
+      <button data-x="caption">Copy caption<small>To paste into Instagram or LinkedIn</small></button>
+      <button data-x="deck">deck.json only<small>For Claude or build-social.py</small></button>
     </div>
-    <label class="check"><input type="checkbox" id="grain" checked> Grain texture (type grounds and duotone)</label>
-    <label class="check"><input type="checkbox" id="guides"> Show margins and safe area (not exported)</label>
-    <label for="example">Start from</label>
-    <select id="example">
-      <option value="">Choose a starting carousel…</option>
-      <option value="photo">Photo carousel (showcase look)</option>
-      <option value="framed">Framed carousel (agencies look)</option>
-      <option value="type">Type carousel (paper, blue, duotone)</option>
-      <option value="styles">One slide of each style</option>
-      <option value="blank">One empty slide</option>
-    </select>
-  </section>
+  </div>
+  <input type="file" id="openFile" accept=".json,application/json" hidden>
+</header>
 
-  <section>
-    <h2><span>Slide <span id="slideNo"></span></span><span id="slideKind" style="text-transform:none;letter-spacing:0"></span></h2>
-    <label for="style">Style</label>
-    <select id="style">
-      <optgroup label="Type">
-        <option value="type:paper">Type on paper</option>
-        <option value="type:paper-deep">Type on deeper paper</option>
-        <option value="type:dark">Type on ink</option>
-        <option value="type:dark-deep">Type on deeper ink</option>
-        <option value="type:lens">Type on lens blue</option>
-      </optgroup>
-      <optgroup label="Photo">
-        <option value="photo:natural">Photo, full bleed</option>
-        <option value="photo:duotone">Photo, duotone</option>
-      </optgroup>
-      <optgroup label="Framed">
-        <option value="framed:cover">Framed: cover (lines, big pill)</option>
-        <option value="framed:rows">Framed: three rows</option>
-        <option value="framed:lens">Framed: lens photo, lines below</option>
-        <option value="framed:pair">Framed: two pills</option>
-        <option value="framed:close">Framed: closing (lines, email, photo)</option>
-      </optgroup>
-    </select>
-    <div id="fields"></div>
-  </section>
-
-  <section>
-    <h2>Photos</h2>
-    <p class="hint">Add photos, select a frame (click it on the slide or below), then click a photo. Drag on the slide to reframe; scroll to zoom. You can also drop photos straight onto a frame.</p>
-    <div class="btns"><button class="ghost" id="addPhotosBtn">Add photos</button></div>
-    <input type="file" id="addPhotos" accept="image/*" multiple hidden>
-    <div class="tray" id="tray"></div>
-  </section>
-
-  <section>
-    <h2>Checks</h2>
-    <div class="issues" id="issues"></div>
-  </section>
-
-  <section>
-    <h2>Export</h2>
-    <div class="btns">
-      <button class="btn" id="exportSlide">This slide (PNG)</button>
-      <button class="btn" id="exportAll">All slides (ZIP)</button>
-    </div>
-    <div class="btns">
-      <button class="ghost" id="exportPdf">LinkedIn PDF</button>
-      <button class="ghost" id="saveProject">Save project</button>
-      <button class="ghost" id="openProjectBtn">Open…</button>
-    </div>
-    <input type="file" id="openProject" accept=".json,application/json" hidden>
-    <p class="hint">Save project keeps the photos inside the file. Open takes a saved project or a <code>deck.json</code> made by Claude (add its photos after). <kbd>⌘Z</kbd> undoes, <kbd>⇧⌘Z</kbd> redoes, arrow keys nudge the selected text.</p>
-  </section>
-</aside>
+<aside class="left" id="inspector"></aside>
 
 <main class="stage" id="stage">
+  <button class="navbtn l" id="prevBtn" title="Previous slide (←)">‹</button>
   <canvas id="c" width="1080" height="1350" aria-label="Slide preview" tabindex="0"></canvas>
-  <div class="tip">Drag text to move it · drag a photo to reframe it · scroll on a photo to zoom</div>
+  <button class="navbtn r" id="nextBtn" title="Next slide (→)">›</button>
+  <input class="inline" id="inline" type="text" hidden>
+  <div class="tip" id="tip">Click to select · double-click text to edit it · drag text to move it · drag a photo to reframe · scroll to zoom</div>
+  <div class="preview" id="preview" hidden></div>
 </main>
 
+<aside class="right" id="right">
+  <div class="tabs">
+    <button data-t="photos" class="on">Photos</button>
+    <button data-t="checks">Checks <span class="badge zero" id="badge">0</span></button>
+    <button data-t="caption">Caption</button>
+  </div>
+  <div class="pane" id="pane-photos">
+    <div class="dropzone" id="dropzone">Add photos<br><small>click, or drop files here</small></div>
+    <input type="file" id="addPhotos" accept="image/*" multiple hidden>
+    <p class="hint">Select a frame on the slide, then click a photo. Photos stay in this browser until you remove them.</p>
+    <div class="tray" id="tray"></div>
+  </div>
+  <div class="pane" id="pane-checks" hidden></div>
+  <div class="pane" id="pane-caption" hidden></div>
+</aside>
+
 <footer class="strip" id="strip"></footer>
+<div class="toast" id="toast"></div>
+<div class="help" id="help" hidden><div>
+  <h3>Shortcuts.</h3>
+  <table>
+    <tr><td><kbd>←</kbd> <kbd>→</kbd></td><td>Previous, next slide</td></tr>
+    <tr><td><kbd>↑</kbd> <kbd>↓</kbd></td><td>Nudge the selected text (<kbd>⇧</kbd> for more)</td></tr>
+    <tr><td>Double-click text</td><td>Edit it on the slide (<kbd>Enter</kbd> to finish)</td></tr>
+    <tr><td><kbd>⌘Z</kbd> <kbd>⇧⌘Z</kbd></td><td>Undo, redo</td></tr>
+    <tr><td><kbd>⌘D</kbd></td><td>Duplicate the slide</td></tr>
+    <tr><td><kbd>⌫</kbd></td><td>Delete the slide</td></tr>
+    <tr><td><kbd>⌘S</kbd> · <kbd>⌘E</kbd></td><td>Save project · export all slides</td></tr>
+    <tr><td><kbd>G</kbd> · <kbd>P</kbd></td><td>Guides · phone preview</td></tr>
+    <tr><td><kbd>?</kbd> · <kbd>Esc</kbd></td><td>This list · close</td></tr>
+  </table>
+</div></div>
 
 <script>
 const WORDMARK_SVG = __WORDMARK_SVG__;
 const FONT_FACES = /*FONT_FACES*/;
 const EXAMPLES = /*EXAMPLE_DECKS*/;
+const START_FORMAT = /*START_FORMAT*/;
 /*COMMON_JS*/
 
 // ===== The look: the same numbers as scripts/build-social.py ==================================
@@ -185,8 +299,10 @@ const GROUNDS = {
 const INK = [18, 22, 20], PAPER = [239, 240, 236], LENS = [22, 36, 156];
 const M = 90, COL = 900, MARK_H = 28, MIN_TEXT = 44, FRAME_BG = '#E5E8E3';
 const SUB_LIGHT = 'rgba(244,245,243,.78)';
+const STORE_KEY = 'poetics-studio-' + (START_FORMAT === 'thumb' ? 'thumb' : 'deck');
 
 function geo(format) {
+  if (format === 'thumb') return { W: 1920, H: 1080, thumb: true, story: false, markTop: 108, safeTop: 0, safeBottom: 1080, shift: 0, k: 1 };
   const story = format === 'story', square = format === 'square';
   const H = story ? 1920 : square ? 1080 : 1350;
   return { W: 1080, H, story, square,
@@ -195,58 +311,54 @@ function geo(format) {
     oy: story ? 200 : 0, shift: (H - 1350) / 2,            // a dragged "top" is stored on the 4:5 canvas
     k: square ? 0.747 : 1 };                               // framed geometry shrinks to fit a square
 }
+const STYLES = {
+  type: [['type:paper', 'Type on paper'], ['type:paper-deep', 'Type on deeper paper'], ['type:dark', 'Type on ink'], ['type:dark-deep', 'Type on deeper ink'], ['type:lens', 'Type on lens blue']],
+  photo: [['photo:natural', 'Photo, full bleed'], ['photo:duotone', 'Photo, duotone']],
+  framed: [['framed:cover', 'Framed: cover'], ['framed:rows', 'Framed: three rows'], ['framed:lens', 'Framed: lens photo'], ['framed:pair', 'Framed: two pills'], ['framed:close', 'Framed: closing with email']],
+  thumb: [['thumb:photo', 'Thumbnail: title and photo'], ['thumb:text', 'Thumbnail: title only']],
+};
 
 // ===== State ===================================================================================
-let deck = null;              // { format, grain, wordmark, slides: [...] }, the same shape as deck.json
-let cur = 0;                  // current slide
-let selSlot = 0;              // selected photo frame on the current slide
-let selText = false;          // text block selected (for nudging)
+let deck = null;              // { format, grain, wordmark, caption, slides: [...] }: the deck.json shape
+let cur = 0, selSlot = 0, selText = false, view = 'edit', pvIndex = 0, pvAd = false, rightTab = 'photos';
 const photos = new Map();     // id -> { id, img, src }
-let regions = [];             // hit areas from the last render of the current slide
-let lastIssues = [];
-let snapY = null;             // guide shown while dragging
+let regions = [], texts = [], snapY = null;
 
 const canvas = document.getElementById('c');
 const ctx = canvas.getContext('2d');
 const $ = id => document.getElementById(id);
 const clone = o => JSON.parse(JSON.stringify(o));
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
-
+const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 function slide() { return deck.slides[cur]; }
+function toast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), 2200); }
 
 // ===== Fonts and text metrics ==================================================================
 const LS = 'letterSpacing' in CanvasRenderingContext2D.prototype;
 let MET = { serif: { a: 0.9, d: 0.25 }, sans: { a: 0.97, d: 0.24 } };
 function readMetrics() {
-  const m = (fam) => { ctx.font = `400 100px ${fam}`; if (LS) ctx.letterSpacing = '0px';
-    const t = ctx.measureText('Hg');
-    return t.fontBoundingBoxAscent ? { a: t.fontBoundingBoxAscent / 100, d: t.fontBoundingBoxDescent / 100 } : null; };
+  const m = fam => { ctx.font = `400 100px ${fam}`; if (LS) ctx.letterSpacing = '0px';
+    const t = ctx.measureText('Hg'); return t.fontBoundingBoxAscent ? { a: t.fontBoundingBoxAscent / 100, d: t.fontBoundingBoxDescent / 100 } : null; };
   MET = { serif: m(DISPLAY) || MET.serif, sans: m(SANS) || MET.sans };
 }
-function measureSpaced(c, text, size, family, em) {
-  c.font = `400 ${size}px ${family}`; if (LS) c.letterSpacing = '0px';
-  return c.measureText(text).width + em * size * [...text].length;
-}
+function measureSpaced(c, text, size, family, em) { c.font = `400 ${size}px ${family}`; if (LS) c.letterSpacing = '0px'; return c.measureText(text).width + em * size * [...text].length; }
 function drawSpaced(c, text, x, y, size, family, em) {
   c.font = `400 ${size}px ${family}`;
+  if (!em) { if (LS) c.letterSpacing = '0px'; c.fillText(text, x, y); return; }
   if (LS) { c.letterSpacing = `${em * size}px`; c.fillText(text, x, y); c.letterSpacing = '0px'; return; }
   for (const ch of text) { c.fillText(ch, x, y); x += c.measureText(ch).width + em * size; }
 }
-// A line fills the 900px column, up to its own maximum: never wider than the column.
-function lineSize(c, t, max) {
-  const w = measureSpaced(c, t || ' ', 100, DISPLAY, -0.035);
-  return Math.max(10, Math.min(max || 150, w > 0 ? 100 * COL / w : max || 150));
-}
+function lineSize(c, t, max) { const w = measureSpaced(c, t || ' ', 100, DISPLAY, -0.035); return Math.max(10, Math.min(max || 150, w > 0 ? 100 * COL / w : max || 150)); }
 
 // Lay out a text block (lines, sub, link) from y = 0, the way the HTML renderer's CSS does.
-function layoutBlock(c, lines, sub, link, colors, framed, scale = 1) {
+function layoutBlock(c, lines, sub, link, colors, framed, scale = 1, refBase = 'lines') {
   const items = []; let y = 0;
   const A = MET.serif.a, D = MET.serif.d;
-  lines.forEach((l, i) => {
+  lines.forEach((l, j) => {
     if (!l.t) return;
     const size = lineSize(c, l.t, (l.max || l.size || 150) * scale);
     const top = y + (items.length ? -0.04 * size : 0), h = 0.92 * size;
-    items.push({ kind: 'line', text: l.t, size, x: M, top, h, base: top + (h - (A + D) * size) / 2 + A * size,
+    items.push({ kind: 'line', ref: [refBase, j], text: l.t, size, x: M, top, h, base: top + (h - (A + D) * size) / 2 + A * size,
       w: measureSpaced(c, l.t, size, DISPLAY, -0.035), color: colors.ink, family: DISPLAY, em: -0.035 });
     y = top + h;
   });
@@ -255,7 +367,7 @@ function layoutBlock(c, lines, sub, link, colors, framed, scale = 1) {
     c.font = `400 ${MIN_TEXT}px ${SANS}`; if (LS) c.letterSpacing = '0px';
     const lh = MIN_TEXT * 1.3, a = MET.sans.a, d = MET.sans.d;
     for (const ln of wrapLines(c, sub, COL)) {
-      items.push({ kind: 'sub', text: ln, size: MIN_TEXT, x: M, top: y, h: lh, base: y + (lh - (a + d) * MIN_TEXT) / 2 + a * MIN_TEXT,
+      items.push({ kind: 'sub', ref: ['sub'], text: ln, size: MIN_TEXT, x: M, top: y, h: lh, base: y + (lh - (a + d) * MIN_TEXT) / 2 + a * MIN_TEXT,
         w: c.measureText(ln).width, color: colors.sub, family: SANS, em: 0 });
       y += lh;
     }
@@ -263,7 +375,7 @@ function layoutBlock(c, lines, sub, link, colors, framed, scale = 1) {
   if (link) {
     y += framed ? 30 : 40;
     const size = 68, lh = (A + D) * size;
-    items.push({ kind: 'link', text: link, size, x: M, top: y, h: lh, base: y + A * size,
+    items.push({ kind: 'link', ref: ['link'], text: link, size, x: M, top: y, h: lh, base: y + A * size,
       w: measureSpaced(c, link, size, DISPLAY, -0.02), color: colors.accent, family: DISPLAY, em: -0.02 });
     y += lh;
   }
@@ -271,154 +383,139 @@ function layoutBlock(c, lines, sub, link, colors, framed, scale = 1) {
 }
 
 // ===== Pixels: photos, duotone, grain ==========================================================
-function parseFocal(f) {
-  const m = String(f || '50% 50%').match(/(-?[\d.]+)%\s+(-?[\d.]+)%/);
-  return m ? [clamp(+m[1] / 100, 0, 1), clamp(+m[2] / 100, 0, 1)] : [0.5, 0.5];
-}
+function parseFocal(f) { const m = String(f || '50% 50%').match(/(-?[\d.]+)%\s+(-?[\d.]+)%/); return m ? [clamp(+m[1] / 100, 0, 1), clamp(+m[2] / 100, 0, 1)] : [0.5, 0.5]; }
 const duoCache = new WeakMap();
 function duotone(img) {
   if (duoCache.has(img)) return duoCache.get(img);
   const s = Math.min(1, 1800 / Math.max(img.naturalWidth, img.naturalHeight));
   const c = document.createElement('canvas'); c.width = Math.round(img.naturalWidth * s); c.height = Math.round(img.naturalHeight * s);
   const x = c.getContext('2d'); x.drawImage(img, 0, 0, c.width, c.height);
-  const d = x.getImageData(0, 0, c.width, c.height), p = d.data;
-  const mix = (a, b, t, k) => a[k] + (b[k] - a[k]) * t;
+  const d = x.getImageData(0, 0, c.width, c.height), p = d.data, mix = (a, b, t, k) => a[k] + (b[k] - a[k]) * t;
   for (let i = 0; i < p.length; i += 4) {
     const r = clamp((p[i] / 255 - .5) * 1.15 + .5, 0, 1), g = clamp((p[i + 1] / 255 - .5) * 1.15 + .5, 0, 1), b = clamp((p[i + 2] / 255 - .5) * 1.15 + .5, 0, 1);
-    const L = .2126 * r + .7152 * g + .0722 * b;
-    const [A, B, t] = L < .5 ? [INK, LENS, L * 2] : [LENS, PAPER, (L - .5) * 2];
+    const L = .2126 * r + .7152 * g + .0722 * b, [A, B, t] = L < .5 ? [INK, LENS, L * 2] : [LENS, PAPER, (L - .5) * 2];
     p[i] = mix(A, B, t, 0); p[i + 1] = mix(A, B, t, 1); p[i + 2] = mix(A, B, t, 2);
   }
   x.putImageData(d, 0, 0); duoCache.set(img, c); return c;
 }
-// Cover-fit inside a box, positioned by the focal point, then scaled (zoom) around it.
-function drawCover(c, src, x, y, w, h, focal, zoom = 1) {
+function drawCover(c, src, x, y, w, h, focal, zoom = 1) {   // cover-fit, positioned by the focal point, scaled around it
   const iw = src.naturalWidth || src.width, ih = src.naturalHeight || src.height;
-  const [fx, fy] = parseFocal(focal), s = Math.max(w / iw, h / ih), dw = iw * s, dh = ih * s;
-  const ox = x + w * fx, oy = y + h * fy;
-  const dx = ox + (x + (w - dw) * fx - ox) * zoom, dy = oy + (y + (h - dh) * fy - oy) * zoom;
-  c.drawImage(src, dx, dy, dw * zoom, dh * zoom);
+  const [fx, fy] = parseFocal(focal), s = Math.max(w / iw, h / ih), dw = iw * s, dh = ih * s, ox = x + w * fx, oy = y + h * fy;
+  c.drawImage(src, ox + (x + (w - dw) * fx - ox) * zoom, oy + (y + (h - dh) * fy - oy) * zoom, dw * zoom, dh * zoom);
   return { dw, dh };
 }
 const grainTiles = {};
 function grainTile(dark) {
-  const key = dark ? 'd' : 'l';
-  if (grainTiles[key]) return grainTiles[key];
+  const key = dark ? 'd' : 'l'; if (grainTiles[key]) return grainTiles[key];
   const t = document.createElement('canvas'); t.width = t.height = 256;
   const x = t.getContext('2d'), d = x.createImageData(256, 256), v = dark ? 255 : 0;
   for (let i = 0; i < d.data.length; i += 4) { d.data[i] = d.data[i + 1] = d.data[i + 2] = v; d.data[i + 3] = Math.random() * 255; }
   x.putImageData(d, 0, 0); return (grainTiles[key] = t);
 }
 function drawGrain(c, G, dark, strong) {
-  c.save();
-  c.globalCompositeOperation = dark ? 'screen' : 'multiply';
-  c.globalAlpha = dark ? (strong ? .12 : .06) : .08;
-  c.fillStyle = c.createPattern(grainTile(dark), 'repeat'); c.fillRect(0, 0, G.W, G.H);
-  c.restore();
+  c.save(); c.globalCompositeOperation = dark ? 'screen' : 'multiply'; c.globalAlpha = dark ? (strong ? .12 : .06) : .08;
+  c.fillStyle = c.createPattern(grainTile(dark), 'repeat'); c.fillRect(0, 0, G.W, G.H); c.restore();
 }
 function scrim(c, G, kind) {
-  const stops = {
-    bottom: [[0, .80], [.30, .55], [.58, .12], [.70, 0]], top: [[0, .80], [.30, .55], [.58, .12], [.70, 0]],
-    mark: [[0, .86], [.10, .66], [.20, .28], [.32, 0]] }[kind];
   if (kind === 'center') { c.fillStyle = 'rgba(8,10,9,.42)'; c.fillRect(0, 0, G.W, G.H); return; }
+  const stops = kind === 'mark' ? [[0, .86], [.10, .66], [.20, .28], [.32, 0]] : [[0, .80], [.30, .55], [.58, .12], [.70, 0]];
   const g = kind === 'bottom' ? c.createLinearGradient(0, G.H, 0, 0) : c.createLinearGradient(0, 0, 0, G.H);
-  stops.forEach(([o, a]) => g.addColorStop(o, `rgba(8,10,9,${a})`));
-  c.fillStyle = g; c.fillRect(0, 0, G.W, G.H);
+  stops.forEach(([o, a]) => g.addColorStop(o, `rgba(8,10,9,${a})`)); c.fillStyle = g; c.fillRect(0, 0, G.W, G.H);
 }
 function placeholder(c, x, y, w, h, r, label, dark) {
-  c.save(); roundRect(c, x, y, w, h, r); c.clip();
-  c.fillStyle = dark ? '#2A302C' : FRAME_BG; c.fillRect(x, y, w, h);
+  c.save(); roundRect(c, x, y, w, h, r); c.clip(); c.fillStyle = dark ? '#2A302C' : FRAME_BG; c.fillRect(x, y, w, h);
   c.fillStyle = dark ? 'rgba(244,245,243,.55)' : '#5B625C'; c.font = `400 ${MIN_TEXT}px ${SANS}`; if (LS) c.letterSpacing = '0px';
-  c.textAlign = 'center'; c.fillText(label, x + w / 2, y + h / 2 + 15); c.textAlign = 'left';
-  c.restore();
+  c.textAlign = 'center'; c.fillText(label, x + w / 2, y + h / 2 + 15); c.textAlign = 'left'; c.restore();
 }
 
 // ===== Rendering one slide =====================================================================
 function showMark(s, i, n) {
+  if (s.layout === 'thumb') return true;
   if (s.wordmark === true || s.wordmark === false) return s.wordmark;
   const mode = deck.wordmark || 'ends';
   return mode === 'all' || (mode !== 'none' && i === 0) || (mode === 'ends' && i === n - 1);
 }
 function photoOf(ref) { const p = ref && photos.get(ref); return p && p.img.complete && p.img.naturalWidth ? p.img : null; }
 
-// Returns { texts, regions, frames } for checks and for dragging.
 function renderSlide(c, i, opts = {}) {
   const G = geo(deck.format), s = deck.slides[i], n = deck.slides.length, L = s.layout;
-  const g = GROUNDS[s.ground || (L === 'photo' ? 'dark' : 'paper')] || GROUNDS.paper;
+  const g = L === 'thumb' ? null : (GROUNDS[s.ground || (L === 'photo' ? 'dark' : 'paper')] || GROUNDS.paper);
   const out = { texts: [], regions: [], frames: [] };
   c.save(); c.textBaseline = 'alphabetic';
-  c.fillStyle = g.bg; c.fillRect(0, 0, G.W, G.H);
   const mark = showMark(s, i, n);
-  const wantGrain = s.grain !== undefined ? s.grain : (L === 'type' || (L === 'photo' && s.treatment === 'duotone'));
-
   const frame = (obj, x, y, w, h, r, slot, dark) => {
     const img = photoOf(obj.photo);
     if (img) {
       c.save(); roundRect(c, x, y, w, h, r); c.clip(); c.fillStyle = FRAME_BG; c.fillRect(x, y, w, h);
-      const src = (L === 'photo' && s.treatment === 'duotone') ? duotone(img) : img;
-      const d = drawCover(c, src, x, y, w, h, obj.focal, obj.zoom || 1); c.restore();
+      const d = drawCover(c, (L === 'photo' && s.treatment === 'duotone') ? duotone(img) : img, x, y, w, h, obj.focal, obj.zoom || 1); c.restore();
       out.regions.push({ type: 'photo', slot, rect: { x, y, w, h }, dw: d.dw, dh: d.dh });
     } else {
       placeholder(c, x, y, w, h, r, obj.photo ? `Add photo: ${obj.photo}` : 'Add a photo', dark);
       out.regions.push({ type: 'photo', slot, rect: { x, y, w, h }, dw: w, dh: h });
     }
-    if (L === 'framed') out.frames.push({ x, y, w, h });
+    if (L === 'framed' || L === 'thumb') out.frames.push({ x, y, w, h });
   };
   const place = (block, top) => block.items.map(it => ({ ...it, top: it.top + top, base: it.base + top }));
-  const drawItems = items => { if (opts.noText) return; items.forEach(it => { c.fillStyle = it.color; drawSpaced(c, it.text, it.x, it.base, it.size, it.family, it.em); }); };
+  const drawItems = items => { if (opts.noText) return; items.forEach(it => { if (opts.hideRef && it.ref && it.ref.join() === opts.hideRef) return; c.fillStyle = it.color; drawSpaced(c, it.text, it.x, it.base, it.size, it.family, it.em); }); };
 
-  if (L === 'photo' || L === 'type') {
-    let scrimKind = null;
-    if (L === 'photo') frame(s, 0, 0, G.W, G.H, 0, 0, true);
-    const colors = L === 'photo' ? { ink: g.ink, sub: SUB_LIGHT, accent: g.accent }
-      : { ink: g.ink, sub: g.dark && s.ground !== 'lens' ? SUB_LIGHT : g.soft, accent: g.accent };
-    const block = layoutBlock(c, s.lines || [], s.sub, s.link, colors, false);
-    const valign = s.valign || (L === 'photo' ? 'bottom' : 'top');
-    let top = s.top != null ? s.top + G.shift
-      : valign === 'bottom' ? G.H - G.txtBottom - block.height : valign === 'center' ? (G.H - block.height) / 2 : G.txtTop;
-    const items = place(block, top);
-    if (L === 'photo') {
-      if (items.length && s.scrim !== false) scrimKind = s.top != null ? (top < G.H / 3 ? 'top' : 'bottom') : valign;
-      else if (mark) scrimKind = 'mark';
-      if (scrimKind) scrim(c, G, scrimKind);
-    }
-    if (L === 'type' && s.outline) {
-      const oh = s.outline.h || 380, ob = s.outline.bottom != null ? s.outline.bottom : G.txtBottom + 30, oyy = G.H - ob - oh;
-      c.save(); c.strokeStyle = g.ink; c.lineWidth = 3; roundRect(c, M + 1.5, oyy + 1.5, COL - 3, oh - 3, (oh - 3) / 2); c.stroke(); c.restore();
-      if (s.outline.text) {
-        c.font = `400 ${MIN_TEXT}px ${SANS}`; if (LS) c.letterSpacing = '0px';
-        const tw = c.measureText(s.outline.text).width, a = MET.sans.a, d = MET.sans.d;
-        const it = { kind: 'outline', text: s.outline.text, size: MIN_TEXT, x: M + (COL - tw) / 2, top: oyy + oh / 2 - (a + d) * MIN_TEXT / 2,
-          h: (a + d) * MIN_TEXT, w: tw, color: g.soft, family: SANS, em: 0 };
-        it.base = it.top + a * MIN_TEXT; out.texts.push(it); drawItems([it]);
-      }
-      out.regions.push({ type: 'outline', rect: { x: M, y: oyy, w: COL, h: oh } });
-    }
+  if (L === 'thumb') {
+    const t = THEMES[s.theme || 'light'], TM = 120;
+    c.fillStyle = t.paper; c.fillRect(0, 0, G.W, G.H);
+    const withPhoto = s.variant !== 'text';
+    if (withPhoto) frame(s, 1056, 120, G.W - 1056, G.H - 240, [48, 0, 0, 48], 0, s.theme === 'dark');
+    const textW = withPhoto ? 1056 - TM - 72 : G.W - 2 * TM;
+    const tt = fit(c, s.title || '', DISPLAY, 400, withPhoto ? [150, 128, 110, 96] : [196, 168, 144, 120], textW, 3);
+    c.font = `400 44px ${SANS}`; if (LS) c.letterSpacing = '0px';
+    const subLines = s.sub ? wrapLines(c, s.sub, textW).slice(0, 2) : [];
+    const blockH = (s.overline ? 84 : 0) + tt.lines.length * tt.size * 1.02 + (subLines.length ? 40 + subLines.length * 44 * 1.4 : 0);
+    let y = G.H - 120 - blockH; const items = [];
+    const add = (ref, text, size, family, color, lh) => { c.font = `400 ${size}px ${family}`;
+      items.push({ kind: ref[0], ref, text, size, x: TM, top: y, h: size * lh, base: y + size * 0.82, w: c.measureText(text).width, color, family, em: 0 }); y += size * lh; };
+    if (s.overline) { add(['overline'], s.overline, 44, SANS, t.soft, 1.4); y += 84 - 44 * 1.4; }
+    tt.lines.forEach(l => add(['title'], l, tt.size, DISPLAY, t.ink, 1.02));
+    if (subLines.length) { y += 40; subLines.forEach(l => add(['sub'], l, 44, SANS, t.soft, 1.4)); }
     drawItems(items); out.texts.push(...items);
-    if (items.length) {
-      const w = Math.max(...items.map(t => t.w));
-      out.regions.push({ type: 'text', rect: { x: M, y: top, w: Math.max(w, 200), h: block.height }, top, height: block.height });
+    drawWordmark(c, t.ink, TM, 108, 40);
+  } else {
+    c.fillStyle = g.bg; c.fillRect(0, 0, G.W, G.H);
+    const wantGrain = s.grain !== undefined ? s.grain : (L === 'type' || (L === 'photo' && s.treatment === 'duotone'));
+    if (L === 'photo' || L === 'type') {
+      if (L === 'photo') frame(s, 0, 0, G.W, G.H, 0, 0, true);
+      const colors = L === 'photo' ? { ink: g.ink, sub: SUB_LIGHT, accent: g.accent } : { ink: g.ink, sub: g.dark && s.ground !== 'lens' ? SUB_LIGHT : g.soft, accent: g.accent };
+      const block = layoutBlock(c, s.lines || [], s.sub, s.link, colors, false);
+      const valign = s.valign || (L === 'photo' ? 'bottom' : 'top');
+      const top = s.top != null ? s.top + G.shift : valign === 'bottom' ? G.H - G.txtBottom - block.height : valign === 'center' ? (G.H - block.height) / 2 : G.txtTop;
+      const items = place(block, top);
+      if (L === 'photo') {
+        const kind = items.length && s.scrim !== false ? (s.top != null ? (top < G.H / 3 ? 'top' : 'bottom') : valign) : (mark ? 'mark' : null);
+        if (kind) scrim(c, G, kind);
+      }
+      if (L === 'type' && s.outline) {
+        const oh = s.outline.h || 380, ob = s.outline.bottom != null ? s.outline.bottom : G.txtBottom + 30, oyy = G.H - ob - oh;
+        c.save(); c.strokeStyle = g.ink; c.lineWidth = 3; roundRect(c, M + 1.5, oyy + 1.5, COL - 3, oh - 3, (oh - 3) / 2); c.stroke(); c.restore();
+        if (s.outline.text) {
+          c.font = `400 ${MIN_TEXT}px ${SANS}`; if (LS) c.letterSpacing = '0px';
+          const tw = c.measureText(s.outline.text).width, a = MET.sans.a, d = MET.sans.d;
+          const it = { kind: 'outline', ref: ['outline'], text: s.outline.text, size: MIN_TEXT, x: M + (COL - tw) / 2, top: oyy + oh / 2 - (a + d) * MIN_TEXT / 2, h: (a + d) * MIN_TEXT, w: tw, color: g.soft, family: SANS, em: 0 };
+          it.base = it.top + a * MIN_TEXT; out.texts.push(it); drawItems([it]);
+        }
+        out.regions.push({ type: 'outline', rect: { x: M, y: oyy, w: COL, h: oh } });
+      }
+      drawItems(items); out.texts.push(...items);
+      if (items.length) out.regions.push({ type: 'text', rect: { x: M, y: top, w: Math.max(Math.max(...items.map(t => t.w)), 200), h: block.height }, top, height: block.height });
+    } else if (L === 'framed') {
+      const k = G.k, Y = y => 192 + (y - 192) * k + G.oy, S = h => h * k, colors = { ink: g.ink, sub: g.soft, accent: g.accent }, a = s.arrangement || 'cover';
+      const text = (lines, sub, link, top, refBase) => { const it = place(layoutBlock(c, lines, sub, link, colors, true, k, refBase), top); drawItems(it); out.texts.push(...it); };
+      if (a === 'cover') { frame(s, M, Y(690), COL, S(570), S(570) / 2, 0); text(s.lines || [], null, null, Y(192)); }
+      else if (a === 'rows') { let y = 192; (s.rows || []).slice(0, 3).forEach((r, j) => { frame(r, M, Y(y + 168), COL, S(160), S(160) / 2, j);
+          const b = layoutBlock(c, [{ t: r.t, max: 170 }], null, null, colors, true, k); b.items.forEach(it => it.ref = ['rows', j]); const it = place(b, Y(y)); drawItems(it); out.texts.push(...it); y += 357; }); }
+      else if (a === 'lens') { const h = s.h || 700; frame(s, M, Y(192), COL, S(h), 48, 0); text(s.lines || [], s.sub, null, Y(192 + h + 44)); }
+      else if (a === 'pair') { (s.photos || []).slice(0, 2).forEach((p, j) => frame(p, M + j * 470, Y(192), 430, S(560), Math.min(215, S(560) / 2), j)); text(s.lines || [], null, null, Y(800)); }
+      else if (a === 'close') { frame(s, M, Y(700), COL, S(560), 48, 0); text(s.lines || [], null, s.link, Y(192)); }
     }
-  } else if (L === 'framed') {
-    const k = G.k, Y = y => 192 + (y - 192) * k + G.oy, S = h => h * k;
-    const colors = { ink: g.ink, sub: g.soft, accent: g.accent };
-    const a = s.arrangement || 'cover';
-    const text = (lines, sub, link, top) => { const b = layoutBlock(c, lines, sub, link, colors, true, k); const it = place(b, top); drawItems(it); out.texts.push(...it); };
-    if (a === 'cover') { frame(s, M, Y(690), COL, S(570), S(570) / 2, 0); text(s.lines || [], null, null, Y(192)); }
-    else if (a === 'rows') {
-      let y = 192;
-      (s.rows || []).slice(0, 3).forEach((r, j) => { frame(r, M, Y(y + 168), COL, S(160), S(160) / 2, j); text([{ t: r.t, max: 170 }], null, null, Y(y)); y += 357; });
-    } else if (a === 'lens') { const h = s.h || 700; frame(s, M, Y(192), COL, S(h), 48, 0); text(s.lines || [], s.sub, null, Y(192 + h + 44)); }
-    else if (a === 'pair') {
-      (s.photos || []).slice(0, 2).forEach((p, j) => frame(p, M + j * 470, Y(192), 430, S(560), Math.min(215, S(560) / 2), j));
-      text(s.lines || [], null, null, Y(800));
-    } else if (a === 'close') { frame(s, M, Y(700), COL, S(560), 48, 0); text(s.lines || [], null, s.link, Y(192)); }
+    if (deck.grain !== false && wantGrain) drawGrain(c, G, g.dark, s.ground === 'lens' || L === 'photo');
+    if (mark) drawWordmark(c, g.mark, M, G.markTop, MARK_H);
   }
-
-  const strong = s.ground === 'lens' || L === 'photo';
-  if (deck.grain !== false && wantGrain) drawGrain(c, G, g.dark, strong);
-  if (mark) drawWordmark(c, g.mark, M, G.markTop, MARK_H);
-
   if (opts.ui) drawUI(c, G, out);
   c.restore();
   return out;
@@ -426,13 +523,15 @@ function renderSlide(c, i, opts = {}) {
 
 function drawUI(c, G, out) {
   c.save();
-  if ($('guides').checked) {
+  if (deck.guides) {
     c.strokeStyle = 'rgba(22,36,156,.8)'; c.setLineDash([12, 10]); c.lineWidth = 2;
-    c.beginPath(); c.moveTo(M, 0); c.lineTo(M, G.H); c.moveTo(G.W - M, 0); c.lineTo(G.W - M, G.H); c.stroke();
-    c.beginPath(); c.moveTo(0, G.safeTop); c.lineTo(G.W, G.safeTop); c.moveTo(0, G.safeBottom); c.lineTo(G.W, G.safeBottom); c.stroke();
+    const m = G.thumb ? 120 : M;
+    c.beginPath(); c.moveTo(m, 0); c.lineTo(m, G.H); c.moveTo(G.W - m, 0); c.lineTo(G.W - m, G.H); c.stroke();
+    if (!G.thumb) { c.beginPath(); c.moveTo(0, G.safeTop); c.lineTo(G.W, G.safeTop); c.moveTo(0, G.safeBottom); c.lineTo(G.W, G.safeBottom); c.stroke(); }
     if (G.story) { c.fillStyle = 'rgba(22,36,156,.10)'; c.fillRect(0, 0, G.W, 270); c.fillRect(0, G.H - 380, G.W, 380); }
+    if (G.thumb) { c.fillStyle = 'rgba(180,35,47,.16)'; c.fillRect(G.W - 260, G.H - 130, 230, 100); }   // YouTube's duration badge
   }
-  const sel = out.regions.find(r => (r.type === 'photo' && r.slot === selSlot && slide().layout !== 'type' && !selText) || (r.type === 'text' && selText));
+  const sel = out.regions.find(r => selText ? r.type === 'text' : (r.type === 'photo' && r.slot === selSlot && deck.slides[cur].layout !== 'photo'));
   if (sel) { c.strokeStyle = '#16249C'; c.setLineDash([10, 8]); c.lineWidth = 3; const r = sel.rect; c.strokeRect(r.x - 6, r.y - 6, r.w + 12, r.h + 12); }
   if (snapY != null) { c.strokeStyle = '#B4232F'; c.setLineDash([]); c.lineWidth = 2; c.beginPath(); c.moveTo(0, snapY); c.lineTo(G.W, snapY); c.stroke(); }
   c.restore();
@@ -441,43 +540,53 @@ function drawUI(c, G, out) {
 // ===== Checks ==================================================================================
 const work = document.createElement('canvas'), wctx = work.getContext('2d', { willReadFrequently: true });
 function lum([r, g, b]) { const ch = v => { v /= 255; return v <= .03928 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4; }; return .2126 * ch(r) + .7152 * ch(g) + .0722 * ch(b); }
-function rgba(col) {
-  if (col.startsWith('#')) return [parseInt(col.slice(1, 3), 16), parseInt(col.slice(3, 5), 16), parseInt(col.slice(5, 7), 16), 1];
-  const n = col.match(/[\d.]+/g).map(Number); return [n[0], n[1], n[2], n[3] == null ? 1 : n[3]];
-}
+function rgba(col) { if (col.startsWith('#')) return [parseInt(col.slice(1, 3), 16), parseInt(col.slice(3, 5), 16), parseInt(col.slice(5, 7), 16), 1]; const n = col.match(/[\d.]+/g).map(Number); return [n[0], n[1], n[2], n[3] == null ? 1 : n[3]]; }
 function checkSlide(i) {
   const G = geo(deck.format), s = deck.slides[i], issues = [];
   work.width = G.W; work.height = G.H;
   const r = renderSlide(wctx, i, { noText: true });
-  const story = G.story;
   for (const t of r.texts) {
-    const name = `"${t.text}"`;
-    if (t.top < G.safeTop - 0.5 && t.kind !== 'outline') issues.push(story ? `${name} is in the top 270px, under the app's interface.` : `${name} is too close to the wordmark.`);
-    if (t.top + t.h > G.safeBottom + 0.5) issues.push(story ? `${name} is in the bottom 380px, under the reply bar and ad button.` : `${name} is too close to the bottom edge.`);
-    if (t.size < MIN_TEXT - 0.5) issues.push(`${name} is ${Math.round(t.size)}px: at least ${MIN_TEXT}px reads on a phone. Shorten the line or raise its size.`);
+    const name = `“${t.text}”`;
+    if (!G.thumb && t.top < G.safeTop - 0.5 && t.kind !== 'outline') issues.push(G.story ? `${name} is in the top 270px, under the app's interface.` : `${name} is too close to the wordmark.`);
+    if (!G.thumb && t.top + t.h > G.safeBottom + 0.5) issues.push(G.story ? `${name} is in the bottom 380px, under the reply bar and ad button.` : `${name} is too close to the bottom edge.`);
+    if (!G.thumb && t.size < MIN_TEXT - 0.5) issues.push(`${name} is ${Math.round(t.size)}px: 44px is the smallest that reads on a phone. Shorten the line or raise its size.`);
     if (r.frames.some(f => t.x < f.x + f.w && t.x + t.w > f.x && t.top < f.y + f.h - 4 && t.top + t.h > f.y + 4)) issues.push(`${name} runs over a photo.`);
-    // contrast against what is behind the text (the slide drawn without text)
-    const x0 = clamp(Math.floor(t.x), 0, G.W - 1), y0 = clamp(Math.floor(t.top), 0, G.H - 1);
-    const w = clamp(Math.ceil(t.w), 1, G.W - x0), h = clamp(Math.ceil(t.h), 1, G.H - y0);
+    const x0 = clamp(Math.floor(t.x), 0, G.W - 1), y0 = clamp(Math.floor(t.top), 0, G.H - 1), w = clamp(Math.ceil(t.w), 1, G.W - x0), h = clamp(Math.ceil(t.h), 1, G.H - y0);
     const px = wctx.getImageData(x0, y0, w, h).data, ls = [];
     for (let k = 0; k < px.length; k += 8) ls.push([px[k], px[k + 1], px[k + 2]]);
     const [tr, tg, tb, ta] = rgba(t.color), light = lum([tr, tg, tb]) > .4;
     ls.sort((p, q) => lum(p) - lum(q));
     const part = light ? ls.slice(Math.floor(ls.length * .9)) : ls.slice(0, Math.max(1, Math.floor(ls.length / 10)));
-    const back = [0, 1, 2].map(j => part.reduce((a, p) => a + p[j], 0) / part.length);
-    const txt = [tr, tg, tb].map((v, j) => v * ta + back[j] * (1 - ta));
+    const back = [0, 1, 2].map(j => part.reduce((a, p) => a + p[j], 0) / part.length), txt = [tr, tg, tb].map((v, j) => v * ta + back[j] * (1 - ta));
     const [l1, l2] = [lum(txt), lum(back)].sort((a, b) => b - a), ratio = (l1 + .05) / (l2 + .05), need = t.size >= 67 ? 3 : 4.5;
-    if (ratio < need) issues.push(`${name} has low contrast (${ratio.toFixed(1)}:1, needs ${need}:1). Move it to a darker part, reframe, use the shade or the duotone.`);
+    if (ratio < need) issues.push(`${name} has low contrast (${ratio.toFixed(1)}:1, needs ${need}:1). Move it, reframe the photo, or turn on the shade.`);
   }
   const slots = slotsOf(s);
   slots.forEach((o, j) => { if (!photoOf(o.photo)) issues.push(`${slots.length > 1 ? `Frame ${j + 1}` : 'The photo frame'} is empty${o.photo ? ` (${o.photo})` : ''}.`); });
-  const copy = copyCheck({ Text: [...(s.lines || []).map(l => l.t), ...(s.rows || []).map(r => r.t)].join(' '), 'Line under': s.sub, Link: s.link, Oval: s.outline && s.outline.text });
-  return [...issues, ...copy];
+  if (s.layout === 'thumb' && (s.title || '').split(/\s+/).filter(Boolean).length > 8) issues.push('The title is more than eight words: thumbnails are seen small.');
+  issues.push(...copyCheck({ Text: [...(s.lines || []).map(l => l.t), ...(s.rows || []).map(r => r.t), s.title, s.overline].filter(Boolean).join(' '), 'Line under': s.sub, Link: s.link, Oval: s.outline && s.outline.text }));
+  return issues;
+}
+function captionIssues() {
+  const out = [], cap = (deck.caption || '').trim();
+  if (deck.format === 'thumb') return out;
+  if (!cap) { out.push('No caption yet. Start with the cover line, add two or three plain sentences, then the email.'); }
+  else {
+    const first = cap.split('\n')[0];
+    if (first.length > 125) out.push(`The first line is ${first.length} characters: Instagram cuts it near 125, behind “more”. Put the point first.`);
+    const tags = cap.match(/#[\p{L}\p{N}_]+/gu) || [];
+    if (tags.length > 5) out.push(`${tags.length} hashtags: three to five is enough.`);
+    tags.filter(t => t.length > 8 && t === t.toLowerCase()).forEach(t => out.push(`Write ${t} in CamelCase (like #ImmersiveCinema) so screen readers say the words.`));
+    deck.slides.forEach((s, i) => { const em = (s.link || '').match(/\S+@\S+/); if (em && !cap.includes(em[0])) out.push(`The email on slide ${i + 1} isn't in the caption: text in an image can't be tapped or read aloud.`); });
+    out.push(...copyCheck({ Caption: cap }));
+  }
+  deck.slides.forEach((s, i) => { if (slotsOf(s).length && !(s.alt || '').trim()) out.push(`Slide ${i + 1} has a photo but no alt text.`); });
+  return out;
 }
 
-// ===== Photo frames on a slide =================================================================
+// ===== Photo frames ============================================================================
 function slotsOf(s) {
-  if (s.layout === 'photo') return [s];
+  if (s.layout === 'photo' || (s.layout === 'thumb' && s.variant !== 'text')) return [s];
   if (s.layout !== 'framed') return [];
   const a = s.arrangement || 'cover';
   if (a === 'rows') return (s.rows || []).slice(0, 3);
@@ -485,30 +594,36 @@ function slotsOf(s) {
   return [s];
 }
 
-// ===== Main render loop ========================================================================
-let raf = 0, checkTimer = 0, thumbTimer = 0;
+// ===== Render loop =============================================================================
+let raf = 0, checkTimer = 0, thumbTimer = 0, hideRef = null;
 function requestRender() { if (!raf) raf = requestAnimationFrame(() => { raf = 0; draw(); }); }
 window.render = requestRender;
 function draw() {
   if (!deck) return;
   const G = geo(deck.format);
   if (canvas.width !== G.W || canvas.height !== G.H) { canvas.width = G.W; canvas.height = G.H; }
-  const r = renderSlide(ctx, cur, { ui: true }); regions = r.regions;
+  const r = renderSlide(ctx, cur, { ui: true, hideRef }); regions = r.regions; texts = r.texts;
+  $('prevBtn').disabled = cur === 0; $('nextBtn').disabled = cur >= deck.slides.length - 1;
+  $('undoBtn').disabled = hist.length < 2; $('redoBtn').disabled = !future.length;
   clearTimeout(checkTimer); checkTimer = setTimeout(runChecks, 220);
   clearTimeout(thumbTimer); thumbTimer = setTimeout(() => updateThumb(cur), 160);
 }
+const slideIssues = [];
 function runChecks() {
-  lastIssues = checkSlide(cur);
-  $('issues').innerHTML = lastIssues.length ? lastIssues.map(t => `<p class="bad">${t.replace(/</g, '&lt;')}</p>`).join('')
-    : '<p class="ok">Nothing to fix on this slide: margins, text size, contrast and copy all pass.</p>';
-  const th = document.querySelectorAll('.thumb')[cur]; if (th) th.classList.toggle('warn', lastIssues.length > 0);
+  slideIssues[cur] = checkSlide(cur);
+  document.querySelectorAll('.thumb').forEach((t, j) => t.classList.toggle('warn', !!(slideIssues[j] && slideIssues[j].length)));
+  const total = slideIssues.reduce((a, l) => a + (l ? l.length : 0), 0);
+  const b = $('badge'); b.textContent = total; b.classList.toggle('zero', !total);
+  if (rightTab === 'checks') buildChecks();
+  if (rightTab === 'caption') buildCaptionIssues();
 }
+function checkAll() { deck.slides.forEach((_, i) => slideIssues[i] = checkSlide(i)); slideIssues.length = deck.slides.length; runChecks(); }
 
 // ===== Slide strip =============================================================================
 const tc = document.createElement('canvas'), tctx = tc.getContext('2d');
 function thumbImage(i, target) {
   const G = geo(deck.format); tc.width = G.W; tc.height = G.H; renderSlide(tctx, i);
-  target.width = 108; target.height = Math.round(108 * G.H / G.W);
+  const h = 92 * 2; target.height = h; target.width = Math.round(h * G.W / G.H);
   const x = target.getContext('2d'); x.imageSmoothingQuality = 'high'; x.drawImage(tc, 0, 0, target.width, target.height);
 }
 function updateThumb(i) { const t = document.querySelectorAll('.thumb canvas')[i]; if (t) thumbImage(i, t); }
@@ -516,317 +631,525 @@ let dragFrom = null;
 function buildStrip() {
   const strip = $('strip'); strip.innerHTML = '';
   deck.slides.forEach((s, i) => {
-    const d = document.createElement('div'); d.className = 'thumb' + (i === cur ? ' on' : ''); d.draggable = true;
+    const d = document.createElement('div'); d.className = 'thumb' + (i === cur ? ' on' : ''); d.draggable = true; d.title = `Slide ${i + 1}: drag to reorder`;
     const cv = document.createElement('canvas'); d.append(cv);
-    d.insertAdjacentHTML('beforeend', `<span class="n">${i + 1}</span><span class="dot" title="Something to fix"></span>`);
-    d.onclick = () => selectSlide(i);
-    d.ondragstart = e => { dragFrom = i; e.dataTransfer.effectAllowed = 'move'; };
+    d.insertAdjacentHTML('beforeend', `<span class="n">${i + 1}</span><span class="dot"></span><span class="tools"><button data-a="dup" title="Duplicate">⧉</button><button data-a="del" title="Delete">✕</button></span>`);
+    d.onclick = e => { const a = e.target.dataset.a; if (a === 'dup') { cur = i; duplicateSlide(); } else if (a === 'del') { cur = i; deleteSlide(); } else selectSlide(i); };
+    d.ondragstart = e => { dragFrom = i; e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/x-slide', i); };
     d.ondragover = e => { if (dragFrom != null) { e.preventDefault(); d.classList.add('dragover'); } };
     d.ondragleave = () => d.classList.remove('dragover');
     d.ondrop = e => { e.preventDefault(); d.classList.remove('dragover'); if (dragFrom == null || dragFrom === i) return;
-      const [m] = deck.slides.splice(dragFrom, 1); deck.slides.splice(i, 0, m); cur = i; dragFrom = null; changed(true); };
+      const [m] = deck.slides.splice(dragFrom, 1); deck.slides.splice(i, 0, m); cur = i; dragFrom = null; changed(true); toast('Slide moved'); };
+    d.ondragend = () => dragFrom = null;
     strip.append(d); thumbImage(i, cv);
-    setTimeout(() => d.classList.toggle('warn', checkSlide(i).length > 0), 0);
   });
-  const b = document.createElement('div'); b.className = 'stripbtns';
-  b.innerHTML = `<button class="ghost" id="addSlide">+ Slide</button><button class="ghost" id="dupSlide">Duplicate</button>
-    <button class="ghost" id="delSlide">Delete</button><div class="row" style="gap:6px"><button class="ghost" id="moveL" title="Move left">◀</button><button class="ghost" id="moveR" title="Move right">▶</button></div>`;
-  strip.append(b);
-  $('addSlide').onclick = () => { const s = slide(); const n = newSlide(styleKey(s)); deck.slides.splice(cur + 1, 0, n); cur++; changed(true); };
-  $('dupSlide').onclick = () => { deck.slides.splice(cur + 1, 0, clone(slide())); cur++; changed(true); };
-  $('delSlide').onclick = () => { if (deck.slides.length < 2) return; deck.slides.splice(cur, 1); cur = Math.min(cur, deck.slides.length - 1); changed(true); };
-  $('moveL').onclick = () => { if (cur < 1) return; [deck.slides[cur - 1], deck.slides[cur]] = [deck.slides[cur], deck.slides[cur - 1]]; cur--; changed(true); };
-  $('moveR').onclick = () => { if (cur >= deck.slides.length - 1) return; [deck.slides[cur + 1], deck.slides[cur]] = [deck.slides[cur], deck.slides[cur + 1]]; cur++; changed(true); };
+  if (deck.format !== 'thumb' || deck.slides.length < 1) {
+    const add = document.createElement('button'); add.className = 'addtile'; add.textContent = '+'; add.title = 'Add a slide';
+    add.onclick = e => stylePop(e.currentTarget, key => { deck.slides.splice(cur + 1, 0, newSlide(key, slide())); cur++; selSlot = 0; changed(true); });
+    strip.append(add);
+  }
+  setTimeout(checkAll, 0);
 }
-function selectSlide(i) { cur = i; selSlot = 0; selText = false; document.querySelectorAll('.thumb').forEach((t, j) => t.classList.toggle('on', j === i)); buildFields(); requestRender(); }
+function selectSlide(i) {
+  cur = clamp(i, 0, deck.slides.length - 1); selSlot = 0; selText = false;
+  document.querySelectorAll('.thumb').forEach((t, j) => t.classList.toggle('on', j === cur));
+  const on = document.querySelectorAll('.thumb')[cur]; if (on) on.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  buildInspector(); requestRender(); if (view !== 'edit') { pvIndex = cur; buildPreview(); }
+}
+function duplicateSlide() { deck.slides.splice(cur + 1, 0, clone(slide())); cur++; changed(true); toast('Slide duplicated'); }
+function deleteSlide() { if (deck.slides.length < 2) { toast('A post needs at least one slide'); return; } deck.slides.splice(cur, 1); cur = Math.min(cur, deck.slides.length - 1); changed(true); toast('Slide deleted · ⌘Z brings it back'); }
+function stylePop(anchor, pick) {
+  closePops();
+  const p = document.createElement('div'); p.className = 'pop';
+  const groups = deck.format === 'thumb' ? [['Thumbnail', STYLES.thumb]] : [['Type', STYLES.type], ['Photo', STYLES.photo], ['Framed', STYLES.framed]];
+  groups.forEach(([h, list]) => { p.insertAdjacentHTML('beforeend', `<h5>${h}</h5>`); list.forEach(([k, t]) => { const b = document.createElement('button'); b.textContent = t; b.onclick = () => { closePops(); pick(k); }; p.append(b); }); });
+  document.body.append(p);
+  const r = anchor.getBoundingClientRect(); p.style.left = Math.min(r.left, innerWidth - 270) + 'px'; p.style.top = Math.max(10, r.top - p.offsetHeight - 8) + 'px';
+  setTimeout(() => document.addEventListener('pointerdown', closePopsOutside), 0);
+}
+function closePops() { document.querySelectorAll('.pop').forEach(p => p.remove()); document.removeEventListener('pointerdown', closePopsOutside); }
+function closePopsOutside(e) { if (!e.target.closest('.pop')) closePops(); }
 
 // ===== New slides and style changes ============================================================
 function styleKey(s) {
   if (s.layout === 'type') return 'type:' + (s.ground || 'paper');
   if (s.layout === 'photo') return 'photo:' + (s.treatment || 'natural');
+  if (s.layout === 'thumb') return 'thumb:' + (s.variant || 'photo');
   return 'framed:' + (s.arrangement || 'cover');
 }
+function textOf(o) { return o.layout === 'thumb' ? (o.title || '') : [...(o.lines || []).map(l => l.t), ...(o.rows || []).map(r => r.t)].filter(Boolean).join(' '); }
 function newSlide(key, from) {
   const [L, v] = key.split(':'), o = from || {};
-  const lines = o.lines && o.lines.length ? clone(o.lines) : [{ t: 'One idea a slide.', max: 200 }];
+  let lines = o.lines && o.lines.length ? clone(o.lines) : null;
+  if (!lines) { const t = textOf(o); lines = t ? [{ t, max: 200 }] : [{ t: 'One idea a slide.', max: 200 }]; }
   const ph = o.photo || (o.rows && o.rows[0] && o.rows[0].photo) || (o.photos && o.photos[0] && o.photos[0].photo) || null;
-  const focal = o.focal || '50% 50%';
-  if (L === 'type') return { layout: 'type', ground: v, valign: o.valign && o.valign !== 'bottom' ? o.valign : 'center', lines, sub: o.sub, link: o.link };
-  if (L === 'photo') return { layout: 'photo', treatment: v, photo: ph, focal, valign: 'bottom', lines, sub: o.sub, link: o.link };
-  const s = { layout: 'framed', arrangement: v };
-  if (v === 'rows') s.rows = (o.rows && o.rows.length === 3) ? clone(o.rows)
-    : [{ t: 'We curate.', photo: ph, focal }, { t: 'We install.', photo: null, focal }, { t: 'We operate.', photo: null, focal }];
+  const focal = o.focal || '50% 50%', keep = { alt: o.alt };
+  if (L === 'thumb') return { layout: 'thumb', variant: v, theme: o.theme || 'light', title: textOf(o) || 'Inside a pop-up VR cinema.', overline: o.overline, sub: o.sub, photo: ph, focal, ...keep };
+  if (L === 'type') return { layout: 'type', ground: v, valign: o.valign && o.valign !== 'bottom' ? o.valign : 'center', lines, sub: o.sub, link: o.link, ...keep };
+  if (L === 'photo') return { layout: 'photo', treatment: v, photo: ph, focal, valign: 'bottom', lines, sub: o.sub, link: o.link, ...keep };
+  const s = { layout: 'framed', arrangement: v, ...keep };
+  if (v === 'rows') s.rows = (o.rows && o.rows.length === 3) ? clone(o.rows) : [{ t: 'We curate.', photo: ph, focal }, { t: 'We install.', photo: null, focal }, { t: 'We operate.', photo: null, focal }];
   else if (v === 'pair') { s.photos = (o.photos && o.photos.length === 2) ? clone(o.photos) : [{ photo: ph, focal }, { photo: null, focal }]; s.lines = lines; }
   else { s.photo = ph; s.focal = focal; s.lines = lines; }
   if (v === 'lens') { s.h = 640; s.sub = o.sub; }
   if (v === 'close') s.link = o.link || 'hello@poeticsvr.com';
   return s;
 }
+function setStyle(i, key) { const s = deck.slides[i], n = newSlide(key, s); ['wordmark', 'grain'].forEach(k => { if (s[k] !== undefined) n[k] = s[k]; }); deck.slides[i] = n; }
 
-// ===== The slide inspector =====================================================================
+// ===== The inspector (left) ====================================================================
 function el(tag, props = {}, kids = []) {
   const e = document.createElement(tag);
-  for (const [k, v] of Object.entries(props)) { if (k === 'style') e.style.cssText = v; else if (k.startsWith('on')) e[k] = v; else if (k === 'html') e.innerHTML = v; else e.setAttribute(k, v); }
+  for (const [k, v] of Object.entries(props)) { if (v == null) continue; if (k === 'style') e.style.cssText = v; else if (k.startsWith('on')) e[k] = v; else if (k === 'html') e.innerHTML = v; else e.setAttribute(k, v); }
   (Array.isArray(kids) ? kids : [kids]).forEach(k => k != null && e.append(k));
   return e;
 }
-function field(label, input) { return el('div', {}, [el('label', {}, label), input]); }
-function textInput(value, on, ph = '') { const i = el('input', { type: 'text', placeholder: ph }); i.value = value || ''; i.oninput = () => on(i.value); return i; }
+const card = (title, kids, action) => el('div', { class: 'card' }, [el('h3', {}, [title, action || null]), ...kids]);
+const field = (label, input) => el('div', {}, [el('label', {}, label), input]);
+function textInput(value, on, ph = '', ref) { const i = el('input', { type: 'text', placeholder: ph, 'data-ref': ref }); i.value = value || ''; i.oninput = () => on(i.value); return i; }
+function textArea(value, on, ph = '', ref) { const i = el('textarea', { placeholder: ph, 'data-ref': ref }); i.value = value || ''; i.oninput = () => on(i.value); return i; }
 function range(min, max, step, value, on) { const r = el('input', { type: 'range', min, max, step }); r.value = value; r.oninput = () => on(+r.value); return r; }
+function segf(options, value, on) { const d = el('div', { class: 'segf' }); options.forEach(([v, t]) => d.append(el('button', { class: v === value ? 'on' : null, onclick: () => on(v) }, t))); return d; }
 function edit(fn, rebuild = false) { fn(slide()); changed(rebuild); }
 
-function buildFields() {
-  const s = slide(), f = $('fields'); f.innerHTML = '';
-  $('slideNo').textContent = `${cur + 1} of ${deck.slides.length}`;
-  $('style').value = styleKey(s);
-  $('slideKind').textContent = showMark(s, cur, deck.slides.length) ? 'wordmark on' : '';
-  const L = s.layout, a = s.arrangement;
+function buildInspector() {
+  const s = slide(), f = $('inspector'); f.innerHTML = '';
+  const L = s.layout, a = s.arrangement, thumb = L === 'thumb';
+  f.append(el('div', { class: 'head' }, [el('h2', {}, thumb ? 'Thumbnail.' : `Slide ${cur + 1}.`), el('span', {}, thumb ? '1920 × 1080' : `of ${deck.slides.length}${showMark(s, cur, deck.slides.length) ? ' · wordmark on' : ''}`)]));
+
+  // Style
+  const sel = el('select', { id: 'style' });
+  (thumb ? [['Thumbnail', STYLES.thumb]] : [['Type', STYLES.type], ['Photo', STYLES.photo], ['Framed', STYLES.framed]]).forEach(([h, list]) => {
+    const g = el('optgroup', { label: h }); list.forEach(([k, t]) => g.append(el('option', { value: k }, t))); sel.append(g); });
+  sel.value = styleKey(s); sel.onchange = () => { setStyle(cur, sel.value); selSlot = 0; changed(true); };
+  const styleKids = [sel];
+  if (thumb) styleKids.push(field('Theme', segf([['light', 'Light'], ['dark', 'Dark']], s.theme || 'light', v => edit(x => x.theme = v, true))));
+  f.append(card('Style', styleKids, thumb ? null : el('button', { title: 'Give every slide this style', onclick: () => {
+    if (!confirm('Use this style on every slide? (Undo brings the others back.)')) return; const k = styleKey(s); deck.slides.forEach((_, i) => setStyle(i, k)); changed(true); toast('Style applied to all slides'); } }, 'Use on all')));
 
   // Text
-  if (!(L === 'framed' && a === 'rows')) {
-    f.append(el('label', {}, 'Lines (each one fills the width, up to its size)'));
+  const tk = [];
+  if (thumb) {
+    tk.push(field('Overline (optional)', textInput(s.overline, v => edit(x => x.overline = v || undefined), 'Talk, 2026', 'overline')));
+    tk.push(field('Title (a few large words)', textArea(s.title, v => edit(x => x.title = v), 'Inside a pop-up VR cinema.', 'title')));
+    tk.push(field('Line under (optional)', textInput(s.sub, v => edit(x => x.sub = v || undefined), '', 'sub')));
+  } else if (L === 'framed' && a === 'rows') {
+    (s.rows || []).forEach((r, j) => tk.push(field(`Row ${j + 1}`, textInput(r.t, v => edit(x => x.rows[j].t = v), '', `rows,${j}`))));
+  } else {
+    tk.push(el('label', {}, 'Lines · each fills the width up to its size'));
     (s.lines || []).forEach((l, j) => {
-      const val = el('span', {}, String(l.max || 150));
-      const r = range(40, 440, 2, l.max || 150, v => { edit(x => x.lines[j].max = v); val.textContent = v; });
-      f.append(el('div', { class: 'line' }, [textInput(l.t, v => edit(x => x.lines[j].t = v)), el('div', { class: 'size' }, [r, val]),
+      const val = el('span', {}, `${l.max || 150}px`);
+      const r = range(40, 440, 2, l.max || 150, v => { edit(x => x.lines[j].max = v); val.textContent = `${v}px`; });
+      tk.push(el('div', { class: 'line', 'data-line': j }, [textInput(l.t, v => edit(x => x.lines[j].t = v), '', `lines,${j}`), el('div', { class: 'size', title: 'Largest size for this line' }, [r, val]),
         el('button', { class: 'x', title: 'Remove line', onclick: () => edit(x => x.lines.splice(j, 1), true) }, '×')]));
     });
-    const sizeAll = range(40, 440, 2, Math.round(((s.lines || [])[0] || {}).max || 200), v => edit(x => (x.lines || []).forEach(l => l.max = v), false));
-    sizeAll.onchange = () => buildFields();
-    f.append(el('div', { class: 'btns' }, [el('button', { class: 'ghost', onclick: () => edit(x => (x.lines = x.lines || []).push({ t: 'New line.', max: ((x.lines || []).slice(-1)[0] || {}).max || 200 }), true) }, '+ Add line')]));
-    f.append(field('Size all lines', sizeAll));
-  } else {
-    (s.rows || []).forEach((r, j) => f.append(field(`Row ${j + 1}`, textInput(r.t, v => edit(x => x.rows[j].t = v)))));
+    tk.push(el('button', { class: 'add', onclick: () => edit(x => (x.lines = x.lines || []).push({ t: 'New line.', max: ((x.lines || []).slice(-1)[0] || {}).max || 200 }), true) }, '+ Add a line'));
+    if ((s.lines || []).length > 1) { const all = range(40, 440, 2, Math.round(((s.lines || [])[0] || {}).max || 200), v => edit(x => (x.lines || []).forEach(l => l.max = v))); all.onchange = () => buildInspector(); tk.push(field('All lines at once', all)); }
   }
-  if (L !== 'framed' || a === 'lens') f.append(field('Line under (optional, 44px)', textInput(s.sub, v => edit(x => x.sub = v || undefined), 'A short fact')));
-  if (L !== 'framed' || a === 'close') f.append(field('Email or link (optional)', textInput(s.link, v => edit(x => x.link = v || undefined), 'hello@poeticsvr.com')));
+  if (!thumb && (L !== 'framed' || a === 'lens')) tk.push(field('Line under (optional, 44px)', textInput(s.sub, v => edit(x => x.sub = v || undefined), 'A short fact', 'sub')));
+  if (!thumb && (L !== 'framed' || a === 'close')) tk.push(field('Email or link (optional)', textInput(s.link, v => edit(x => x.link = v || undefined), 'hello@poeticsvr.com', 'link')));
+  f.append(card('Text', tk));
 
   // Position
   if (L === 'type' || L === 'photo') {
-    const sel = el('select', {}, [['top', 'Top'], ['center', 'Middle'], ['bottom', 'Bottom']].map(([v, t]) => el('option', { value: v }, t)));
-    sel.value = s.valign || (L === 'photo' ? 'bottom' : 'top');
-    sel.onchange = () => edit(x => { x.valign = sel.value; delete x.top; }, true);
-    f.append(el('div', { class: 'row' }, [field(s.top != null ? 'Position (moved by hand)' : 'Position', sel),
-      el('div', {}, [el('label', {}, ' '), el('button', { class: 'ghost', style: 'width:100%', onclick: () => edit(x => delete x.top, true) }, 'Snap back')])]));
+    const v = s.top != null ? 'hand' : (s.valign || (L === 'photo' ? 'bottom' : 'top'));
+    const pk = [segf([['top', 'Top'], ['center', 'Middle'], ['bottom', 'Bottom']], v, val => edit(x => { x.valign = val; delete x.top; }, true))];
+    if (s.top != null) pk.push(el('p', { class: 'hint' }, 'Moved by hand. Pick a position above to snap back.'));
+    else pk.push(el('p', { class: 'hint' }, 'Or drag the text on the slide; it snaps to these three.'));
+    if (L === 'photo') { const sh = el('input', { type: 'checkbox' }); sh.checked = s.scrim !== false; sh.onchange = () => edit(x => { if (sh.checked) delete x.scrim; else x.scrim = false; }); pk.push(el('label', { class: 'check' }, [sh, 'Soft shade behind the text'])); }
+    f.append(card('Position', pk));
   }
-  if (L === 'photo') {
-    const sh = el('input', { type: 'checkbox' }); sh.checked = s.scrim !== false; sh.onchange = () => edit(x => { if (sh.checked) delete x.scrim; else x.scrim = false; });
-    f.append(el('label', { class: 'check' }, [sh, ' Soft shade behind the text']));
-  }
+  // Oval
   if (L === 'type') {
     const on = el('input', { type: 'checkbox' }); on.checked = !!s.outline;
     on.onchange = () => edit(x => { if (on.checked) x.outline = { text: '', h: 380, bottom: 150 }; else delete x.outline; }, true);
-    f.append(el('label', { class: 'check' }, [on, ' Empty oval, drawn as a line']));
-    if (s.outline) {
-      f.append(field('Text in the oval (optional)', textInput(s.outline.text, v => edit(x => x.outline.text = v))));
-      f.append(field('Oval height', range(100, 600, 10, s.outline.h || 380, v => edit(x => x.outline.h = v))));
-      f.append(el('p', { class: 'hint' }, 'Drag the oval on the slide to move it.'));
-    }
+    const ok = [el('label', { class: 'check', style: 'margin-top:0' }, [on, 'An empty oval, drawn as a line'])];
+    if (s.outline) { ok.push(field('Text inside (optional)', textInput(s.outline.text, v => edit(x => x.outline.text = v), '', 'outline'))); ok.push(field('Height', range(100, 600, 10, s.outline.h || 380, v => edit(x => x.outline.h = v)))); ok.push(el('p', { class: 'hint' }, 'Drag the oval on the slide to move it.')); }
+    f.append(card('Oval', ok));
   }
-
-  // Photo frames
+  // Photo
   const slots = slotsOf(s);
   if (slots.length) {
-    f.append(el('label', {}, slots.length > 1 ? 'Photo frames (select one, then click a photo)' : 'Photo'));
-    slots.forEach((o, j) => {
-      const p = photos.get(o.photo);
-      const card = el('div', { class: 'slot' + (j === selSlot ? ' on' : ''), onclick: () => { selSlot = j; selText = false; buildFields(); requestRender(); } }, [
-        el('div', { class: 'pic', style: p ? `background-image:url("${p.src}")` : '' }),
-        el('div', { class: 'meta' }, [el('b', {}, slots.length > 1 ? `Frame ${j + 1}` : 'Frame'), o.photo ? (p ? o.photo : `${o.photo} (add this photo)`) : 'Empty: click a photo below'])]);
-      f.append(card);
-    });
+    const pk = [];
+    slots.forEach((o, j) => { const p = photos.get(o.photo);
+      pk.push(el('div', { class: 'slot' + (j === selSlot ? ' on' : ''), onclick: () => { selSlot = j; selText = false; buildInspector(); requestRender(); } }, [
+        el('div', { class: 'pic', style: p ? `background-image:url("${p.src}")` : null }),
+        el('div', { class: 'meta' }, [el('b', {}, slots.length > 1 ? `Frame ${j + 1}` : 'Frame'), o.photo ? (p ? o.photo : `${o.photo} · add this photo`) : 'Empty · pick a photo on the right'])])); });
     const o = slots[selSlot] || slots[0];
-    f.append(el('div', { class: 'row' }, [
-      field('Zoom', range(1, 3, 0.01, o.zoom || 1, v => edit(() => { o.zoom = v; if (v === 1) delete o.zoom; }))),
-      el('div', {}, [el('label', {}, ' '), el('button', { class: 'ghost', style: 'width:100%', onclick: () => edit(() => { o.focal = '50% 50%'; delete o.zoom; }, true) }, 'Reset crop')])]));
-    if (L === 'framed' && a === 'lens') f.append(field('Photo height', range(400, 820, 10, s.h || 700, v => edit(x => x.h = v))));
+    pk.push(field(`Zoom · ${Math.round((o.zoom || 1) * 100)}%`, range(1, 3, 0.01, o.zoom || 1, v => { edit(() => { o.zoom = v; if (v === 1) delete o.zoom; }); })));
+    pk.push(el('div', { class: 'row', style: 'margin-top:8px' }, [el('button', { class: 'ghost', onclick: () => edit(() => { o.focal = '50% 50%'; delete o.zoom; }, true) }, 'Reset crop'),
+      el('button', { class: 'ghost', disabled: o.photo ? null : '', onclick: () => edit(() => { o.photo = null; delete o.zoom; }, true) }, 'Empty frame')]));
+    if (L === 'framed' && a === 'lens') pk.push(field('Photo height', range(400, 820, 10, s.h || 700, v => edit(x => x.h = v))));
+    pk.push(el('p', { class: 'hint' }, 'Drag on the slide to reframe; scroll to zoom.'));
+    f.append(card(slots.length > 1 ? 'Photos' : 'Photo', pk));
   }
-
-  // Slide options
-  const wm = el('select', {}, [['', 'Follow the post setting'], ['on', 'Show on this slide'], ['off', 'Hide on this slide']].map(([v, t]) => el('option', { value: v }, t)));
-  wm.value = s.wordmark === true ? 'on' : s.wordmark === false ? 'off' : '';
-  wm.onchange = () => edit(x => { if (wm.value === 'on') x.wordmark = true; else if (wm.value === 'off') x.wordmark = false; else delete x.wordmark; }, true);
-  const gr = el('select', {}, [['', 'Automatic'], ['on', 'On'], ['off', 'Off']].map(([v, t]) => el('option', { value: v }, t)));
-  gr.value = s.grain === true ? 'on' : s.grain === false ? 'off' : '';
-  gr.onchange = () => edit(x => { if (gr.value === 'on') x.grain = true; else if (gr.value === 'off') x.grain = false; else delete x.grain; });
-  f.append(el('div', { class: 'row' }, [field('Wordmark', wm), field('Grain', gr)]));
+  // This slide
+  const sk = [];
+  if (!thumb) {
+    const wm = el('select', {}, [['', 'As the post says'], ['on', 'Show here'], ['off', 'Hide here']].map(([v, t]) => el('option', { value: v }, t)));
+    wm.value = s.wordmark === true ? 'on' : s.wordmark === false ? 'off' : '';
+    wm.onchange = () => edit(x => { if (wm.value === 'on') x.wordmark = true; else if (wm.value === 'off') x.wordmark = false; else delete x.wordmark; }, true);
+    const gr = el('select', {}, [['', 'Automatic'], ['on', 'On'], ['off', 'Off']].map(([v, t]) => el('option', { value: v }, t)));
+    gr.value = s.grain === true ? 'on' : s.grain === false ? 'off' : '';
+    gr.onchange = () => edit(x => { if (gr.value === 'on') x.grain = true; else if (gr.value === 'off') x.grain = false; else delete x.grain; });
+    sk.push(el('div', { class: 'row' }, [field('Wordmark', wm), field('Grain', gr)]));
+  }
+  sk.push(field('Alt text (what a screen reader says)', textArea(s.alt, v => edit(x => x.alt = v || undefined), 'What the photo shows, then the words on the slide.')));
+  sk.push(el('button', { class: 'add', onclick: () => edit(x => x.alt = suggestAlt(x), true) }, 'Fill in the slide’s words'));
+  f.append(card(thumb ? 'Accessibility' : 'This slide', sk));
+}
+function suggestAlt(s) { const t = s.layout === 'thumb' ? [s.overline, s.title, s.sub] : [...(s.lines || []).map(l => l.t), ...(s.rows || []).map(r => r.t), s.sub, s.link, s.outline && s.outline.text];
+  const words = t.filter(Boolean).join(' ').replace(/\s+/g, ' ').trim(); const keep = (s.alt || '').split(' Text:')[0].trim();
+  return (keep && !keep.startsWith('Text:') ? keep + ' ' : (slotsOf(s).length ? 'A photo. ' : '')) + (words ? `Text: ${words}` : ''); }
+function flashRef(ref) {
+  const key = ref.join(), inp = document.querySelector(`[data-ref="${key}"]`); if (!inp) return;
+  const row = inp.closest('.line') || inp; row.classList.add('flash'); inp.scrollIntoView({ block: 'nearest' }); setTimeout(() => row.classList.remove('flash'), 900);
 }
 
-$('style').onchange = () => { const s = slide(); const n = newSlide($('style').value, s);
-  ['wordmark', 'grain'].forEach(k => { if (s[k] !== undefined) n[k] = s[k]; }); deck.slides[cur] = n; selSlot = 0; changed(true); };
+// ===== Right panel: photos, checks, caption ====================================================
+function setTab(t) { rightTab = t; document.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === t)); ['photos', 'checks', 'caption'].forEach(k => $('pane-' + k).hidden = k !== t);
+  if (t === 'checks') buildChecks(); if (t === 'caption') buildCaption(); }
+document.querySelectorAll('.tabs button').forEach(b => b.onclick = () => setTab(b.dataset.t));
+function buildChecks() {
+  const p = $('pane-checks'); p.innerHTML = '';
+  const mine = slideIssues[cur] || [];
+  p.append(el('h4', { style: 'margin-top:0' }, deck.format === 'thumb' ? 'The thumbnail' : `Slide ${cur + 1}`));
+  p.append(mine.length ? el('div', {}, mine.map(t => el('div', { class: 'issue' }, t))) : el('div', { class: 'ok' }, 'Margins, safe area, text size, contrast and copy all pass.'));
+  if (deck.slides.length > 1) {
+    p.append(el('h4', {}, 'The whole post'));
+    p.append(el('div', { class: 'summary' }, deck.slides.map((_, i) => { const n = (slideIssues[i] || []).length;
+      return el('button', { onclick: () => selectSlide(i) }, [el('span', {}, `Slide ${i + 1}`), el('span', { style: n ? 'color:var(--warn)' : 'color:var(--soft)' }, n ? `${n} to fix` : 'ok')]); })));
+  }
+  const cap = captionIssues();
+  if (cap.length) { p.append(el('h4', {}, 'Caption and alt text')); p.append(el('div', {}, cap.map(t => el('div', { class: 'issue soft' }, t)))); }
+}
+function buildCaption() {
+  const p = $('pane-caption'); p.innerHTML = '';
+  if (deck.format === 'thumb') { p.append(el('p', { class: 'hint', style: 'margin-top:0' }, 'Thumbnails have no caption. Write the alt text on the left.')); return; }
+  const count = el('div', { class: 'count' });
+  const upd = () => { const c = deck.caption || '', first = c.split('\n')[0]; count.innerHTML = `<span>First line ${first.length}/125</span><span>${c.length} characters</span>`; };
+  const ta = textArea(deck.caption, v => { deck.caption = v; upd(); changed(false); }, 'Immersive cinema, anywhere.\n\nTwo or three plain sentences.\n\nTell us about your space: hello@poeticsvr.com\n\n#ImmersiveCinema #VRCinema');
+  ta.style.minHeight = '200px'; upd();
+  p.append(el('label', { style: 'margin-top:0' }, 'Caption'), ta, count);
+  p.append(el('div', { class: 'row', style: 'margin-top:8px' }, [el('button', { class: 'ghost', onclick: () => copyCaption() }, 'Copy caption'),
+    el('button', { class: 'ghost', onclick: () => { const first = textOf(deck.slides[0]); if (!first) return; deck.caption = first + (deck.caption ? '\n\n' + deck.caption : ''); buildCaption(); changed(false); } }, 'Start with the cover')]));
+  p.append(el('p', { class: 'hint' }, 'The point first (Instagram cuts the first line near 125 characters), then the email, then three to five CamelCase hashtags.'));
+  p.append(el('h4', {}, 'Alt text, slide by slide'));
+  deck.slides.forEach((s, i) => p.append(field(`Slide ${i + 1}`, textArea(s.alt, v => { s.alt = v || undefined; changed(false); }, suggestAlt(s)))));
+  p.append(el('div', { id: 'capIssues' })); buildCaptionIssues();
+}
+function buildCaptionIssues() { const box = $('capIssues'); if (!box) return; const l = captionIssues(); box.innerHTML = ''; box.append(el('h4', {}, 'Checks'), l.length ? el('div', {}, l.map(t => el('div', { class: 'issue soft' }, t))) : el('div', { class: 'ok' }, 'Caption and alt text look right.')); }
+function captionText() {
+  const lines = [deck.caption || '', '', 'Alt text:'];
+  deck.slides.forEach((s, i) => lines.push(`${i + 1}. ${s.alt || suggestAlt(s)}`));
+  return lines.join('\n');
+}
+async function copyCaption() { try { await navigator.clipboard.writeText(deck.caption || ''); toast('Caption copied'); } catch (e) { toast('Copy did not work here: select the text and copy it'); } }
 
-// ===== Photos ==================================================================================
-function addPhotoFile(file) {
-  return new Promise(res => {
-    const id = file.name.replace(/\.[^.]+$/, '');
-    const fr = new FileReader();
-    fr.onload = () => { const img = new Image(); img.onload = () => { photos.set(id, { id, img, src: fr.result }); res(id); }; img.src = fr.result; };
-    fr.readAsDataURL(file);
-  });
+// ===== Photos (kept in this browser with IndexedDB) ============================================
+const idb = (() => {
+  let dbp = null;
+  const open = () => dbp || (dbp = new Promise((res, rej) => { const r = indexedDB.open('poetics-studio', 1); r.onupgradeneeded = () => r.result.createObjectStore('photos'); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); }));
+  const run = (mode, fn) => open().then(db => new Promise((res, rej) => { const t = db.transaction('photos', mode); fn(t.objectStore('photos')); t.oncomplete = res; t.onerror = () => rej(t.error); }));
+  return {
+    put: (k, v) => run('readwrite', s => s.put(v, k)).catch(() => {}),
+    del: k => run('readwrite', s => s.delete(k)).catch(() => {}),
+    all: () => open().then(db => new Promise(res => { const out = {}; const r = db.transaction('photos').objectStore('photos').openCursor();
+      r.onsuccess = () => { const c = r.result; if (c) { out[c.key] = c.value; c.continue(); } else res(out); }; r.onerror = () => res(out); })).catch(() => ({})),
+  };
+})();
+function shrinkSrc(img, src) {
+  const s = Math.min(1, 2400 / Math.max(img.naturalWidth, img.naturalHeight));
+  if (s === 1 && src.startsWith('data:image/jpeg')) return src;
+  const c = document.createElement('canvas'); c.width = Math.round(img.naturalWidth * s); c.height = Math.round(img.naturalHeight * s);
+  c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); return c.toDataURL('image/jpeg', 0.9);
+}
+function loadImage(src) { return new Promise(res => { const img = new Image(); img.onload = () => res(img); img.onerror = () => res(null); img.src = src; }); }
+async function addPhotoFile(file) {
+  const id = file.name.replace(/\.[^.]+$/, '');
+  const src = await new Promise(res => { const fr = new FileReader(); fr.onload = () => res(fr.result); fr.readAsDataURL(file); });
+  const img = await loadImage(src); if (!img) return null;
+  const small = shrinkSrc(img, src); photos.set(id, { id, img, src: small }); idb.put(id, small); return id;
 }
 async function addPhotoFiles(files, assignTo) {
-  const ids = []; for (const f of files) if (f.type.startsWith('image/')) ids.push(await addPhotoFile(f));
-  if (assignTo && ids[0]) { assignTo.photo = ids[0]; assignTo.focal = assignTo.focal || '50% 50%'; delete assignTo.zoom; }
-  buildTray(); changed(true); buildStrip();
+  const ids = []; for (const f of files) if (f.type.startsWith('image/')) { const id = await addPhotoFile(f); if (id) ids.push(id); }
+  if (!ids.length) return;
+  if (assignTo) { assignTo.photo = ids[0]; assignTo.focal = '50% 50%'; delete assignTo.zoom; }
+  buildTray(); changed(true); toast(`${ids.length} photo${ids.length > 1 ? 's' : ''} added`);
 }
+function usedPhotos() { return new Set(deck.slides.flatMap(s => slotsOf(s).map(o => o.photo)).filter(Boolean)); }
 function buildTray() {
-  const t = $('tray'); t.innerHTML = '';
+  const t = $('tray'); t.innerHTML = ''; const used = usedPhotos();
   for (const p of photos.values()) {
-    const d = el('div', { style: `background-image:url("${p.src}")`, title: p.id, draggable: 'true' }, el('span', {}, p.id));
-    d.onclick = () => { const o = slotsOf(slide())[selSlot]; if (!o) return; o.photo = p.id; delete o.zoom; o.focal = '50% 50%'; changed(true); };
+    const d = el('div', { class: 'ph', style: `background-image:url("${p.src}")`, title: `${p.id}${used.has(p.id) ? ' · in use' : ''}`, draggable: 'true' }, [used.has(p.id) ? el('i', { class: 'used' }) : null, el('span', {}, p.id),
+      el('button', { class: 'rm', title: 'Remove from the studio', onclick: e => { e.stopPropagation(); photos.delete(p.id); idb.del(p.id); buildTray(); changed(true); } }, '×')]);
+    d.onclick = () => { const o = slotsOf(slide())[selSlot]; if (!o) { toast('This slide has no photo frame: pick a photo or framed style'); return; } o.photo = p.id; delete o.zoom; o.focal = '50% 50%'; changed(true); buildTray(); };
     d.ondragstart = e => e.dataTransfer.setData('text/x-photo', p.id);
     t.append(d);
   }
   if (!photos.size) t.innerHTML = '<p class="hint" style="grid-column:1/-1">No photos yet.</p>';
 }
-$('addPhotosBtn').onclick = () => $('addPhotos').click();
+$('dropzone').onclick = () => $('addPhotos').click();
 $('addPhotos').onchange = e => { addPhotoFiles([...e.target.files]); e.target.value = ''; };
+$('dropzone').ondragover = e => { e.preventDefault(); $('dropzone').classList.add('over'); };
+$('dropzone').ondragleave = () => $('dropzone').classList.remove('over');
+$('dropzone').ondrop = e => { e.preventDefault(); $('dropzone').classList.remove('over'); addPhotoFiles([...e.dataTransfer.files]); };
 
-// ===== Pointer: move text, reframe photos, zoom ================================================
+// ===== Pointer on the slide: select, edit, move, reframe, zoom =================================
 function toCanvas(e) { const r = canvas.getBoundingClientRect(); return [(e.clientX - r.left) * canvas.width / r.width, (e.clientY - r.top) * canvas.height / r.height]; }
 function hit(x, y) { for (let i = regions.length - 1; i >= 0; i--) { const r = regions[i].rect; if (x >= r.x && x <= r.x + r.w && y >= r.y && y <= r.y + r.h) return regions[i]; } return null; }
+function textAt(x, y) { return texts.find(t => t.ref && x >= t.x - 10 && x <= t.x + Math.max(t.w, 120) + 10 && y >= t.top && y <= t.top + t.h); }
 let drag = null;
 canvas.addEventListener('pointerdown', e => {
-  const [x, y] = toCanvas(e), h = hit(x, y); if (!h) { selText = false; requestRender(); return; }
-  canvas.setPointerCapture(e.pointerId); canvas.focus();
+  if (e.button !== 0) return;
+  const [x, y] = toCanvas(e), tx = textAt(x, y), h = hit(x, y);
+  canvas.focus();
+  if (tx) flashRef(tx.ref);
+  if (!h) { if (selText) { selText = false; requestRender(); } return; }
+  canvas.setPointerCapture(e.pointerId);
   const s = slide(), G = geo(deck.format);
-  if (h.type === 'text') { selText = true; drag = { kind: 'text', y0: y, top0: h.top, height: h.height }; }
-  else if (h.type === 'outline') { drag = { kind: 'outline', y0: y, b0: s.outline.bottom != null ? s.outline.bottom : G.txtBottom + 30 }; }
-  else if (h.type === 'photo') {
-    selText = false; if (selSlot !== h.slot) { selSlot = h.slot; buildFields(); }
-    const o = slotsOf(s)[h.slot]; drag = { kind: 'photo', o, x0: x, y0: y, f0: parseFocal(o.focal), r: h };
-  }
+  if (h.type === 'text') { selText = true; drag = { kind: 'text', y0: y, top0: h.top, height: h.height, moved: false }; }
+  else if (h.type === 'outline') drag = { kind: 'outline', y0: y, b0: s.outline.bottom != null ? s.outline.bottom : G.txtBottom + 30 };
+  else if (h.type === 'photo') { selText = false; if (selSlot !== h.slot) { selSlot = h.slot; buildInspector(); } const o = slotsOf(s)[h.slot]; drag = { kind: 'photo', o, x0: x, y0: y, f0: parseFocal(o.focal), r: h }; }
   requestRender();
 });
 canvas.addEventListener('pointermove', e => {
   const [x, y] = toCanvas(e);
-  if (!drag) { const h = hit(x, y); canvas.style.cursor = !h ? 'default' : h.type === 'photo' ? 'grab' : 'move'; return; }
+  if (!drag) { const t = textAt(x, y), h = hit(x, y); canvas.style.cursor = h && h.type === 'text' ? 'move' : t ? 'text' : !h ? 'default' : h.type === 'photo' ? 'grab' : 'move'; return; }
   const s = slide(), G = geo(deck.format);
   if (drag.kind === 'text') {
-    let top = drag.top0 + (y - drag.y0);
-    const snaps = [G.txtTop, (G.H - drag.height) / 2, G.H - G.txtBottom - drag.height]; snapY = null;
-    for (const v of snaps) if (Math.abs(top - v) < 14) { top = v; snapY = v === snaps[1] ? G.H / 2 : v === snaps[0] ? v : v + drag.height; }
+    if (Math.abs(y - drag.y0) < 3 && !drag.moved) return; drag.moved = true;
+    let top = drag.top0 + (y - drag.y0); const snaps = [G.txtTop, (G.H - drag.height) / 2, G.H - G.txtBottom - drag.height]; snapY = null;
+    snaps.forEach((v, k) => { if (Math.abs(top - v) < 14) { top = v; snapY = k === 1 ? G.H / 2 : k === 0 ? v : v + drag.height; } });
     s.top = Math.round(top - G.shift);
-  } else if (drag.kind === 'outline') {
-    s.outline.bottom = Math.round(clamp(drag.b0 - (y - drag.y0), 0, G.H - (s.outline.h || 380)));
-  } else if (drag.kind === 'photo') {
-    const z = drag.o.zoom || 1, r = drag.r;
-    const sx = Math.max(1, r.dw * z - r.rect.w), sy = Math.max(1, r.dh * z - r.rect.h);
-    const fx = r.dw * z > r.rect.w + 1 ? clamp(drag.f0[0] - (x - drag.x0) / sx, 0, 1) : drag.f0[0];
-    const fy = r.dh * z > r.rect.h + 1 ? clamp(drag.f0[1] - (y - drag.y0) / sy, 0, 1) : drag.f0[1];
+  } else if (drag.kind === 'outline') s.outline.bottom = Math.round(clamp(drag.b0 - (y - drag.y0), 0, G.H - (s.outline.h || 380)));
+  else if (drag.kind === 'photo') {
+    canvas.style.cursor = 'grabbing';
+    const z = drag.o.zoom || 1, r = drag.r, sx = Math.max(1, r.dw * z - r.rect.w), sy = Math.max(1, r.dh * z - r.rect.h);
+    const fx = r.dw * z > r.rect.w + 1 ? clamp(drag.f0[0] - (x - drag.x0) / sx, 0, 1) : drag.f0[0], fy = r.dh * z > r.rect.h + 1 ? clamp(drag.f0[1] - (y - drag.y0) / sy, 0, 1) : drag.f0[1];
     drag.o.focal = `${Math.round(fx * 100)}% ${Math.round(fy * 100)}%`;
   }
   requestRender();
 });
-canvas.addEventListener('pointerup', () => { if (drag) { const wasText = drag.kind === 'text'; drag = null; snapY = null; changed(wasText); } });
+canvas.addEventListener('pointerup', () => { if (!drag) return; const d = drag; drag = null; snapY = null; if (d.kind !== 'text' || d.moved) changed(d.kind === 'text'); else requestRender(); });
+canvas.addEventListener('dblclick', e => { const [x, y] = toCanvas(e), t = textAt(x, y); if (t) startInline(t); });
 canvas.addEventListener('wheel', e => {
   const [x, y] = toCanvas(e), h = hit(x, y); if (!h || h.type !== 'photo') return;
   e.preventDefault(); const o = slotsOf(slide())[h.slot]; if (!o) return;
   o.zoom = Math.round(clamp((o.zoom || 1) * (1 - e.deltaY * 0.0015), 1, 3) * 100) / 100; if (o.zoom === 1) delete o.zoom;
-  selSlot = h.slot; changed(false); clearTimeout(window._zt); window._zt = setTimeout(buildFields, 300);
+  selSlot = h.slot; changed(false); clearTimeout(window._zt); window._zt = setTimeout(buildInspector, 300);
 }, { passive: false });
+
+// Inline editing: an input laid over the text on the slide
+let inlineRef = null;
+function getRef(s, ref) { const [k, j] = ref; if (k === 'lines') return s.lines[j].t; if (k === 'rows') return s.rows[j].t; if (k === 'outline') return s.outline.text; return s[k] || ''; }
+function setRef(s, ref, v) { const [k, j] = ref; if (k === 'lines') s.lines[j].t = v; else if (k === 'rows') s.rows[j].t = v; else if (k === 'outline') s.outline.text = v; else s[k] = v || undefined; }
+function startInline(t) {
+  const inp = $('inline'), r = canvas.getBoundingClientRect(), st = $('stage').getBoundingClientRect(), sc = r.width / canvas.width;
+  inlineRef = t.ref; const multi = ['sub', 'title'].includes(t.ref[0]);
+  inp.value = getRef(slide(), t.ref); inp.hidden = false;
+  Object.assign(inp.style, { left: (r.left - st.left + t.x * sc - 6) + 'px', top: (r.top - st.top + t.top * sc - 4) + 'px', width: Math.max(t.w * sc + 40, 220) + 'px',
+    height: (t.h * sc + 8) + 'px', fontSize: (t.size * sc) + 'px', fontFamily: t.family, letterSpacing: (t.em * t.size * sc) + 'px' });
+  hideRef = multi ? null : t.ref.join(); requestRender();
+  inp.focus(); inp.select();
+}
+function endInline(commit) {
+  const inp = $('inline'); if (inp.hidden) return;
+  if (commit) { setRef(slide(), inlineRef, inp.value); changed(true); }
+  inp.hidden = true; hideRef = null; inlineRef = null; requestRender(); canvas.focus();
+}
+$('inline').addEventListener('input', () => { setRef(slide(), inlineRef, $('inline').value); requestRender(); });
+$('inline').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); endInline(true); } if (e.key === 'Escape') { e.preventDefault(); endInline(true); } e.stopPropagation(); });
+$('inline').addEventListener('blur', () => endInline(true));
+
 // Drop photos on a frame
 const stage = $('stage');
 stage.addEventListener('dragover', e => { if ([...e.dataTransfer.types].some(t => t === 'Files' || t === 'text/x-photo')) { e.preventDefault(); stage.classList.add('drop'); } });
 stage.addEventListener('dragleave', () => stage.classList.remove('drop'));
 stage.addEventListener('drop', e => {
   e.preventDefault(); stage.classList.remove('drop');
-  const [x, y] = toCanvas(e), h = hit(x, y), slots = slotsOf(slide());
-  const target = h && h.type === 'photo' ? slots[h.slot] : slots[selSlot];
+  const [x, y] = toCanvas(e), h = hit(x, y), slots = slotsOf(slide()), target = h && h.type === 'photo' ? slots[h.slot] : slots[selSlot];
   const id = e.dataTransfer.getData('text/x-photo');
-  if (id && target) { target.photo = id; target.focal = '50% 50%'; delete target.zoom; changed(true); return; }
+  if (id && target) { target.photo = id; target.focal = '50% 50%'; delete target.zoom; changed(true); buildTray(); return; }
   if (e.dataTransfer.files.length) addPhotoFiles([...e.dataTransfer.files], target);
 });
-// Keyboard: undo, redo, nudge
+$('prevBtn').onclick = () => selectSlide(cur - 1);
+$('nextBtn').onclick = () => selectSlide(cur + 1);
+
+// ===== Keyboard ================================================================================
 document.addEventListener('keydown', e => {
-  const typing = /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName);
-  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'z' && !typing) { e.preventDefault(); e.shiftKey ? redo() : undo(); return; }
-  if (!typing && selText && ['ArrowUp', 'ArrowDown'].includes(e.key)) {
+  const typing = /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName), mod = e.metaKey || e.ctrlKey, k = e.key.toLowerCase();
+  if (e.key === 'Escape') { $('help').hidden = true; closePops(); $('exportMenu').hidden = true; if (view !== 'edit') setView('edit'); return; }
+  if (mod && k === 's') { e.preventDefault(); saveProject(); return; }
+  if (mod && k === 'e') { e.preventDefault(); exportZip(); return; }
+  if (typing) return;
+  if (mod && k === 'z') { e.preventDefault(); e.shiftKey ? redo() : undo(); return; }
+  if (mod && k === 'd') { e.preventDefault(); duplicateSlide(); return; }
+  if (mod) return;
+  if (e.key === '?') { $('help').hidden = !$('help').hidden; return; }
+  if (k === 'g') { deck.guides = !deck.guides; syncTop(); requestRender(); return; }
+  if (k === 'p') { setView(view === 'phone' ? 'edit' : 'phone'); return; }
+  if (view !== 'edit') { if (e.key === 'ArrowLeft') pvStep(-1); if (e.key === 'ArrowRight') pvStep(1); return; }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); selectSlide(cur - 1); return; }
+  if (e.key === 'ArrowRight') { e.preventDefault(); selectSlide(cur + 1); return; }
+  if ((e.key === 'Backspace' || e.key === 'Delete') && document.activeElement === canvas) { e.preventDefault(); deleteSlide(); return; }
+  if (selText && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) {
     e.preventDefault(); const s = slide(), G = geo(deck.format), r = regions.find(q => q.type === 'text'); if (!r) return;
     s.top = Math.round(r.top + (e.key === 'ArrowUp' ? -1 : 1) * (e.shiftKey ? 20 : 4) - G.shift); changed(false);
   }
 });
+$('help').onclick = e => { if (e.target === $('help')) $('help').hidden = true; };
+$('helpBtn').onclick = () => $('help').hidden = false;
 
 // ===== History and autosave ====================================================================
 let hist = [], future = [], saveTimer = 0;
-function snapshot() { return JSON.stringify(deck); }
 function changed(rebuild) {
   clearTimeout(saveTimer);
   saveTimer = setTimeout(() => {
-    const snap = snapshot();
+    const snap = JSON.stringify(deck);
     if (hist[hist.length - 1] !== snap) { hist.push(snap); if (hist.length > 200) hist.shift(); future = []; }
-    try { localStorage.setItem('poetics-studio-deck', snap); } catch (err) { /* storage can be off: fine */ }
+    try { localStorage.setItem(STORE_KEY, snap); } catch (err) { /* storage can be off */ }
+    $('undoBtn').disabled = hist.length < 2; $('redoBtn').disabled = !future.length;
   }, 350);
-  if (rebuild) { buildStrip(); buildFields(); }
+  if (rebuild) { buildStrip(); buildInspector(); }
+  if (rebuild && rightTab === 'photos') buildTray();
   requestRender();
 }
-function restore(snap) { deck = JSON.parse(snap); cur = Math.min(cur, deck.slides.length - 1); selSlot = 0; syncPostFields(); buildStrip(); buildFields(); requestRender(); }
-function undo() { if (hist.length < 2) return; future.push(hist.pop()); restore(hist[hist.length - 1]); }
-function redo() { if (!future.length) return; const s = future.pop(); hist.push(s); restore(s); }
+function restore(snap) { deck = JSON.parse(snap); cur = Math.min(cur, deck.slides.length - 1); selSlot = 0; syncTop(); buildStrip(); buildInspector(); requestRender(); }
+function undo() { if (hist.length < 2) return; future.push(hist.pop()); restore(hist[hist.length - 1]); toast('Undone'); }
+function redo() { if (!future.length) return; const s = future.pop(); hist.push(s); restore(s); toast('Redone'); }
+$('undoBtn').onclick = undo; $('redoBtn').onclick = redo;
 
-// ===== Post settings ===========================================================================
-function syncPostFields() { $('format').value = deck.format || 'post'; $('markRule').value = deck.wordmark || 'ends'; $('grain').checked = deck.grain !== false; }
-$('format').onchange = () => { deck.format = $('format').value; changed(true); };
-$('markRule').onchange = () => { deck.wordmark = $('markRule').value; changed(true); };
-$('grain').onchange = () => { deck.grain = $('grain').checked; changed(true); };
-$('guides').onchange = requestRender;
-$('example').onchange = () => {
-  const v = $('example').value; $('example').value = ''; if (!v) return;
-  if (deck && deck.slides.length > 1 && !confirm('Replace the current slides? (Undo brings them back.)')) return;
-  loadDeck(v === 'blank' ? { format: deck.format, slides: [newSlide('type:paper')] } : clone(EXAMPLES[v]));
+// ===== Top bar =================================================================================
+function syncTop() {
+  $('format').value = deck.format || 'post'; $('markRule').value = deck.wordmark || 'ends';
+  $('grainBtn').setAttribute('aria-pressed', deck.grain !== false); $('guidesBtn').setAttribute('aria-pressed', !!deck.guides);
+  const thumb = deck.format === 'thumb'; $('markRuleWrap').hidden = thumb; $('grainBtn').hidden = thumb;
+  $('prevBtn').hidden = $('nextBtn').hidden = thumb; document.querySelector('.tabs button[data-t=caption]').hidden = thumb;
+  if (thumb && rightTab === 'caption') setTab('photos');
+  $('tip').textContent = thumb ? 'Double-click text to edit it · drag the photo to reframe · scroll to zoom' : 'Click to select · double-click text to edit it · drag text to move it · drag a photo to reframe · scroll to zoom';
+}
+$('format').onchange = () => {
+  const was = deck.format, now = $('format').value; deck.format = now;
+  if (now === 'thumb' && was !== 'thumb') deck.slides = [newSlide(slotsOf(slide()).length ? 'thumb:photo' : 'thumb:text', slide())];
+  if (now !== 'thumb' && was === 'thumb') deck.slides = deck.slides.map(s => newSlide(slotsOf(s).length ? 'photo:natural' : 'type:paper', s));
+  cur = Math.min(cur, deck.slides.length - 1); syncTop(); changed(true);
 };
-function loadDeck(d) {
-  deck = { format: d.format || 'post', wordmark: d.wordmark || 'ends', grain: d.grain !== false, slides: d.slides && d.slides.length ? d.slides : [newSlide('type:paper')] };
-  cur = 0; selSlot = 0; selText = false; syncPostFields(); buildStrip(); buildFields(); changed(false); requestRender();
+$('markRule').onchange = () => { deck.wordmark = $('markRule').value; changed(true); };
+$('grainBtn').onclick = () => { deck.grain = deck.grain === false; syncTop(); changed(true); };
+$('guidesBtn').onclick = () => { deck.guides = !deck.guides; syncTop(); requestRender(); };
+$('sideBtn').onclick = () => document.body.classList.toggle('show-right');
+$('exportBtn').onclick = e => { e.stopPropagation(); $('exportMenu').hidden = !$('exportMenu').hidden; };
+document.addEventListener('click', e => { if (!e.target.closest('.menu-wrap')) $('exportMenu').hidden = true; });
+$('exportMenu').onclick = e => { const b = e.target.closest('button'); if (!b) return; $('exportMenu').hidden = true;
+  ({ png: exportSlide, zip: exportZip, pdf: exportPdf, caption: copyCaption, deck: exportDeck })[b.dataset.x](); };
+
+// ===== Previews: phone and grid ================================================================
+document.querySelectorAll('#viewSeg button').forEach(b => b.onclick = () => setView(b.dataset.v));
+function setView(v) { view = v; pvIndex = cur; document.querySelectorAll('#viewSeg button').forEach(b => b.classList.toggle('on', b.dataset.v === v)); $('preview').hidden = v === 'edit'; if (v !== 'edit') buildPreview(); }
+const pvCache = new Map();
+function pvImg(i) { return renderFull(i).toDataURL('image/jpeg', 0.88); }
+function pvStep(d) { pvIndex = clamp(pvIndex + d, 0, deck.slides.length - 1); buildPreview(); }
+function buildPreview() {
+  const p = $('preview'); p.innerHTML = ''; const n = deck.slides.length, fmt = deck.format, av = `<div class="av">${WORDMARK_SVG.replace('fill="#121614"', 'fill="#EFF0EC"')}</div>`;
+  const side = (title, body) => { const d = el('div', { class: 'pvside' }, [el('h3', {}, title), el('div', { html: body })]); return d; };
+  const adToggle = () => { const c = el('input', { type: 'checkbox' }); c.checked = pvAd; c.onchange = () => { pvAd = c.checked; buildPreview(); }; return el('label', { class: 'check' }, [c, 'Show it as an ad']); };
+  if (view === 'grid') {
+    if (fmt === 'story' || fmt === 'thumb') { p.append(side('No grid for this format.', '<p>Stories and thumbnails don’t sit on the profile grid. Use Phone to see them in place.</p>')); return; }
+    const g = el('div', { class: 'gridpv' }); g.append(el('div', { class: 'me', style: `background-image:url("${pvImg(0)}")` })); for (let k = 0; k < 8; k++) g.append(el('div'));
+    const ph = el('div', { class: 'phone' }, el('div', { class: 'screen', style: 'padding:44px 0 30px' }, [el('div', { class: 'ig-top', style: 'padding-top:0', html: `${av}<div>poeticsvr<small>Profile</small></div>` }), g]));
+    p.append(ph, side('The cover on your grid.', '<p>Instagram shows profile tiles at 3:4, so the top and bottom of a 4:5 cover are cut. Keep the cover’s words clear of the edges.</p>'));
+    return;
+  }
+  if (fmt === 'thumb') {
+    const src = pvImg(0), title = (deck.slides[0].title || '').replace(/\n/g, ' ');
+    const big = el('div', { class: 'yt', html: `<div class="th"><img src="${src}"><span class="dur">12:34</span></div><div class="t">${esc(title)}</div><div class="c">Poetics · 1.2K views · 2 days ago</div>` });
+    const small = el('div', { class: 'yt small', html: `<div class="th"><img src="${src}"><span class="dur">12:34</span></div><div><div class="t" style="margin-top:0;font-size:13px">${esc(title)}</div><div class="c">Poetics</div></div>` });
+    p.append(el('div', { style: 'display:flex;flex-direction:column;gap:18px' }, [big, small]), side('Seen small.', '<p>On the home page and as a suggestion, the thumbnail is a few centimetres wide, with the duration badge bottom right. A few large words win.</p>'));
+    return;
+  }
+  const src = pvImg(pvIndex), dots = deck.slides.map((_, k) => `<i class="${k === pvIndex ? 'on' : ''}"></i>`).join('');
+  let screen;
+  if (fmt === 'story') {
+    screen = el('div', { class: 'screen' }, el('div', { class: 'st', html: `<img src="${src}"><div class="zone" style="top:0;height:14%"></div><div class="zone" style="bottom:0;height:19.8%"></div>
+      <div class="bars">${deck.slides.map((_, k) => `<i class="${k <= pvIndex ? 'on' : ''}"></i>`).join('')}</div><div class="who">${av}poeticsvr <span style="opacity:.7;font-weight:400">${pvAd ? 'Sponsored' : '2h'}</span></div>
+      ${pvAd ? '<div class="adcta">Learn more</div>' : '<div class="reply">Send message</div>'}` }));
+  } else {
+    const cap = esc((deck.caption || 'Write the caption in the Caption tab.').split('\n')[0]); const short = cap.length > 125 ? cap.slice(0, 125) + '… ' : cap + ' ';
+    screen = el('div', { class: 'screen' }, [el('div', { class: 'ig-top', html: `${av}<div>poeticsvr<small>${pvAd ? 'Sponsored' : 'Athens, Greece'}</small></div><span style="margin-left:auto">···</span>` }),
+      el('div', { class: 'ig-media', html: `<img src="${src}">${n > 1 ? `<span class="cnt">${pvIndex + 1}/${n}</span>` : ''}` }),
+      pvAd ? el('div', { class: 'cta', html: '<span>Learn more</span><span>›</span>' }) : null,
+      el('div', { class: 'ig-bar', html: `<span>♡ ◯ ➤</span><div class="dots">${n > 1 ? dots : ''}</div><span>⌑</span>` }),
+      el('div', { class: 'ig-cap', html: `<b>poeticsvr</b> ${short}<span class="more">more</span>` })]);
+    const media = screen.querySelector('.ig-media');
+    if (pvIndex > 0) media.append(el('button', { class: 'pv l', onclick: () => pvStep(-1) }, '‹'));
+    if (pvIndex < n - 1) media.append(el('button', { class: 'pv r', onclick: () => pvStep(1) }, '›'));
+  }
+  if (fmt === 'story') { const st = screen.querySelector('.st'); st.style.cursor = 'pointer'; st.onclick = e => pvStep(e.offsetX < st.clientWidth / 2 ? -1 : 1); }
+  const sideBody = fmt === 'story' ? '<p>The striped bands are where Instagram puts the profile, the reply bar and an ad’s button. Tap the left or right half to move through the frames.</p>'
+    : '<p>About the size people see it. Use the arrows, or ← →, to swipe. The caption shows its first line, then “more”.</p>';
+  const s2 = side(fmt === 'story' ? 'As a story.' : 'In the feed.', sideBody); s2.append(adToggle());
+  s2.append(el('div', { class: 'row', style: 'margin-top:12px' }, [el('button', { class: 'ghost', onclick: () => { selectSlide(pvIndex); setView('edit'); } }, 'Edit this slide'), el('button', { class: 'ghost', onclick: () => setView('edit') }, 'Back')]));
+  p.append(el('div', { class: 'phone' }, screen), s2);
 }
 
-// ===== Export: PNG, ZIP, PDF, project ==========================================================
-function slideName(i) { const s = deck.slides[i]; return `${String(i + 1).padStart(2, '0')}-${s.arrangement || s.layout}`; }
+// ===== Loading decks ===========================================================================
+function loadDeck(d) {
+  deck = { format: d.format || 'post', wordmark: d.wordmark || 'ends', grain: d.grain !== false, guides: !!d.guides, caption: d.caption || '', slides: d.slides && d.slides.length ? d.slides : [newSlide('type:paper')] };
+  cur = 0; selSlot = 0; selText = false; hist = []; future = [];
+  syncTop(); buildStrip(); buildInspector(); buildTray(); changed(false); requestRender();
+  if (view !== 'edit') setView('edit');
+}
+function starter(kind) {
+  if (kind === 'thumb') return { format: 'thumb', slides: [newSlide('thumb:photo')] };
+  return clone(EXAMPLES[kind]);
+}
+
+// ===== Export ==================================================================================
+function slideName(i) { const s = deck.slides[i]; return deck.format === 'thumb' ? 'thumbnail' : `${String(i + 1).padStart(2, '0')}-${s.arrangement || s.layout}`; }
 function renderFull(i) { const G = geo(deck.format), c = document.createElement('canvas'); c.width = G.W; c.height = G.H; renderSlide(c.getContext('2d'), i); return c; }
 function download(name, blob) { const a = document.createElement('a'); a.download = name; a.href = URL.createObjectURL(blob); a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 4000); }
 const toBlob = (c, type, q) => new Promise(r => c.toBlob(r, type, q));
-function warnFirst() {
-  const bad = deck.slides.map((s, i) => checkSlide(i).length ? i + 1 : 0).filter(Boolean);
-  return !bad.length || confirm(`Slide${bad.length > 1 ? 's' : ''} ${bad.join(', ')} still ${bad.length > 1 ? 'have' : 'has'} something to fix (see Checks). Export anyway?`);
+function okToExport(all) {
+  checkAll(); const bad = (all ? deck.slides.map((_, i) => i) : [cur]).filter(i => (slideIssues[i] || []).length).map(i => i + 1);
+  return !bad.length || confirm(`${bad.length > 1 ? 'Slides' : 'Slide'} ${bad.join(', ')} still ${bad.length > 1 ? 'have' : 'has'} something to fix (see Checks). Export anyway?`);
 }
-$('exportSlide').onclick = async () => { if (checkSlide(cur).length && !confirm('This slide still has something to fix (see Checks). Export anyway?')) return; download(slideName(cur) + '.png', await toBlob(renderFull(cur), 'image/png')); };
-
+const baseName = () => deck.format === 'thumb' ? 'poetics-thumbnail' : 'poetics-carousel';
+async function exportSlide() { if (!okToExport(false)) return; download(slideName(cur) + '.png', await toBlob(renderFull(cur), 'image/png')); toast('PNG exported'); }
 const CRC = (() => { const t = new Uint32Array(256); for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
 function crc32(b) { let c = 0xFFFFFFFF; for (let i = 0; i < b.length; i++) c = CRC[(c ^ b[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
-function zip(files) {   // [{ name, data: Uint8Array }], stored (PNG and JPEG are already compressed)
+function zip(files) {   // stored: PNG and JPEG are already compressed
   const enc = new TextEncoder(), parts = [], central = []; let off = 0;
   const u16 = v => [v & 255, (v >> 8) & 255], u32 = v => [v & 255, (v >> 8) & 255, (v >> 16) & 255, (v >>> 24) & 255];
   for (const f of files) {
     const name = enc.encode(f.name), crc = crc32(f.data), size = f.data.length;
-    const head = new Uint8Array([...u32(0x04034b50), ...u16(20), ...u16(0), ...u16(0), ...u16(0), ...u16(0x5A21), ...u32(crc), ...u32(size), ...u32(size), ...u16(name.length), ...u16(0)]);
+    const head = new Uint8Array([...u32(0x04034b50), ...u16(20), ...u16(0x0800), ...u16(0), ...u16(0), ...u16(0x5A21), ...u32(crc), ...u32(size), ...u32(size), ...u16(name.length), ...u16(0)]);
     parts.push(head, name, f.data);
-    central.push(new Uint8Array([...u32(0x02014b50), ...u16(20), ...u16(20), ...u16(0), ...u16(0), ...u16(0), ...u16(0x5A21), ...u32(crc), ...u32(size), ...u32(size),
-      ...u16(name.length), ...u16(0), ...u16(0), ...u16(0), ...u16(0), ...u32(0), ...u32(off)]), name);
+    central.push(new Uint8Array([...u32(0x02014b50), ...u16(20), ...u16(20), ...u16(0x0800), ...u16(0), ...u16(0), ...u16(0x5A21), ...u32(crc), ...u32(size), ...u32(size), ...u16(name.length), ...u16(0), ...u16(0), ...u16(0), ...u16(0), ...u32(0), ...u32(off)]), name);
     off += head.length + name.length + size;
   }
-  const cdSize = central.reduce((a, p) => a + p.length, 0);
-  const end = new Uint8Array([...u32(0x06054b50), ...u16(0), ...u16(0), ...u16(files.length), ...u16(files.length), ...u32(cdSize), ...u32(off), ...u16(0)]);
-  return new Blob([...parts, ...central, end], { type: 'application/zip' });
+  const cd = central.reduce((a, p) => a + p.length, 0);
+  return new Blob([...parts, ...central, new Uint8Array([...u32(0x06054b50), ...u16(0), ...u16(0), ...u16(files.length), ...u16(files.length), ...u32(cd), ...u32(off), ...u16(0)])], { type: 'application/zip' });
 }
-$('exportAll').onclick = async () => {
-  if (!warnFirst()) return;
-  const files = [];
+const deckJSON = () => { const d = clone(deck); delete d.guides; if (!d.caption) delete d.caption; return JSON.stringify(d, null, 1); };
+async function exportZip() {
+  if (!okToExport(true)) return; toast('Building the ZIP…');
+  const enc = new TextEncoder(), files = [];
   for (let i = 0; i < deck.slides.length; i++) files.push({ name: slideName(i) + '.png', data: new Uint8Array(await (await toBlob(renderFull(i), 'image/png')).arrayBuffer()) });
-  files.push({ name: 'deck.json', data: new TextEncoder().encode(JSON.stringify(deck, null, 1)) });
-  download('poetics-carousel.zip', zip(files));
-};
-async function pdf() {   // one page per slide, each a JPEG: what LinkedIn takes as a document post
+  if (deck.format !== 'thumb') files.push({ name: 'caption.md', data: enc.encode(`# Caption\n\n${deck.caption || ''}\n\n## Alt text\n\n${deck.slides.map((s, i) => `${i + 1}. ${s.alt || suggestAlt(s)}`).join('\n')}\n`) });
+  files.push({ name: 'deck.json', data: enc.encode(deckJSON()) });
+  download(baseName() + '.zip', zip(files)); toast(`${deck.slides.length} slide${deck.slides.length > 1 ? 's' : ''} exported`);
+}
+async function pdf() {   // a page per slide, each a JPEG: what LinkedIn takes as a document post
   const enc = new TextEncoder(), chunks = [], offs = []; let len = 0;
   const push = d => { const b = typeof d === 'string' ? enc.encode(d) : d; chunks.push(b); len += b.length; };
   const G = geo(deck.format), pw = G.W / 2, ph = G.H / 2, n = deck.slides.length;
-  push('%PDF-1.4\n%\xE2\xE3\xCF\xD3\n');
+  push('%PDF-1.4\n');
   const obj = (id, body) => { offs[id] = len; push(`${id} 0 obj\n`); body(); push('\nendobj\n'); };
-  const kids = [...Array(n)].map((_, i) => `${3 + i * 3} 0 R`).join(' ');
   obj(1, () => push('<< /Type /Catalog /Pages 2 0 R >>'));
-  obj(2, () => push(`<< /Type /Pages /Kids [${kids}] /Count ${n} >>`));
+  obj(2, () => push(`<< /Type /Pages /Kids [${[...Array(n)].map((_, i) => `${3 + i * 3} 0 R`).join(' ')}] /Count ${n} >>`));
   for (let i = 0; i < n; i++) {
-    const p = 3 + i * 3, jpg = new Uint8Array(await (await toBlob(renderFull(i), 'image/jpeg', 0.92)).arrayBuffer());
-    const content = `q ${pw} 0 0 ${ph} 0 0 cm /Im0 Do Q`;
+    const p = 3 + i * 3, jpg = new Uint8Array(await (await toBlob(renderFull(i), 'image/jpeg', 0.92)).arrayBuffer()), content = `q ${pw} 0 0 ${ph} 0 0 cm /Im0 Do Q`;
     obj(p, () => push(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pw} ${ph}] /Resources << /XObject << /Im0 ${p + 1} 0 R >> >> /Contents ${p + 2} 0 R >>`));
     obj(p + 1, () => { push(`<< /Type /XObject /Subtype /Image /Width ${G.W} /Height ${G.H} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpg.length} >>\nstream\n`); push(jpg); push('\nendstream'); });
     obj(p + 2, () => push(`<< /Length ${content.length} >>\nstream\n${content}\nendstream`));
@@ -836,33 +1159,41 @@ async function pdf() {   // one page per slide, each a JPEG: what LinkedIn takes
   push(`trailer\n<< /Size ${total} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`);
   return new Blob(chunks, { type: 'application/pdf' });
 }
-$('exportPdf').onclick = async () => { if (!warnFirst()) return; download('poetics-carousel.pdf', await pdf()); };
-function shrink(p) {   // photos go into the project file at up to 2400px, as JPEG
-  const s = Math.min(1, 2400 / Math.max(p.img.naturalWidth, p.img.naturalHeight));
-  if (s === 1 && p.src.startsWith('data:image/jpeg')) return p.src;
-  const c = document.createElement('canvas'); c.width = Math.round(p.img.naturalWidth * s); c.height = Math.round(p.img.naturalHeight * s);
-  c.getContext('2d').drawImage(p.img, 0, 0, c.width, c.height); return c.toDataURL('image/jpeg', 0.9);
+async function exportPdf() { if (!okToExport(true)) return; download(baseName() + '.pdf', await pdf()); toast('PDF exported: post it on LinkedIn as a document'); }
+function exportDeck() { download('deck.json', new Blob([deckJSON()], { type: 'application/json' })); toast('deck.json exported'); }
+function saveProject() {
+  const used = usedPhotos(), ph = {}; for (const p of photos.values()) if (used.has(p.id)) ph[p.id] = p.src;
+  download(baseName() + '.json', new Blob([JSON.stringify({ ...JSON.parse(deckJSON()), photos: ph })], { type: 'application/json' })); toast('Project saved, photos included');
 }
-$('saveProject').onclick = () => {
-  const used = new Set(deck.slides.flatMap(s => slotsOf(s).map(o => o.photo)).filter(Boolean)), ph = {};
-  for (const p of photos.values()) if (used.has(p.id)) ph[p.id] = shrink(p);
-  download('poetics-carousel.json', new Blob([JSON.stringify({ ...deck, photos: ph })], { type: 'application/json' }));
-};
-$('openProjectBtn').onclick = () => $('openProject').click();
-$('openProject').onchange = async e => {
+$('saveBtn').onclick = saveProject;
+$('openBtn').onclick = () => $('openFile').click();
+$('openFile').onchange = async e => {
   const f = e.target.files[0]; e.target.value = ''; if (!f) return;
-  let d; try { d = JSON.parse(await f.text()); } catch (err) { alert('That file is not a project or deck.json.'); return; }
-  if (!d.slides) { alert('That file has no slides.'); return; }
+  let d; try { d = JSON.parse(await f.text()); } catch (err) { toast('That file is not a project or deck.json'); return; }
+  if (!d.slides) { toast('That file has no slides'); return; }
   const ph = d.photos || {}; delete d.photos;
-  await Promise.all(Object.entries(ph).map(([id, src]) => new Promise(res => { const img = new Image(); img.onload = () => { photos.set(id, { id, img, src }); res(); }; img.onerror = res; img.src = src; })));
-  buildTray(); loadDeck(d);
+  for (const [id, src] of Object.entries(ph)) { const img = await loadImage(src); if (img) { photos.set(id, { id, img, src }); idb.put(id, src); } }
+  loadDeck(d); const missing = [...usedPhotos()].filter(id => !photos.has(id));
+  toast(missing.length ? `Opened. Add ${missing.length} photo${missing.length > 1 ? 's' : ''}: frames show their names` : 'Opened');
 };
 
 // ===== Start ===================================================================================
-window.studio = { loadDeck, addPhotoFiles, get deck() { return deck; }, checkSlide, renderFull, selectSlide, photos };
-let saved = null; try { saved = JSON.parse(localStorage.getItem('poetics-studio-deck')); } catch (err) { saved = null; }
-loadDeck(saved && saved.slides ? saved : clone(EXAMPLES.type));
-buildTray();
+function startPicker() {   // the first card in the inspector offers starting points when the deck is fresh
+  const sel = el('select', {}, [['', 'Start from…'], ...(deck.format === 'thumb' ? [['thumb', 'A blank thumbnail']] :
+    [['photo', 'Photo carousel (showcase look)'], ['framed', 'Framed carousel (agencies look)'], ['type', 'Type carousel (paper, blue, duotone)'], ['styles', 'One slide of each style'], ['blank', 'One empty slide']])].map(([v, t]) => el('option', { value: v }, t)));
+  sel.onchange = () => { const v = sel.value; if (!v) return; if (deck.slides.length > 1 && !confirm('Replace the current slides with this starting point?')) { sel.value = ''; return; }
+    const keep = { format: deck.format, caption: deck.caption }; const d = v === 'blank' ? { format: deck.format, slides: [newSlide('type:paper')] } : starter(v);
+    if (v !== 'thumb' && keep.format !== 'thumb') d.format = keep.format; loadDeck(d); toast('Starting point loaded'); };
+  return sel;
+}
+const _buildInspector = buildInspector;
+buildInspector = function () { _buildInspector(); $('inspector').append(card('New post', [startPicker(), el('p', { class: 'hint' }, 'Or open a saved project or a deck.json from Claude (Open, top right).')])); };
+
+window.studio = { loadDeck, addPhotoFiles, get deck() { return deck; }, checkSlide, captionIssues, renderFull, selectSlide, setView, photos, startInline: i => texts[i] && startInline(texts[i]) };
+$('brandMark').innerHTML = WORDMARK_SVG;
+let saved = null; try { saved = JSON.parse(localStorage.getItem(STORE_KEY)); } catch (err) { saved = null; }
+loadDeck(saved && saved.slides ? saved : starter(START_FORMAT === 'thumb' ? 'thumb' : 'type'));
+idb.all().then(async all => { for (const [id, src] of Object.entries(all)) { if (photos.has(id)) continue; const img = await loadImage(src); if (img) photos.set(id, { id, img, src }); } buildTray(); buildInspector(); buildStrip(); requestRender(); });
 loadFonts(FONT_FACES).then(() => { readMetrics(); buildStrip(); requestRender(); });
 </script>
 </body>

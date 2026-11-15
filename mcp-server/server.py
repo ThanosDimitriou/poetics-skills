@@ -214,7 +214,8 @@ def get_social_template_path(template: str) -> str:
     template: "social-carousel" (the social studio: posts, carousels and stories
     at 4:5, 1:1 and 9:16 in every feed style, with drag-to-adjust, live checks and
     export to PNG, ZIP or a LinkedIn PDF; it also opens a deck JSON like the one
-    generate_social_post takes) or "video-thumb" (1920x1080). Open the returned
+    generate_social_post takes) or "video-thumb" (the same studio, opening on
+    the 1920x1080 thumbnail format). Open the returned
     path in a browser (a local file, no server). The user adds photos and
     exports; this tool can't click Export for them.
     """

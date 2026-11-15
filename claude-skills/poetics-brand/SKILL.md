@@ -161,8 +161,9 @@ people who made the deck unless asked; the only email is hello@poeticsvr.com; ev
 Give the user the right self-contained editor (an HTML file to open in a browser, offline):
 `templates/social-carousel/editor.html`, the social studio, for posts, carousels and stories
 (4:5, 1:1, 9:16) in all three feed styles (type, photo, framed), with drag-to-move text, photo
-reframing, per-line sizes, the wordmark rule, live checks and export to PNG, ZIP or a LinkedIn PDF;
-or `templates/video-thumb/editor.html` for 1920×1080 thumbnails. Draft the text with the user in
+reframing, editing text on the slide, phone and grid previews, caption and alt text, live checks
+and export to PNG, ZIP or a LinkedIn PDF; `templates/video-thumb/editor.html` is the same studio
+opening on the 1920×1080 thumbnail format. Draft the text with the user in
 the website's voice; they add the photos and export.
 
 For a **whole carousel or story in the feed styles** (type: solid ground and big serif; photo:

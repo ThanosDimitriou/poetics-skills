@@ -26,7 +26,7 @@ brand-kit/                (a link to plugins/brand/brand-kit, the real folder)
 ├── assets/                 logos, self-hosted fonts
 ├── photos/                 the photo library index (the photos stay on the owner's machine)
 ├── scripts/                build-deck.py, build-doc-pdf.py, build-doc.py, audit-deck.py, photo-library.py, build-social.py
-├── templates/              deck starters (decks/), the social post and video thumbnail editors (_src/ + build-social-editors.py), social feed style examples (social-styles/)
+├── templates/              deck starters (decks/), the social studio (social-carousel/, video-thumb/; source in _src/ + build-social-editors.py), social feed style examples (social-styles/)
 ├── schemas/                the document content schema
 └── guides/                 voice, deck copy, anti-slop, proposal playbook, using it outside Claude Code
 ```
