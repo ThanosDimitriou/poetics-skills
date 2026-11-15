@@ -229,9 +229,9 @@ function render() {
   const tt = fit(ctx, title, DISPLAY, 400, withPhoto ? [150, 128, 110, 96] : [196, 168, 144, 120], textW, 3);
   ctx.font = `400 44px ${SANS}`;
   const subLines = sub ? wrapLines(ctx, sub, textW).slice(0, 2) : [];
-  const blockH = (over ? 72 : 0) + tt.lines.length * tt.size * 1.02 + (subLines.length ? 40 + subLines.length * 44 * 1.4 : 0);
+  const blockH = (over ? 84 : 0) + tt.lines.length * tt.size * 1.02 + (subLines.length ? 40 + subLines.length * 44 * 1.4 : 0);
   let y = H - 120 - blockH;
-  if (over) { ctx.font = `400 34px ${SANS}`; drawLines(ctx, [over], M, y, 34, 1.4, t.soft); y += 72; }
+  if (over) { ctx.font = `400 44px ${SANS}`; drawLines(ctx, [over], M, y, 44, 1.4, t.soft); y += 84; }
   ctx.font = `400 ${tt.size}px ${DISPLAY}`;
   y = drawLines(ctx, tt.lines, M, y, tt.size, 1.02, t.ink);
   if (subLines.length) { ctx.font = `400 44px ${SANS}`; drawLines(ctx, subLines, M, y + 40, 44, 1.4, t.soft); }

@@ -160,7 +160,8 @@ draw the same system on a canvas (the Aperture look; the other feed styles are b
   the footer bottom-left, an optional "2 of 6" bottom-right. A story keeps its top and bottom 250px
   clear (the app's own interface). Layouts mirror the deck templates: cover, photo with caption,
   statement (on paper-deep), heading and rows, figure, quote, closing (the band with the Ring, the
-  email in lens).
+  email in lens). No text under 44px, overline and footer included (about 16px on a phone); on the
+  cover the photograph shrinks to leave the text room.
 - **Video thumbnail:** 1920 × 1080, 120px margins; title and photo (the photograph bleeds off the
   right edge, square on that side) or title only. Large display type: thumbnails are seen small.
 - Display sizes step down to fit rather than overflow; the copy check runs as you type.
