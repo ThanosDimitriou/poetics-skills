@@ -179,7 +179,9 @@ not claude.ai chat):
 | **framed** | arrangements `cover`, `rows`, `lens`, `pair`, `close`: light ground, every photograph in a pill or lens | B2B proof and offers: agencies, venues, brands. The nearest to the website |
 
 **What stays the same everywhere:** the colour tokens (no other hex), Instrument Serif for display
-and Inter Tight for text, no italics, the wordmark top-left (28px tall, as in the social editors) with 72px clear below it, 90px
+and Inter Tight for text, no italics, the wordmark top-left (28px tall, as in the social editors) with 72px clear below it, on the
+first and last slide of a carousel only (Instagram shows the account name above every slide; set
+`"wordmark": "all"` for a post that will be shared slide by slide), 90px
 side margins, one idea per slide, the voice and the copy check, and the content rules (never
 invent a figure, never name or show a film, hello@poeticsvr.com only). Display lines are sized to
 fill the 900px column, up to a maximum, so nothing overflows. A story keeps its top and bottom

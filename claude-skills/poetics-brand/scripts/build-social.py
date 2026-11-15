@@ -21,6 +21,8 @@ The social styles (see design-system.md, "Social feed styles"): three layouts, a
 deck.json:
   {"format": "post" | "story",          4:5 (1080 x 1350, default) or 9:16 (1080 x 1920, top and bottom 250px clear)
    "grain": true | false,               false turns the texture off everywhere
+   "wordmark": "ends" | "all" | "cover", the wordmark on the first and last slide (default), every slide, or the first
+                                        only; a slide's own "wordmark": true | false overrides it
    "slides": [{"layout": "photo", "photo": "<library id or file path>", "focal": "50% 40%", "zoom": 1.1,
                "valign": "bottom" | "center" | "top", "scrim": true,
                "lines": [{"t": "Immersive cinema,", "max": 128}, {"t": "anywhere.", "max": 268}],
@@ -181,8 +183,14 @@ body{{background:#777}}
         return (f'<div class="ph" style=\'left:{x}px;top:{y}px;width:{w}px;height:{h}px;border-radius:{radius}px;'
                 f'background-color:{bg};background-image:url("{photo_uri(pid)}");background-position:{focal or "50% 50%"}\'></div>')
 
+    n_slides = len(deck["slides"])
+    mode = deck.get("wordmark", "ends")           # "ends": first and last slide, "all", or "cover": first only
+
     def slide(s, i):
         L = s["layout"]
+        show_mark = s.get("wordmark")
+        if show_mark is None:
+            show_mark = mode == "all" or i == 1 or (mode == "ends" and i == n_slides)
         g = GROUNDS[s.get("ground", "dark" if L == "photo" else "paper")]
         ink = f'color:{g["ink"]};'
         mark = WORDMARK.replace('fill="#121614"', f'fill="{g["mark"]}"')
@@ -197,7 +205,7 @@ body{{background:#777}}
             valign = s.get("valign", "bottom")
             if s.get("lines") and s.get("scrim", True):
                 body += f'<div class="scrim {valign}"></div>'
-            else:
+            elif show_mark:
                 body += '<div class="scrim top-only"></div>'
             sub = f'<div class="sub" style="color:rgba(244,245,243,.78)">{esc(s["sub"])}</div>' if s.get("sub") else ""
             link = f'<div class="link" style="color:{g["accent"]}">{esc(s["link"])}</div>' if s.get("link") else ""
@@ -247,7 +255,8 @@ body{{background:#777}}
             body = f'<div class="fr">{body}</div>'
         else:
             sys.exit(f"slide {i}: unknown layout {L!r} (type, photo, framed)")
-        return f'<section class="slide" id="s{i}" style="background:{g["bg"]}">{body}{tex}<div class="mark">{mark}</div></section>'
+        mark_div = f'<div class="mark">{mark}</div>' if show_mark else ""
+        return f'<section class="slide" id="s{i}" style="background:{g["bg"]}">{body}{tex}{mark_div}</section>'
 
     slides = deck["slides"]
     page = (f"<!doctype html><meta charset=utf-8><style>{css}</style><body>{duo_filter()}"

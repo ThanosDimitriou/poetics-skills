@@ -73,7 +73,9 @@ python3 "${CLAUDE_PLUGIN_ROOT}/brand-kit/scripts/build-social.py" deck.json OUT_
 
 It writes `01-….png` onward (1080 × 1350, or 1080 × 1920 with `"format": "story"`) and a
 `contact-sheet.png`, checks every slide (margins, wordmark clearance, the story's 250px, text over
-photographs) and the copy, and exits non-zero if something is wrong. Read the "Social feed styles"
+photographs, text under 44px, contrast against what is behind each line) and the copy, and exits non-zero if something is wrong.
+The wordmark goes on the first and last slide only, since Instagram shows the account name above every
+slide; `"wordmark": "all"` in the deck puts it back everywhere. Read the "Social feed styles"
 section of `design-system.md` first: it says which layout to use for what and which brand rules
 the feed relaxes. Copy a starting deck from `${CLAUDE_PLUGIN_ROOT}/brand-kit/templates/social-styles/examples/`:
 
